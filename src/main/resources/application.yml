@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/zipcook?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    username: cuk
+    password: 1234
+
+#openai api settings
+api:
+  secret:
+    key: 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
+openai:
+  api:
+    url: https://api.openai.com/v1/completions
