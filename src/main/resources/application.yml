@@ -5,6 +5,11 @@ spring:
     username: cuk
     password: 1234
 
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+
 #openai api settings
 api:
   secret:
@@ -12,3 +17,7 @@ api:
 openai:
   api:
     url: https://api.openai.com/v1/completions
+
+
+
+
