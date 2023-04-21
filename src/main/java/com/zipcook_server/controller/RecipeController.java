@@ -3,7 +3,6 @@ package com.zipcook_server.controller;
 import com.zipcook_server.data.dto.recipe.RecipeCreate;
 import com.zipcook_server.data.dto.recipe.RecipeEdit;
 import com.zipcook_server.data.dto.recipe.RecipeResponse;
-import com.zipcook_server.data.entity.RecipePost;
 import com.zipcook_server.data.request.RecipeSearch;
 import com.zipcook_server.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class RecipeController {
     }
 
     @GetMapping("/{boardId}")
-    public RecipePost getPost(@PathVariable Long boardId) throws IOException {
+    public RecipeResponse getPost(@PathVariable Long boardId) throws IOException {
         return recipeService.get(boardId);
 
     }

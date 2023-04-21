@@ -3,7 +3,6 @@ package com.zipcook_server.controller;
 import com.zipcook_server.data.dto.share.ShareCreate;
 import com.zipcook_server.data.dto.share.ShareEdit;
 import com.zipcook_server.data.dto.share.ShareResponse;
-import com.zipcook_server.data.entity.SharePost;
 import com.zipcook_server.data.request.ShareSearch;
 import com.zipcook_server.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class ShareController {
     }
 
     @GetMapping("/{boardId}")
-    public SharePost getPost(@PathVariable Long boardId) throws IOException {
+    public ShareResponse getPost(@PathVariable Long boardId) throws IOException {
         return shareService.get(boardId);
 
     }
