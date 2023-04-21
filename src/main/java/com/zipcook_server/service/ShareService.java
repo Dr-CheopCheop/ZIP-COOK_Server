@@ -42,11 +42,11 @@ public class ShareService {
         shareRepository.save(sharePost);
     }
 
-    public SharePost get(Long id){
+    public ShareResponse get(Long id){
         SharePost post=shareRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-        return SharePost.builder()
+        return ShareResponse.builder()
                 .id(post.getId())
                 .user(post.getUser())
                 .title(post.getTitle())

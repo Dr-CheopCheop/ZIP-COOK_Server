@@ -46,11 +46,11 @@ public class RecipeService {
         recipeRepository.save(recipePost);
     }
 
-    public RecipePost get(Long id){
+    public RecipeResponse get(Long id){
         RecipePost post=recipeRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-        return RecipePost.builder()
+        return RecipeResponse.builder()
                 .id(post.getId())
                 .user(post.getUser())
                 .title(post.getTitle())
