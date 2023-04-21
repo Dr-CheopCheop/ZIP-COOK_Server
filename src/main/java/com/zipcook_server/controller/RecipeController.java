@@ -38,6 +38,12 @@ public class RecipeController {
         return recipeService.getList(recipeSearch);
     }
 
+    @GetMapping("/search/{title}")
+    public List<RecipeResponse> searchByTitle(@PathVariable String title) throws IOException {
+        return recipeService.searchByTitle(title);
+    }
+
+
     @PatchMapping("/{boardId}")
     public void edit(@PathVariable Long boardId, @RequestBody @Valid RecipeEdit request){
         recipeService.edit(boardId,request);
