@@ -157,7 +157,6 @@ class RecipeControllerTest {
                 .collect(Collectors.toList());
 
 
-
         recipeRepository.saveAll(requestPosts);
 
         // expected
@@ -218,7 +217,6 @@ class RecipeControllerTest {
                 .andDo(print());
 
 
-
     }
 
 
@@ -260,8 +258,45 @@ class RecipeControllerTest {
                 .andDo(print());
 
 
-
     }
 
 
+    @Test
+    @DisplayName("게시글 검색")
+    void test6() throws Exception {
+        // given
+
+        User user = User.builder()
+                .id("joy")
+                .email("example@example.com")
+                .password("abc123")
+                .location("seoul")
+                .build();
+        userRepository.save(user);
+
+        List<String> content = new ArrayList<>();
+        content.add("Step 1. Do this");
+        content.add("Step 2. Do that");
+        content.add("Step 3. Do something else");
+
+        RecipePost recipe = RecipePost.builder()
+                .user(user)
+                .title("Spaghetti with Meatballs")
+                .serving(4)
+                .level("easy")
+                .ingredients("ground beef, bread crumbs, milk, eggs, salt, pepper, garlic, onion, spaghetti, tomato sauce")
+                .summary("Classic spaghetti and meatballs")
+                .content(content)
+                .time(60)
+                .build();
+
+        recipeRepository.save(recipe);
+
+        // when
+        mockMvc.perform(get("/board-recipe/search/{title}" ,recipe.getTitle())
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+    }
 }

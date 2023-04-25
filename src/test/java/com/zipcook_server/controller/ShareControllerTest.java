@@ -255,6 +255,45 @@ class ShareControllerTest {
 
     }
 
+    @Test
+    @DisplayName("게시글 검색")
+    void test7() throws Exception {
+        // given
+
+        User user = User.builder()
+                .id("joy")
+                .email("example@example.com")
+                .password("abc123")
+                .location("seoul")
+                .build();
+        userRepository.save(user);
+
+        SharePost sharePost = SharePost.builder()
+                .user(user)
+                .title("share tomato")
+                .content("Test content")
+                .regDate(new Date())
+                .build();
+
+        shareRepository.save(sharePost);
+
+        SharePost sharePost2 = SharePost.builder()
+                .user(user)
+                .title("share banana")
+                .content("Test content")
+                .regDate(new Date())
+                .build();
+
+        shareRepository.save(sharePost2);
+
+        // when
+        mockMvc.perform(get("/board-share/search/{title}" ,"share")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+    }
+
 
 }
 

@@ -72,6 +72,13 @@ public class RecipeService {
                 .collect(Collectors.toList());
     }
 
+
+    public List<RecipeResponse> searchByTitle(String title) {
+        return recipeRepository.findByTitleContaining(title).stream()
+                .map(RecipeResponse::new)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public void edit(Long id, RecipeEdit recipeEdit){
         RecipePost recipePost=recipeRepository.findById(id)
