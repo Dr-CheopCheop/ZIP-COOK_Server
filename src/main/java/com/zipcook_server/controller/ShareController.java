@@ -38,6 +38,11 @@ public class ShareController {
         return shareService.getList(shareSearch);
     }
 
+    @GetMapping("/search/{title}")
+    public List<ShareResponse> searchByTitle(@PathVariable String title) throws IOException {
+        return shareService.searchByTitle(title);
+    }
+
     @PatchMapping("/{boardId}")
     public void edit(@PathVariable Long boardId, @RequestBody @Valid ShareEdit request){
         shareService.edit(boardId,request);

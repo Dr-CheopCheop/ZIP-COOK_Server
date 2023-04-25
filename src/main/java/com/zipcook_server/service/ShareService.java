@@ -63,6 +63,21 @@ public class ShareService {
                 .collect(Collectors.toList());
     }
 
+
+
+    public List<ShareResponse> searchEntities(String keyword) {
+        return shareRepository.findByTitleContaining(keyword).stream()
+                .map(ShareResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<ShareResponse> searchByTitle(String title) {
+        return shareRepository.findByTitleContaining(title).stream()
+                .map(ShareResponse::new)
+                .collect(Collectors.toList());
+    }
+
+
     @Transactional
     public void edit(Long id, ShareEdit shareEdit){
         SharePost sharePost=shareRepository.findById(id)
