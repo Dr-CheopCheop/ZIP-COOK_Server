@@ -1,11 +1,11 @@
 package com.zipcook_server.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zipcook_server.data.dto.share.ShareCreate;
-import com.zipcook_server.data.dto.share.ShareEdit;
-import com.zipcook_server.data.entity.SharePost;
+import com.zipcook_server.data.dto.sale.SaleCreate;
+import com.zipcook_server.data.dto.sale.SaleEdit;
+import com.zipcook_server.data.entity.SalePost;
 import com.zipcook_server.data.entity.User;
-import com.zipcook_server.repository.Share.ShareRepository;
+import com.zipcook_server.repository.Sale.SaleRepository;
 import com.zipcook_server.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-class ShareControllerTest {
+class SaleControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -40,7 +40,7 @@ class ShareControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ShareRepository shareRepository;
+    private SaleRepository saleRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -48,14 +48,14 @@ class ShareControllerTest {
 
     @BeforeEach
     void clean() {
-        shareRepository.deleteAll();
+        saleRepository.deleteAll();
         userRepository.deleteAll();
     }
 
 
 
     @Test
-    @DisplayName("/share 요청시 db에 값이 저장된다")
+    @DisplayName("요청시 db에 값이 저장된다")
     void test1() throws Exception {
         // given
         User user = User.builder()
@@ -66,25 +66,25 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        ShareCreate shareCreate = ShareCreate.builder()
+        SaleCreate saleCreate = SaleCreate.builder()
                 .user(user)
-                .title("tomato")
-                .content("share tomato")
+                .title("sale")
+                .content("sale content")
                 .build();
 
-        String json = objectMapper.writeValueAsString(shareCreate);
+        String json = objectMapper.writeValueAsString(saleCreate);
 
         // when
-        mockMvc.perform(post("/board-share")
+        mockMvc.perform(post("/board-sale")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
                 .andDo(print());
 
         // then
-        SharePost post = shareRepository.findAll().get(0);
-        assertThat(post.getTitle()).isEqualTo("tomato");
-        assertThat(post.getContent()).isEqualTo("share tomato");
+        SalePost post = saleRepository.findAll().get(0);
+        assertThat(post.getTitle()).isEqualTo("sale");
+        assertThat(post.getContent()).isEqualTo("sale content");
         assertThat(post.getUser().getId()).isEqualTo("joy");
     }
 
@@ -102,17 +102,17 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        SalePost salePost = SalePost.builder()
                 .user(user)
-                .title("tomato")
-                .content("share tomato")
+                .title("sale")
+                .content("sale content")
                 .build();
 
-        shareRepository.save(sharePost);
+        saleRepository.save(salePost);
 
 
         //when
-        mockMvc.perform(get("/board-share/{boardId}", sharePost.getId())
+        mockMvc.perform(get("/board-sale/{boardId}", salePost.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -133,18 +133,18 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        List<SharePost> requestPosts = IntStream.range(0, 10)
-                .mapToObj(i -> SharePost.builder()
+        List<SalePost> requestPosts = IntStream.range(0, 10)
+                .mapToObj(i -> SalePost.builder()
                         .user(user)
                         .title("title" + i)
                         .content("content" + i)
                         .build())
                 .collect(Collectors.toList());
 
-        shareRepository.saveAll(requestPosts);
+        saleRepository.saveAll(requestPosts);
 
         // expected
-        mockMvc.perform(get("/board-share?page=1&size=10")
+        mockMvc.perform(get("/board-sale?page=1&size=10")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -164,25 +164,25 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        SalePost salePost = SalePost.builder()
                 .user(user)
-                .title("Test share post")
-                .content("Test content")
+                .title("Test sale post")
+                .content("Test sale content")
                 .regDate(new Date())
                 .build();
 
-        shareRepository.save(sharePost);
+        saleRepository.save(salePost);
 
-        ShareEdit shareEdit = ShareEdit.builder()
-                .title("apple")
-                .content("Test content")
+        SaleEdit saleEdit = SaleEdit.builder()
+                .title("sale sale :)")
+                .content("test sale content")
                 .build();
 
 
         //when
-        mockMvc.perform(patch("/board-share/{boardId}", sharePost.getId())
+        mockMvc.perform(patch("/board-sale/{boardId}", salePost.getId())
                         .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(shareEdit)))
+                        .content(objectMapper.writeValueAsString(saleEdit)))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -202,18 +202,18 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        SalePost salePost = SalePost.builder()
                 .user(user)
-                .title("Test share post")
+                .title("Test sale post")
                 .content("Test content")
                 .regDate(new Date())
                 .build();
 
-        shareRepository.save(sharePost);
+        saleRepository.save(salePost);
 
 
         //when
-        mockMvc.perform(delete("/board-share/{boardId}", sharePost.getId())
+        mockMvc.perform(delete("/board-sale/{boardId}", salePost.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -235,15 +235,15 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        ShareCreate shareCreate = ShareCreate.builder()
+        SaleCreate saleCreate = SaleCreate.builder()
                 .user(user)
-                .content("share tomato")
+                .content("sale content")
                 .build();
 
-        String json = objectMapper.writeValueAsString(shareCreate);
+        String json = objectMapper.writeValueAsString(saleCreate);
 
         // expected
-        mockMvc.perform(post("/board-share")
+        mockMvc.perform(post("/board-sale")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -270,26 +270,26 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        SalePost salePost = SalePost.builder()
                 .user(user)
-                .title("share tomato")
-                .content("Test content")
+                .title("sale title")
+                .content("Test sale content")
                 .regDate(new Date())
                 .build();
 
-        shareRepository.save(sharePost);
+        saleRepository.save(salePost);
 
-        SharePost sharePost2 = SharePost.builder()
+        SalePost salePost2 = SalePost.builder()
                 .user(user)
-                .title("share banana")
-                .content("Test content")
+                .title("sale banana")
+                .content("Test sale content")
                 .regDate(new Date())
                 .build();
 
-        shareRepository.save(sharePost2);
+        saleRepository.save(salePost2);
 
         // when
-        mockMvc.perform(get("/board-share/search/{title}" ,"share")
+        mockMvc.perform(get("/board-sale/search/{title}" ,"sale")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

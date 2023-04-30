@@ -43,6 +43,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     @Builder.Default
+    private List<SalePost> saleEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    @Builder.Default
     private List<RecipePost> recipeEntities = new ArrayList<>();
 
     @Override
