@@ -35,8 +35,9 @@ public class RecipePost {
     @Column(name = "level", length = 5)
     private String level;
 
-    @Column(length = 1000)
-    private String ingredients;
+    @ElementCollection
+    @Column(name = "ingredients")
+    private List<String> ingredients;
 
     @Column(name = "summary", length = 1000)
     private String summary;

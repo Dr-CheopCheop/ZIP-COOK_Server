@@ -70,12 +70,16 @@ class RecipeControllerTest {
         content.add("Step 2. Do that");
         content.add("Step 3. Do something else");
 
+        List<String> ingredients = new ArrayList<>();
+        ingredients.add("tomato");
+        ingredients.add("onion");
+
         RecipeCreate recipeCreate = RecipeCreate.builder()
                 .user(user)
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
-                .ingredients("Ingredient A, Ingredient B, Ingredient C")
+                .ingredients(ingredients)
                 .summary("This is a test recipe")
                 .content(content)
                 .time(30)
@@ -114,12 +118,17 @@ class RecipeControllerTest {
         content.add("Step 2. Do that");
         content.add("Step 3. Do something else");
 
+        List<String> ingredients = new ArrayList<>();
+        ingredients.add("tomato");
+        ingredients.add("onion");
+
+
         RecipePost recipePost = RecipePost.builder()
                 .user(user)
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
-                .ingredients("Ingredient A, Ingredient B, Ingredient C")
+                .ingredients(ingredients)
                 .summary("This is a test recipe")
                 .content(content)
                 .time(30)
@@ -186,12 +195,16 @@ class RecipeControllerTest {
         content.add("Step 2. Do that");
         content.add("Step 3. Do something else");
 
+        List<String> ingredients = new ArrayList<>();
+        ingredients.add("tomato");
+        ingredients.add("onion");
+
         RecipePost recipePost = RecipePost.builder()
                 .user(user)
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
-                .ingredients("Ingredient A, Ingredient B, Ingredient C")
+                .ingredients(ingredients)
                 .summary("This is a test recipe")
                 .content(content)
                 .time(30)
@@ -204,7 +217,7 @@ class RecipeControllerTest {
                 .title("title edit test")
                 .serving(2)
                 .level("easy")
-                .ingredients("Ingredient A, Ingredient B, Ingredient C")
+                .ingredients(ingredients)
                 .summary("This is a test recipe")
                 .content(content)
                 .time(30)
@@ -238,12 +251,17 @@ class RecipeControllerTest {
         content.add("Step 2. Do that");
         content.add("Step 3. Do something else");
 
+        List<String> ingredients = new ArrayList<>();
+        ingredients.add("tomato");
+        ingredients.add("onion");
+
+
         RecipePost recipePost = RecipePost.builder()
                 .user(user)
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
-                .ingredients("Ingredient A, Ingredient B, Ingredient C")
+                .ingredients(ingredients)
                 .summary("This is a test recipe")
                 .content(content)
                 .time(30)
@@ -281,12 +299,17 @@ class RecipeControllerTest {
         content.add("Step 2. Do that");
         content.add("Step 3. Do something else");
 
+        List<String> ingredients = new ArrayList<>();
+        ingredients.add("tomato");
+        ingredients.add("onion");
+
+
         RecipePost recipe = RecipePost.builder()
                 .user(user)
                 .title("Spaghetti with Meatballs")
                 .serving(4)
                 .level("easy")
-                .ingredients("ground beef, bread crumbs, milk, eggs, salt, pepper, garlic, onion, spaghetti, tomato sauce")
+                .ingredients(ingredients)
                 .summary("Classic spaghetti and meatballs")
                 .content(content)
                 .time(60)
