@@ -20,10 +20,9 @@ public class RecipeEdit {
     @Size(max=5)
     private String level;
 
-    @Size(max=150)
-    private String ingredients;
+    private  List<String> ingredients;
 
-    @Size(max=40)
+
     private String summary;
 
     private List<String> content;
@@ -32,7 +31,7 @@ public class RecipeEdit {
 
     @Builder
     public RecipeEdit(String title, int serving, String level,
-                      String ingredients, String summary, List<String> content, int time) {
+                      List<String> ingredients, String summary, List<String> content, int time) {
         this.title = title;
         this.serving = serving;
         this.level = level;

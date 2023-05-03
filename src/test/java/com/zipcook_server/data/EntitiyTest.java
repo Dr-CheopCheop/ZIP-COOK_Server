@@ -45,7 +45,6 @@ public class EntitiyTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("user저장")
     public void test1() {
         User user = User.builder()
@@ -105,13 +104,15 @@ public class EntitiyTest {
                 .build();
         userRepository.save(user);
 
+
+
         RecipePost recipePost = RecipePost.builder()
                 .user(user)
                 .title("Test Recipe")
                 .serving(2)
                 .level("easy")
                 .summary("This is a test recipe")
-                .ingredients("apple,tomato")
+                .ingredients(Arrays.asList("tomato","onion"))
                 .content(Arrays.asList("Step 1. Do this", "Step 2. Do that", "Step 3. Do something else"))
                 .time(30)
                 .regDate(new Date())

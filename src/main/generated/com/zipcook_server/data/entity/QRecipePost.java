@@ -26,7 +26,7 @@ public class QRecipePost extends EntityPathBase<RecipePost> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath ingredients = createString("ingredients");
+    public final ListPath<String, StringPath> ingredients = this.<String, StringPath>createList("ingredients", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final StringPath level = createString("level");
 

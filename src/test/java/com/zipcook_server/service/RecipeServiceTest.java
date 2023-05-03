@@ -21,6 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @AutoConfigureMockMvc
+@Transactional
 @SpringBootTest
 class RecipeServiceTest {
 
@@ -54,17 +55,23 @@ class RecipeServiceTest {
                 .build();
         userRepository.save(user);
 
+
+
         List<String> content = new ArrayList<>();
         content.add("Step 1. Do this");
         content.add("Step 2. Do that");
         content.add("Step 3. Do something else");
+
+        List<String> ingredients = new ArrayList<>();
+        ingredients.add("tomato");
+        ingredients.add("onion");
 
         RecipePost recipePost = RecipePost.builder()
                 .user(user)
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
-                .ingredients("Ingredient A, Ingredient B, Ingredient C")
+                .ingredients(ingredients)
                 .summary("This is a test recipe")
                 .content(content)
                 .time(30)
@@ -77,7 +84,7 @@ class RecipeServiceTest {
                 .title("title edit test")
                 .serving(2)
                 .level("easy")
-                .ingredients("Ingredient A, Ingredient B, Ingredient C")
+                .ingredients(ingredients)
                 .summary("This is a test recipe")
                 .content(content)
                 .time(30)
@@ -114,12 +121,16 @@ class RecipeServiceTest {
         content.add("Step 2. Do that");
         content.add("Step 3. Do something else");
 
+        List<String> ingredients = new ArrayList<>();
+        content.add("tomato");
+        content.add("onion");
+
         RecipePost recipePost= RecipePost.builder()
                 .user(user)
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
-                .ingredients("Ingredient A, Ingredient B, Ingredient C")
+                .ingredients(ingredients)
                 .summary("This is a test recipe")
                 .content(content)
                 .time(30)

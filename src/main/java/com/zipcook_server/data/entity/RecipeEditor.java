@@ -15,7 +15,7 @@ public class RecipeEditor {
 
     private String level;
 
-    private String ingredients;
+    private List<String> ingredients;
 
     private String summary;
 
