@@ -24,6 +24,8 @@ public class QSharePost extends EntityPathBase<SharePost> {
 
     public final StringPath content = createString("content");
 
+    public final StringPath filepath = createString("filepath");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final DatePath<java.util.Date> regDate = createDate("regDate", java.util.Date.class);

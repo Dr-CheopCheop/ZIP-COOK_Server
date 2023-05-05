@@ -8,12 +8,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.Date;
 @Data
-@Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShareResponse {
+public class Sharedto {
 
     private Long id;
 
@@ -28,11 +26,14 @@ public class ShareResponse {
 
     private Date regDate;
 
-    public ShareResponse(SharePost post){
+    private String filepath;
+
+    public Sharedto(SharePost post){
         this.user=post.getUser();
         this.id= post.getId();
         this.title= post.getTitle();
         this.content=post.getContent();
         this.regDate=post.getRegDate();
+        this.filepath=post.getFilepath();
     }
 }

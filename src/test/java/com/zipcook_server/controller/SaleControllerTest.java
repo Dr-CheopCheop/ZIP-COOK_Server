@@ -2,20 +2,22 @@ package com.zipcook_server.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zipcook_server.data.dto.sale.SaleCreate;
-import com.zipcook_server.data.dto.sale.SaleEdit;
+import com.zipcook_server.data.dto.sale.Saledto;
 import com.zipcook_server.data.entity.SalePost;
 import com.zipcook_server.data.entity.User;
 import com.zipcook_server.repository.Sale.SaleRepository;
 import com.zipcook_server.repository.UserRepository;
+import com.zipcook_server.service.SaleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,11 +27,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
-@Transactional
+
 @SpringBootTest
 class SaleControllerTest {
 
@@ -41,6 +42,9 @@ class SaleControllerTest {
 
     @Autowired
     private SaleRepository saleRepository;
+
+    @Autowired
+    private SaleService saleService;
 
     @Autowired
     private UserRepository userRepository;
@@ -55,7 +59,7 @@ class SaleControllerTest {
 
 
     @Test
-    @DisplayName("요청시 db에 값이 저장된다")
+    @DisplayName("/sale 요청시 db에 값이 저장된다")
     void test1() throws Exception {
         // given
         User user = User.builder()
@@ -68,25 +72,29 @@ class SaleControllerTest {
 
         SaleCreate saleCreate = SaleCreate.builder()
                 .user(user)
-                .title("sale")
-                .content("sale content")
+                .title("title sale")
+                .content("content sale")
                 .build();
 
-        String json = objectMapper.writeValueAsString(saleCreate);
 
-        // when
-        mockMvc.perform(post("/board-sale")
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
+        MockMultipartFile multipartFile1 = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        String json = objectMapper.writeValueAsString(saleCreate);
+        MockMultipartFile salepost = new MockMultipartFile("salepost", "salepost", "application/json", json.getBytes(StandardCharsets.UTF_8));
+
+
+        mockMvc.perform(multipart("/board-sale")
+                        .file(multipartFile1)
+                        .file(salepost))
                 .andExpect(status().isOk())
                 .andDo(print());
 
         // then
         SalePost post = saleRepository.findAll().get(0);
-        assertThat(post.getTitle()).isEqualTo("sale");
-        assertThat(post.getContent()).isEqualTo("sale content");
+        assertThat(post.getTitle()).isEqualTo("title sale");
+        assertThat(post.getContent()).isEqualTo("content sale");
         assertThat(post.getUser().getId()).isEqualTo("joy");
     }
+
 
 
 
@@ -153,9 +161,11 @@ class SaleControllerTest {
     }
 
 
+
     @Test
     @DisplayName("글 수정")
     void test4() throws Exception {
+        // given
         User user = User.builder()
                 .id("joy")
                 .email("example@example.com")
@@ -164,28 +174,34 @@ class SaleControllerTest {
                 .build();
         userRepository.save(user);
 
-        SalePost salePost = SalePost.builder()
+        SaleCreate saleCreate = SaleCreate.builder()
                 .user(user)
-                .title("Test sale post")
-                .content("Test sale content")
+                .title("title sale")
+                .content("content sale")
+                .build();
+
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        saleService.write(saleCreate, file);
+
+        List<SalePost> salePosts = saleRepository.findByTitleContaining("sale");
+
+        Saledto update = Saledto.builder()
+                .user(user)
+                .title("Test update post")
+                .content("Test update content")
                 .regDate(new Date())
                 .build();
 
-        saleRepository.save(salePost);
+        String json = objectMapper.writeValueAsString(update);
+        MockMultipartFile saledto = new MockMultipartFile("update", "update", "application/json", json.getBytes(StandardCharsets.UTF_8));
 
-        SaleEdit saleEdit = SaleEdit.builder()
-                .title("sale sale :)")
-                .content("test sale content")
-                .build();
-
-
-        //when
-        mockMvc.perform(patch("/board-sale/{boardId}", salePost.getId())
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(saleEdit)))
+        // when
+        mockMvc.perform(multipart("/board-sale/update/{boardId}", salePosts.get(0).getId())
+                        .file(file)
+                        .file(saledto))
                 .andExpect(status().isOk())
+                .andExpect(content().string("Updated Successfully!"))
                 .andDo(print());
-
 
 
     }
@@ -202,18 +218,20 @@ class SaleControllerTest {
                 .build();
         userRepository.save(user);
 
-        SalePost salePost = SalePost.builder()
+
+        SaleCreate saleCreate = SaleCreate.builder()
                 .user(user)
-                .title("Test sale post")
-                .content("Test content")
-                .regDate(new Date())
+                .title("title sale")
+                .content("content sale")
                 .build();
 
-        saleRepository.save(salePost);
+        MockMultipartFile File= new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        saleService.write(saleCreate,File);
 
+        List<SalePost> salePost=saleRepository.findByTitleContaining("sale");
 
         //when
-        mockMvc.perform(delete("/board-sale/{boardId}", salePost.getId())
+        mockMvc.perform(delete("/board-sale/{boardId}", salePost.get(0).getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -224,7 +242,7 @@ class SaleControllerTest {
 
 
     @Test
-    @DisplayName("/share 요청시 제목은 필수값이다")
+    @DisplayName("/sale 요청시 제목은 필수값이다")
     void test6() throws Exception {
         // given
         User user = User.builder()
@@ -237,21 +255,23 @@ class SaleControllerTest {
 
         SaleCreate saleCreate = SaleCreate.builder()
                 .user(user)
-                .content("sale content")
+                .content("sale tomato")
                 .build();
 
-        String json = objectMapper.writeValueAsString(saleCreate);
 
-        // expected
-        mockMvc.perform(post("/board-sale")
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
+        MockMultipartFile multipartFile1 = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        String json = objectMapper.writeValueAsString(saleCreate);
+        MockMultipartFile salepost = new MockMultipartFile("salepost", "salepost", "application/json", json.getBytes(StandardCharsets.UTF_8));
+
+
+        mockMvc.perform(multipart("/board-sale")
+                        .file(multipartFile1)
+                        .file(salepost))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다"))
                 .andExpect(jsonPath("$.validation.title").value("제목을 입력하세요"))
                 .andDo(print());
-
 
 
 

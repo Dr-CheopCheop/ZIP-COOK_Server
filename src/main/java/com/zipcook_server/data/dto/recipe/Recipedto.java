@@ -10,12 +10,10 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecipeResponse {
+public class Recipedto {
 
     private Long id;
 
@@ -43,7 +41,9 @@ public class RecipeResponse {
 
     private Date regDate;
 
-    public RecipeResponse(RecipePost post){
+    private String filepath;
+
+    public Recipedto(RecipePost post){
         this.user=post.getUser();
         this.id= post.getId();
         this.title= post.getTitle();
@@ -54,5 +54,6 @@ public class RecipeResponse {
         this.content=post.getContent();
         this.time=post.getTime();
         this.regDate=post.getRegDate();
+        this.filepath=post.getFilepath();
     }
 }
