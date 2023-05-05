@@ -36,6 +36,8 @@ public class SharePost {
     @Column(name = "reg_date")
     private Date regDate;
 
+    private String filepath;
+
     public  ShareEditor.ShareEditorBuilder toEditor(){
         return ShareEditor.builder()
                 .title(title)

@@ -19,6 +19,7 @@ public class ShareEdit {
     @Size(max=80)
     private String content;
 
+
     @Builder
     public ShareEdit(String title,String content){
         this.title=title;

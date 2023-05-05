@@ -28,11 +28,14 @@ public class ShareResponse {
 
     private Date regDate;
 
+    private String filepath;
+
     public ShareResponse(SharePost post){
         this.user=post.getUser();
         this.id= post.getId();
         this.title= post.getTitle();
         this.content=post.getContent();
         this.regDate=post.getRegDate();
+        this.filepath=post.getFilepath();
     }
 }

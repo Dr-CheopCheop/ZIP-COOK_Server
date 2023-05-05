@@ -7,15 +7,18 @@ import com.zipcook_server.data.entity.SharePost;
 import com.zipcook_server.data.entity.User;
 import com.zipcook_server.repository.Share.ShareRepository;
 import com.zipcook_server.repository.UserRepository;
+import com.zipcook_server.service.ShareService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +46,9 @@ class ShareControllerTest {
     private ShareRepository shareRepository;
 
     @Autowired
+    private ShareService shareService;
+
+    @Autowired
     private UserRepository userRepository;
 
 
@@ -51,7 +57,6 @@ class ShareControllerTest {
         shareRepository.deleteAll();
         userRepository.deleteAll();
     }
-
 
 
     @Test
@@ -72,12 +77,15 @@ class ShareControllerTest {
                 .content("share tomato")
                 .build();
 
-        String json = objectMapper.writeValueAsString(shareCreate);
 
-        // when
-        mockMvc.perform(post("/board-share")
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
+        MockMultipartFile multipartFile1 = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        String json = objectMapper.writeValueAsString(shareCreate);
+        MockMultipartFile sharepost = new MockMultipartFile("sharepost", "sharepost", "application/json", json.getBytes(StandardCharsets.UTF_8));
+
+
+        mockMvc.perform(multipart("/board-share")
+                        .file(multipartFile1)
+                        .file(sharepost))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -102,17 +110,21 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        ShareCreate shareCreate = ShareCreate.builder()
                 .user(user)
-                .title("tomato")
-                .content("share tomato")
+                .title("Test share post")
+                .content("Test content")
+                .regDate(new Date())
                 .build();
 
-        shareRepository.save(sharePost);
+        MockMultipartFile File= new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        shareService.write(shareCreate,File);
+
+        List<SharePost> sharePost=shareRepository.findByTitleContaining("share");
 
 
         //when
-        mockMvc.perform(get("/board-share/{boardId}", sharePost.getId())
+        mockMvc.perform(get("/board-share/{boardId}", sharePost.get(0).getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -167,15 +179,16 @@ class ShareControllerTest {
         SharePost sharePost = SharePost.builder()
                 .user(user)
                 .title("Test share post")
-                .content("Test content")
+                .content("Test share content")
                 .regDate(new Date())
+                .filepath("filepath")
                 .build();
 
         shareRepository.save(sharePost);
 
         ShareEdit shareEdit = ShareEdit.builder()
-                .title("apple")
-                .content("Test content")
+                .title("share share :)")
+                .content("test share content")
                 .build();
 
 
@@ -202,18 +215,20 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        ShareCreate shareCreate = ShareCreate.builder()
                 .user(user)
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
                 .build();
 
-        shareRepository.save(sharePost);
+        MockMultipartFile File= new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        shareService.write(shareCreate,File);
 
+        List<SharePost> sharePost=shareRepository.findByTitleContaining("share");
 
         //when
-        mockMvc.perform(delete("/board-share/{boardId}", sharePost.getId())
+        mockMvc.perform(delete("/board-share/{boardId}", sharePost.get(0).getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -240,18 +255,20 @@ class ShareControllerTest {
                 .content("share tomato")
                 .build();
 
-        String json = objectMapper.writeValueAsString(shareCreate);
 
-        // expected
-        mockMvc.perform(post("/board-share")
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
+        MockMultipartFile multipartFile1 = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        String json = objectMapper.writeValueAsString(shareCreate);
+        MockMultipartFile sharepost = new MockMultipartFile("sharepost", "sharepost", "application/json", json.getBytes(StandardCharsets.UTF_8));
+
+
+        mockMvc.perform(multipart("/board-share")
+                        .file(multipartFile1)
+                        .file(sharepost))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다"))
                 .andExpect(jsonPath("$.validation.title").value("제목을 입력하세요"))
                 .andDo(print());
-
 
 
 

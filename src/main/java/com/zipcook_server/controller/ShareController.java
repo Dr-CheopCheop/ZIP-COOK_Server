@@ -8,6 +8,7 @@ import com.zipcook_server.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -22,8 +23,10 @@ public class ShareController {
     ShareService shareService;
 
     @PostMapping()
-    public ResponseEntity<String> sharePost(@RequestBody @Valid  ShareCreate shareCreate) throws IOException {
-        shareService.write(shareCreate);
+    public ResponseEntity<String> sharePost(@RequestPart("sharepost") @Valid  ShareCreate shareCreate,
+                                            @RequestPart(value="file",required = true) MultipartFile file) throws IOException {
+
+        shareService.write(shareCreate,file);
         return ResponseEntity.ok("Post shared successfully!");
     }
 
@@ -44,7 +47,7 @@ public class ShareController {
     }
 
     @PatchMapping("/{boardId}")
-    public void edit(@PathVariable Long boardId, @RequestBody @Valid ShareEdit request){
+    public void edit(@PathVariable Long boardId, @RequestBody @Valid ShareEdit request) throws IOException {
         shareService.edit(boardId,request);
 
     }

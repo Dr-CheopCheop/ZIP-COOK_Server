@@ -11,12 +11,16 @@ import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Share.ShareRepository;
 import com.zipcook_server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,15 +32,25 @@ public class ShareService {
     @Autowired
     UserRepository userRepository;
 
-    public void write(ShareCreate shareCreate) throws IOException {
+    @Autowired
+    private ResourceLoader resourceLoader;
+
+    public void write(ShareCreate shareCreate, MultipartFile file) throws IOException {
         User user = userRepository.findById(shareCreate.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        String savepath="/Users/seunghee/Documents/boardimages/"+fileName;
+        File saveFile = new File(savepath);
+        file.transferTo(saveFile);
 
         SharePost sharePost = SharePost.builder()
                 .user(user)
                 .title(shareCreate.getTitle())
                 .content(shareCreate.getContent())
                 .regDate(new Date())
+                .filepath(savepath)
                 .build();
 
         shareRepository.save(sharePost);
@@ -79,9 +93,10 @@ public class ShareService {
 
 
     @Transactional
-    public void edit(Long id, ShareEdit shareEdit){
+    public void edit(Long id, ShareEdit shareEdit) throws IOException {
         SharePost sharePost=shareRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
+
 
         ShareEditor.ShareEditorBuilder shareEditorBuilder=sharePost.toEditor();
 
@@ -96,6 +111,8 @@ public class ShareService {
         SharePost post=shareRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
+        File deleteFile = new File(post.getFilepath());
+        deleteFile.delete();
         shareRepository.delete(post);
     }
 

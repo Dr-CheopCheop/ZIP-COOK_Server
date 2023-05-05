@@ -29,5 +29,7 @@ public class ShareCreate {
 
     private Date regDate;
 
+    private String filepath;
+
 
 }
