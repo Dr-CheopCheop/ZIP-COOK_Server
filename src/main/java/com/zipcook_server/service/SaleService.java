@@ -1,9 +1,7 @@
 package com.zipcook_server.service;
 
 import com.zipcook_server.data.dto.sale.SaleCreate;
-import com.zipcook_server.data.dto.sale.SaleEdit;
-import com.zipcook_server.data.dto.sale.SaleResponse;
-import com.zipcook_server.data.entity.SaleEditor;
+import com.zipcook_server.data.dto.sale.Saledto;
 import com.zipcook_server.data.entity.SalePost;
 import com.zipcook_server.data.entity.User;
 import com.zipcook_server.data.request.SaleSearch;
@@ -13,10 +11,13 @@ import com.zipcook_server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,73 +29,83 @@ public class SaleService {
     @Autowired
     UserRepository userRepository;
 
-    public void write(SaleCreate saleCreate) throws IOException {
+    public void write(SaleCreate saleCreate, MultipartFile file) throws IOException {
         User user = userRepository.findById(saleCreate.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        String savepath="/Users/seunghee/Documents/boardimages/sale/"+fileName;
+        File saveFile = new File(savepath);
+        file.transferTo(saveFile);
 
         SalePost salePost = SalePost.builder()
                 .user(user)
                 .title(saleCreate.getTitle())
                 .content(saleCreate.getContent())
                 .regDate(new Date())
+                .filepath(savepath)
                 .build();
 
         saleRepository.save(salePost);
     }
 
-    public SaleResponse get(Long id){
+    public Saledto get(Long id){
         SalePost post=saleRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-        return SaleResponse.builder()
+        return Saledto.builder()
                 .id(post.getId())
                 .user(post.getUser())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .regDate(post.getRegDate())
+                .filepath(post.getFilepath())
                 .build();
 
 
     }
 
-    public List<SaleResponse> getList(SaleSearch saleSearch){
+    public List<Saledto> getList(SaleSearch saleSearch){
         return saleRepository.getList(saleSearch).stream()
-                .map(SaleResponse::new)
+                .map(Saledto::new)
                 .collect(Collectors.toList());
     }
 
 
 
-    public List<SaleResponse> searchEntities(String keyword) {
-        return saleRepository.findByTitleContaining(keyword).stream()
-                .map(SaleResponse::new)
-                .collect(Collectors.toList());
-    }
 
-    public List<SaleResponse> searchByTitle(String title) {
+    public List<Saledto> searchByTitle(String title) {
         return saleRepository.findByTitleContaining(title).stream()
-                .map(SaleResponse::new)
+                .map(Saledto::new)
                 .collect(Collectors.toList());
     }
 
 
     @Transactional
-    public void edit(Long id, SaleEdit saleEdit){
+    public void update(Long id, Saledto update, MultipartFile file) throws IOException {
         SalePost salePost=saleRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-        SaleEditor.SaleEditorBuilder saleEditorBuilder=salePost.toEditor();
+        File deleteFile = new File(salePost.getFilepath());
+        deleteFile.delete();
 
-        SaleEditor saleEditor=saleEditorBuilder.title(saleEdit.getTitle())
-                .content(saleEdit.getContent())
-                .build();
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        String savepath="/Users/seunghee/Documents/boardimages/sale/"+fileName;
+        File saveFile = new File(savepath);
+        file.transferTo(saveFile);
 
-        salePost.edit(saleEditor);
+        salePost.toUpdateEntity(update,savepath);
+        saleRepository.save(salePost);
     }
 
     public void delete(Long id){
         SalePost post=saleRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
+
+        File deleteFile = new File(post.getFilepath());
+        deleteFile.delete();
 
         saleRepository.delete(post);
     }

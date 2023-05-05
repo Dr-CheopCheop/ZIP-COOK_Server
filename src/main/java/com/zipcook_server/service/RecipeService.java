@@ -1,9 +1,7 @@
 package com.zipcook_server.service;
 
 import com.zipcook_server.data.dto.recipe.RecipeCreate;
-import com.zipcook_server.data.dto.recipe.RecipeEdit;
-import com.zipcook_server.data.dto.recipe.RecipeResponse;
-import com.zipcook_server.data.entity.RecipeEditor;
+import com.zipcook_server.data.dto.recipe.Recipedto;
 import com.zipcook_server.data.entity.RecipePost;
 import com.zipcook_server.data.entity.User;
 import com.zipcook_server.data.request.RecipeSearch;
@@ -13,9 +11,13 @@ import com.zipcook_server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,9 +29,15 @@ public class RecipeService {
     @Autowired
     UserRepository userRepository;
 
-    public void write(RecipeCreate recipeCreate) {
+    public void write(RecipeCreate recipeCreate, MultipartFile file) throws IOException {
         User user = userRepository.findById(recipeCreate.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        String savepath="/Users/seunghee/Documents/boardimages/recipe/"+fileName;
+        File saveFile = new File(savepath);
+        file.transferTo(saveFile);
 
         RecipePost recipePost = RecipePost.builder()
                 .user(user)
@@ -41,16 +49,17 @@ public class RecipeService {
                 .content(recipeCreate.getContent())
                 .time(recipeCreate.getTime())
                 .regDate(new Date())
+                .filepath(savepath)
                 .build();
 
         recipeRepository.save(recipePost);
     }
 
-    public RecipeResponse get(Long id){
+    public Recipedto get(Long id){
         RecipePost post=recipeRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-        return RecipeResponse.builder()
+        return Recipedto.builder()
                 .id(post.getId())
                 .user(post.getUser())
                 .title(post.getTitle())
@@ -61,47 +70,49 @@ public class RecipeService {
                 .content(post.getContent())
                 .time(post.getTime())
                 .regDate(new Date())
+                .filepath(post.getFilepath())
                 .build();
 
     }
 
 
-    public List<RecipeResponse> getList(RecipeSearch recipeSearch){
+    public List<Recipedto> getList(RecipeSearch recipeSearch){
         return recipeRepository.getList(recipeSearch).stream()
-                .map(RecipeResponse::new)
+                .map(Recipedto::new)
                 .collect(Collectors.toList());
     }
 
 
-    public List<RecipeResponse> searchByTitle(String title) {
+    public List<Recipedto> searchByTitle(String title) {
         return recipeRepository.findByTitleContaining(title).stream()
-                .map(RecipeResponse::new)
+                .map(Recipedto::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public void edit(Long id, RecipeEdit recipeEdit){
+    public void update(Long id, Recipedto update, MultipartFile file) throws IOException {
         RecipePost recipePost=recipeRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-        RecipeEditor.RecipeEditorBuilder recipeEditorBuilder=recipePost.toEditor();
+        File deleteFile = new File(recipePost.getFilepath());
+        deleteFile.delete();
 
-        RecipeEditor recipeEditor=recipeEditorBuilder
-                .title(recipeEdit.getTitle())
-                .serving(recipeEdit.getServing())
-                .level(recipeEdit.getLevel())
-                .ingredients(recipeEdit.getIngredients())
-                .summary(recipeEdit.getSummary())
-                .content(recipeEdit.getContent())
-                .time(recipeEdit.getTime())
-                .build();
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        String savepath="/Users/seunghee/Documents/boardimages/recipe/"+fileName;
+        File saveFile = new File(savepath);
+        file.transferTo(saveFile);
 
-        recipePost.edit(recipeEditor);
+        recipePost.toUpdateEntity(update,savepath);
+        recipeRepository.save(recipePost);
     }
 
     public void delete(Long id){
         RecipePost post=recipeRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
+
+        File deleteFile = new File(post.getFilepath());
+        deleteFile.delete();
 
         recipeRepository.delete(post);
     }

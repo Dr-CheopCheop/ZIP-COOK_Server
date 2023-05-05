@@ -2,7 +2,7 @@ package com.zipcook_server.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zipcook_server.data.dto.share.ShareCreate;
-import com.zipcook_server.data.dto.share.ShareEdit;
+import com.zipcook_server.data.dto.share.Sharedto;
 import com.zipcook_server.data.entity.SharePost;
 import com.zipcook_server.data.entity.User;
 import com.zipcook_server.repository.Share.ShareRepository;
@@ -28,8 +28,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @Transactional
@@ -168,6 +167,7 @@ class ShareControllerTest {
     @Test
     @DisplayName("글 수정")
     void test4() throws Exception {
+        // given
         User user = User.builder()
                 .id("joy")
                 .email("example@example.com")
@@ -176,32 +176,39 @@ class ShareControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        ShareCreate shareCreate = ShareCreate.builder()
                 .user(user)
                 .title("Test share post")
-                .content("Test share content")
+                .content("Test content")
                 .regDate(new Date())
-                .filepath("filepath")
                 .build();
 
-        shareRepository.save(sharePost);
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        shareService.write(shareCreate, file);
 
-        ShareEdit shareEdit = ShareEdit.builder()
-                .title("share share :)")
-                .content("test share content")
+        List<SharePost> sharePosts = shareRepository.findByTitleContaining("share");
+
+        Sharedto update = Sharedto.builder()
+                .user(user)
+                .title("Test update post")
+                .content("Test update content")
+                .regDate(new Date())
                 .build();
 
+        String json = objectMapper.writeValueAsString(update);
+        MockMultipartFile sharedto = new MockMultipartFile("update", "update", "application/json", json.getBytes(StandardCharsets.UTF_8));
 
-        //when
-        mockMvc.perform(patch("/board-share/{boardId}", sharePost.getId())
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(shareEdit)))
+        // when
+        mockMvc.perform(multipart("/board-share/update/{boardId}", sharePosts.get(0).getId())
+                        .file(file)
+                        .file(sharedto))
                 .andExpect(status().isOk())
+                .andExpect(content().string("Updated Successfully!"))
                 .andDo(print());
 
 
-
     }
+
 
 
     @Test

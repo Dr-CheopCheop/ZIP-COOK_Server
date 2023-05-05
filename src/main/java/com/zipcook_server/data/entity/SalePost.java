@@ -1,6 +1,7 @@
 package com.zipcook_server.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zipcook_server.data.dto.sale.Saledto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,14 +36,12 @@ public class SalePost {
     @Column(name = "reg_date")
     private Date regDate;
 
-    public  SaleEditor.SaleEditorBuilder toEditor(){
-        return SaleEditor.builder()
-                .title(title)
-                .content(content);
-    }
+    private String filepath;
 
-    public void edit(SaleEditor saleEditor){
-        title=saleEditor.getTitle();
-        content=saleEditor.getContent();
+    public void toUpdateEntity(Saledto saleUpdate, String filepath) {
+        this.title = saleUpdate.getTitle();
+        this.content = saleUpdate.getContent();
+        this.regDate = new Date();
+        this.filepath = filepath;
     }
 }

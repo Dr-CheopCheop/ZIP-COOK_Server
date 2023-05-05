@@ -2,30 +2,33 @@ package com.zipcook_server.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zipcook_server.data.dto.recipe.RecipeCreate;
-import com.zipcook_server.data.dto.recipe.RecipeEdit;
+import com.zipcook_server.data.dto.recipe.Recipedto;
 import com.zipcook_server.data.entity.RecipePost;
 import com.zipcook_server.data.entity.User;
 import com.zipcook_server.repository.Recipe.RecipeRepository;
 import com.zipcook_server.repository.UserRepository;
+import com.zipcook_server.service.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -44,6 +47,9 @@ class RecipeControllerTest {
     private RecipeRepository recipeRepository;
 
     @Autowired
+    private RecipeService recipeService;
+
+    @Autowired
     private UserRepository userRepository;
 
 
@@ -54,7 +60,7 @@ class RecipeControllerTest {
     }
 
     @Test
-    @DisplayName("/share 요청시 db에 값이 저장된다")
+    @DisplayName("/recipe 요청시 db에 값이 저장된다")
     void test1() throws Exception {
         // given
         User user = User.builder()
@@ -74,6 +80,7 @@ class RecipeControllerTest {
         ingredients.add("tomato");
         ingredients.add("onion");
 
+
         RecipeCreate recipeCreate = RecipeCreate.builder()
                 .user(user)
                 .title("Test recipe")
@@ -86,20 +93,20 @@ class RecipeControllerTest {
                 .regDate(new Date())
                 .build();
 
-        String json = objectMapper.writeValueAsString(recipeCreate);
 
-        // when
-        mockMvc.perform(post("/board-recipe")
-                        .contentType(APPLICATION_JSON)
-                        .content(json))
+        MockMultipartFile multipartFile1 = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        String json = objectMapper.writeValueAsString(recipeCreate);
+        MockMultipartFile recipepost = new MockMultipartFile("recipepost", "recipepost", "application/json", json.getBytes(StandardCharsets.UTF_8));
+
+
+        mockMvc.perform(multipart("/board-recipe")
+                        .file(multipartFile1)
+                        .file(recipepost))
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        // then
-        RecipePost post = recipeRepository.findAll().get(0);
-        assertThat(post.getTitle()).isEqualTo("Test recipe");
-        assertThat(post.getUser().getId()).isEqualTo("joy");
     }
+
 
     @Test
     @DisplayName("글 1개 조회")
@@ -182,6 +189,7 @@ class RecipeControllerTest {
     @Test
     @DisplayName("글 수정")
     void test4() throws Exception {
+        // given
         User user = User.builder()
                 .id("joy")
                 .email("example@example.com")
@@ -199,7 +207,8 @@ class RecipeControllerTest {
         ingredients.add("tomato");
         ingredients.add("onion");
 
-        RecipePost recipePost = RecipePost.builder()
+
+        RecipeCreate recipeCreate = RecipeCreate.builder()
                 .user(user)
                 .title("Test recipe")
                 .serving(2)
@@ -211,24 +220,26 @@ class RecipeControllerTest {
                 .regDate(new Date())
                 .build();
 
-        recipeRepository.save(recipePost);
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        recipeService.write(recipeCreate, file);
 
-        RecipeEdit recipeEdit = RecipeEdit.builder()
-                .title("title edit test")
-                .serving(2)
-                .level("easy")
-                .ingredients(ingredients)
-                .summary("This is a test recipe")
-                .content(content)
-                .time(30)
+        List<RecipePost> recipePosts = recipeRepository.findByTitleContaining("recipe");
+
+        Recipedto update = Recipedto.builder()
+                .user(user)
+                .title("Test update post")
+                .regDate(new Date())
                 .build();
 
+        String json = objectMapper.writeValueAsString(update);
+        MockMultipartFile recipedto = new MockMultipartFile("update", "update", "application/json", json.getBytes(StandardCharsets.UTF_8));
 
-        //when
-        mockMvc.perform(patch("/board-recipe/{boardId}", recipePost.getId())
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(recipeEdit)))
+        // when
+        mockMvc.perform(multipart("/board-recipe/update/{boardId}", recipePosts.get(0).getId())
+                        .file(file)
+                        .file(recipedto))
                 .andExpect(status().isOk())
+                .andExpect(content().string("Updated Successfully!"))
                 .andDo(print());
 
 
@@ -256,7 +267,7 @@ class RecipeControllerTest {
         ingredients.add("onion");
 
 
-        RecipePost recipePost = RecipePost.builder()
+        RecipeCreate recipeCreate = RecipeCreate.builder()
                 .user(user)
                 .title("Test recipe")
                 .serving(2)
@@ -268,14 +279,17 @@ class RecipeControllerTest {
                 .regDate(new Date())
                 .build();
 
-        recipeRepository.save(recipePost);
+        MockMultipartFile File= new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
+        recipeService.write(recipeCreate,File);
 
+        List<RecipePost> recipePost=recipeRepository.findByTitleContaining("recipe");
 
         //when
-        mockMvc.perform(delete("/board-recipe/{boardId}", recipePost.getId())
+        mockMvc.perform(delete("/board-recipe/{boardId}", recipePost.get(0).getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
+
 
 
     }

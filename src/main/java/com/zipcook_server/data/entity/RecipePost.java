@@ -1,6 +1,7 @@
 package com.zipcook_server.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zipcook_server.data.dto.recipe.Recipedto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,25 +55,18 @@ public class RecipePost {
     @Column(name = "reg_date")
     private Date regDate;
 
-    public  RecipeEditor.RecipeEditorBuilder toEditor(){
-        return RecipeEditor.builder()
-                .title(title)
-                .serving(serving)
-                .level(level)
-                .ingredients(ingredients)
-                .summary(summary)
-                .content(content)
-                .time(time);
-    }
+    private String filepath;
 
-    public void edit(RecipeEditor recipeEditor){
-        title=recipeEditor.getTitle();
-        serving=recipeEditor.getServing();
-        level=recipeEditor.getLevel();
-        ingredients=recipeEditor.getIngredients();
-        summary=recipeEditor.getSummary();
-        content=recipeEditor.getContent();
-        time= recipeEditor.getTime();
+    public void toUpdateEntity(Recipedto recipeUpdate, String filepath) {
+        this.title = recipeUpdate.getTitle();
+        this.serving=recipeUpdate.getServing();
+        this.level= recipeUpdate.getLevel();
+        this.ingredients=recipeUpdate.getIngredients();
+        this.summary= recipeUpdate.getSummary();
+        this.content = recipeUpdate.getContent();
+        this.time= recipeUpdate.getTime();
+        this.regDate = new Date();
+        this.filepath = filepath;
     }
 
 }

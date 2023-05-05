@@ -9,12 +9,10 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
-@Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaleResponse {
+public class Saledto {
 
     private Long id;
 
@@ -29,11 +27,14 @@ public class SaleResponse {
 
     private Date regDate;
 
-    public SaleResponse(SalePost post){
+    private String filepath;
+
+    public Saledto(SalePost post){
         this.user=post.getUser();
         this.id= post.getId();
         this.title= post.getTitle();
         this.content=post.getContent();
         this.regDate=post.getRegDate();
+        this.filepath=post.getFilepath();
     }
 }

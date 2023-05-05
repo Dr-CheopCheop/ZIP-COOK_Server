@@ -1,6 +1,7 @@
 package com.zipcook_server.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zipcook_server.data.dto.share.Sharedto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,15 +39,11 @@ public class SharePost {
 
     private String filepath;
 
-    public  ShareEditor.ShareEditorBuilder toEditor(){
-        return ShareEditor.builder()
-                .title(title)
-                .content(content);
-    }
 
-
-    public void edit(ShareEditor shareEditor){
-        title=shareEditor.getTitle();
-        content=shareEditor.getContent();
+    public void toUpdateEntity(Sharedto shareUpdate, String filepath) {
+        this.title = shareUpdate.getTitle();
+        this.content = shareUpdate.getContent();
+        this.regDate = new Date();
+        this.filepath = filepath;
     }
 }
