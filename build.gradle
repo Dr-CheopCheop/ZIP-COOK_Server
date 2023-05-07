@@ -41,6 +41,12 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 //    gpt-3
     implementation group: 'com.theokanning.openai-gpt3-java', name: 'client', version: '0.9.0'
+//    yaml
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.5'
+//    TypeReference
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+
+
 
 
 
@@ -76,3 +82,4 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
