@@ -3,6 +3,7 @@ package com.zipcook_server.repository.Share;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.zipcook_server.data.entity.QSharePost;
 import com.zipcook_server.data.entity.SharePost;
+import com.zipcook_server.data.request.MainSearch;
 import com.zipcook_server.data.request.ShareSearch;
 import lombok.RequiredArgsConstructor;
 
@@ -15,8 +16,18 @@ public class ShareRepositoryImpl implements SharePostRepositoryCustom {
     @Override
     public List<SharePost> getList(ShareSearch shareSearch) {
         return jpaQueryFactory.selectFrom(QSharePost.sharePost)
-                .limit(shareSearch.getPage())
+                .orderBy(QSharePost.sharePost.id.desc())
+                .limit(10)
                 .offset(shareSearch.getOffset())
+                .fetch();
+    }
+
+    @Override
+    public List<SharePost> maingetList(MainSearch mainSearch) {
+        return jpaQueryFactory.selectFrom(QSharePost.sharePost)
+                .orderBy(QSharePost.sharePost.id.desc())
+                .limit(5)
+                .offset(mainSearch.sharegetOffset())
                 .fetch();
     }
 }

@@ -1,6 +1,5 @@
 package com.zipcook_server.data.dto.recipe;
 
-import com.zipcook_server.data.entity.User;
 import lombok.*;
 
 import javax.validation.Valid;
@@ -15,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RecipeCreate {
     @Valid
-    private User user;
+    private String uid;
 
     @Size(max=30)
     private String title;

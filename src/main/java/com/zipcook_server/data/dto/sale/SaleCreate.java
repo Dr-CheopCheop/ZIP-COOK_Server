@@ -1,6 +1,5 @@
 package com.zipcook_server.data.dto.sale;
 
-import com.zipcook_server.data.entity.User;
 import lombok.*;
 
 import javax.validation.Valid;
@@ -17,7 +16,7 @@ import java.util.Date;
 public class SaleCreate {
 
     @Valid
-    private User user;
+    private String uid;
 
     @NotBlank(message = "제목을 입력하세요")
     @Size(max=30)

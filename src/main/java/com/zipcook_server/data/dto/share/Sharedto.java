@@ -1,8 +1,10 @@
 package com.zipcook_server.data.dto.share;
 
 import com.zipcook_server.data.entity.SharePost;
-import com.zipcook_server.data.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
@@ -16,7 +18,7 @@ public class Sharedto {
     private Long id;
 
     @Valid
-    private User user;
+    private String uid;
 
     @Size(max=30)
     private String title;
@@ -29,7 +31,7 @@ public class Sharedto {
     private String filepath;
 
     public Sharedto(SharePost post){
-        this.user=post.getUser();
+        this.uid=post.getUser().getId();
         this.id= post.getId();
         this.title= post.getTitle();
         this.content=post.getContent();
