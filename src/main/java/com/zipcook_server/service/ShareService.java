@@ -34,12 +34,12 @@ public class ShareService {
     private ResourceLoader resourceLoader;
 
     public void write(ShareCreate shareCreate, MultipartFile file) throws IOException {
-        User user = userRepository.findById(shareCreate.getUser().getId())
+        User user = userRepository.findById(shareCreate.getUid())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
-        String savepath="/Users/seunghee/Documents/boardimages/share/"+fileName;
+        String savepath="/Users/seunghee/Documents/boardimages/"+fileName;
         File saveFile = new File(savepath);
         file.transferTo(saveFile);
 
@@ -60,7 +60,7 @@ public class ShareService {
 
         return Sharedto.builder()
                 .id(post.getId())
-                .user(post.getUser())
+                .uid(post.getUser().getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .regDate(post.getRegDate())
@@ -79,6 +79,11 @@ public class ShareService {
 
 
 
+    public List<Sharedto> getAll(){
+        return shareRepository.findAll().stream()
+                .map(Sharedto::new)
+                .collect(Collectors.toList());
+    }
 
     public List<Sharedto> searchByTitle(String title) {
         return shareRepository.findByTitleContaining(title).stream()
@@ -96,7 +101,7 @@ public class ShareService {
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
-        String savepath="/Users/seunghee/Documents/boardimages/share/"+fileName;
+        String savepath="/Users/seunghee/Documents/boardimages/"+fileName;
         File saveFile = new File(savepath);
         file.transferTo(saveFile);
 

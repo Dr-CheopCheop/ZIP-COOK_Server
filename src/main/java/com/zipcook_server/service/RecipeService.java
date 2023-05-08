@@ -30,12 +30,12 @@ public class RecipeService {
     UserRepository userRepository;
 
     public void write(RecipeCreate recipeCreate, MultipartFile file) throws IOException {
-        User user = userRepository.findById(recipeCreate.getUser().getId())
+        User user = userRepository.findById(recipeCreate.getUid())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
-        String savepath="/Users/seunghee/Documents/boardimages/recipe/"+fileName;
+        String savepath="/Users/seunghee/Documents/boardimages/"+fileName;
         File saveFile = new File(savepath);
         file.transferTo(saveFile);
 
@@ -61,7 +61,7 @@ public class RecipeService {
 
         return Recipedto.builder()
                 .id(post.getId())
-                .user(post.getUser())
+                .uid(post.getUser().getId())
                 .title(post.getTitle())
                 .serving(post.getServing())
                 .level(post.getLevel())
@@ -76,12 +76,18 @@ public class RecipeService {
     }
 
 
+
     public List<Recipedto> getList(RecipeSearch recipeSearch){
         return recipeRepository.getList(recipeSearch).stream()
                 .map(Recipedto::new)
                 .collect(Collectors.toList());
     }
 
+    public List<Recipedto> getAll(){
+        return recipeRepository.findAll().stream()
+                .map(Recipedto::new)
+                .collect(Collectors.toList());
+    }
 
     public List<Recipedto> searchByTitle(String title) {
         return recipeRepository.findByTitleContaining(title).stream()
@@ -99,7 +105,7 @@ public class RecipeService {
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
-        String savepath="/Users/seunghee/Documents/boardimages/recipe/"+fileName;
+        String savepath="/Users/seunghee/Documents/boardimages/"+fileName;
         File saveFile = new File(savepath);
         file.transferTo(saveFile);
 

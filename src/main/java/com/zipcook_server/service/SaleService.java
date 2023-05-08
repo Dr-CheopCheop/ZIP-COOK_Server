@@ -30,12 +30,12 @@ public class SaleService {
     UserRepository userRepository;
 
     public void write(SaleCreate saleCreate, MultipartFile file) throws IOException {
-        User user = userRepository.findById(saleCreate.getUser().getId())
+        User user = userRepository.findById(saleCreate.getUid())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
-        String savepath="/Users/seunghee/Documents/boardimages/sale/"+fileName;
+        String savepath="/Users/seunghee/Documents/boardimages/"+fileName;
         File saveFile = new File(savepath);
         file.transferTo(saveFile);
 
@@ -56,7 +56,7 @@ public class SaleService {
 
         return Saledto.builder()
                 .id(post.getId())
-                .user(post.getUser())
+                .uid(post.getUser().getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .regDate(post.getRegDate())
@@ -73,7 +73,11 @@ public class SaleService {
     }
 
 
-
+    public List<Saledto> getAll(){
+        return saleRepository.findAll().stream()
+                .map(Saledto::new)
+                .collect(Collectors.toList());
+    }
 
     public List<Saledto> searchByTitle(String title) {
         return saleRepository.findByTitleContaining(title).stream()
@@ -92,7 +96,7 @@ public class SaleService {
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
-        String savepath="/Users/seunghee/Documents/boardimages/sale/"+fileName;
+        String savepath="/Users/seunghee/Documents/boardimages/"+fileName;
         File saveFile = new File(savepath);
         file.transferTo(saveFile);
 

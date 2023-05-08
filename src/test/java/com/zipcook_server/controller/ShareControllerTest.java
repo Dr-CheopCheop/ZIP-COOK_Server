@@ -71,7 +71,7 @@ class ShareControllerTest {
         userRepository.save(user);
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("tomato")
                 .content("share tomato")
                 .build();
@@ -110,7 +110,7 @@ class ShareControllerTest {
         userRepository.save(user);
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
@@ -155,7 +155,7 @@ class ShareControllerTest {
         shareRepository.saveAll(requestPosts);
 
         // expected
-        mockMvc.perform(get("/board-share?page=1&size=10")
+        mockMvc.perform(get("/board-share?page=1")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -177,7 +177,7 @@ class ShareControllerTest {
         userRepository.save(user);
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
@@ -189,7 +189,7 @@ class ShareControllerTest {
         List<SharePost> sharePosts = shareRepository.findByTitleContaining("share");
 
         Sharedto update = Sharedto.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("Test update post")
                 .content("Test update content")
                 .regDate(new Date())
@@ -223,7 +223,7 @@ class ShareControllerTest {
         userRepository.save(user);
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
@@ -258,7 +258,7 @@ class ShareControllerTest {
         userRepository.save(user);
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .content("share tomato")
                 .build();
 

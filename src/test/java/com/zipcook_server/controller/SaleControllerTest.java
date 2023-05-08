@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
-
+@Transactional
 @SpringBootTest
 class SaleControllerTest {
 
@@ -71,7 +72,7 @@ class SaleControllerTest {
         userRepository.save(user);
 
         SaleCreate saleCreate = SaleCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("title sale")
                 .content("content sale")
                 .build();
@@ -141,7 +142,7 @@ class SaleControllerTest {
                 .build();
         userRepository.save(user);
 
-        List<SalePost> requestPosts = IntStream.range(0, 10)
+        List<SalePost> requestPosts = IntStream.range(0, 20)
                 .mapToObj(i -> SalePost.builder()
                         .user(user)
                         .title("title" + i)
@@ -152,7 +153,7 @@ class SaleControllerTest {
         saleRepository.saveAll(requestPosts);
 
         // expected
-        mockMvc.perform(get("/board-sale?page=1&size=10")
+        mockMvc.perform(get("/board-sale?page=1")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -175,7 +176,7 @@ class SaleControllerTest {
         userRepository.save(user);
 
         SaleCreate saleCreate = SaleCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("title sale")
                 .content("content sale")
                 .build();
@@ -186,7 +187,7 @@ class SaleControllerTest {
         List<SalePost> salePosts = saleRepository.findByTitleContaining("sale");
 
         Saledto update = Saledto.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("Test update post")
                 .content("Test update content")
                 .regDate(new Date())
@@ -220,7 +221,7 @@ class SaleControllerTest {
 
 
         SaleCreate saleCreate = SaleCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("title sale")
                 .content("content sale")
                 .build();
@@ -254,7 +255,7 @@ class SaleControllerTest {
         userRepository.save(user);
 
         SaleCreate saleCreate = SaleCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .content("sale tomato")
                 .build();
 

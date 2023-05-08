@@ -16,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@Transactional
+
 @SpringBootTest
 class RecipeControllerTest {
 
@@ -82,7 +81,7 @@ class RecipeControllerTest {
 
 
         RecipeCreate recipeCreate = RecipeCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
@@ -178,7 +177,7 @@ class RecipeControllerTest {
         recipeRepository.saveAll(requestPosts);
 
         // expected
-        mockMvc.perform(get("/board-recipe?page=1&size=10")
+        mockMvc.perform(get("/board-recipe?page=1")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -209,7 +208,7 @@ class RecipeControllerTest {
 
 
         RecipeCreate recipeCreate = RecipeCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
@@ -226,7 +225,7 @@ class RecipeControllerTest {
         List<RecipePost> recipePosts = recipeRepository.findByTitleContaining("recipe");
 
         Recipedto update = Recipedto.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("Test update post")
                 .regDate(new Date())
                 .build();
@@ -268,7 +267,7 @@ class RecipeControllerTest {
 
 
         RecipeCreate recipeCreate = RecipeCreate.builder()
-                .user(user)
+                .uid(user.getId())
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
