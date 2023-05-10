@@ -3,6 +3,7 @@ package com.zipcook_server.data.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.zipcook_server.data.entity.Comment.ShareComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,6 +50,11 @@ public class User {
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     @Builder.Default
     private List<RecipePost> recipeEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    @Builder.Default
+    private List<ShareComment> shareComments = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
