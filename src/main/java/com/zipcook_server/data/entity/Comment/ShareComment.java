@@ -1,6 +1,7 @@
 package com.zipcook_server.data.entity.Comment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zipcook_server.data.dto.comment.ShareCommentdto;
 import com.zipcook_server.data.entity.SharePost;
 import com.zipcook_server.data.entity.User;
 import lombok.AllArgsConstructor;
@@ -40,5 +41,10 @@ public class ShareComment {
     @JsonIgnore
     @JoinColumn(name = "sharepost_id")
     private SharePost sharePost;
+
+    public void toUpdateEntity(ShareCommentdto shareCommentdto) {
+        this.content = shareCommentdto.getContent();
+        this.regDate = new Date();
+    }
 
 }

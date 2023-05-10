@@ -13,7 +13,9 @@ import com.zipcook_server.repository.Share.ShareRepository;
 import com.zipcook_server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,8 +58,24 @@ public class CommentService {
     }
 
     public List<ShareCommentdto> sharecommentfindall(Long sharepost_id){
-        return shareCommentRepository.findBySharePostIdOrderByRegDateDesc(sharepost_id).stream()
+        return shareCommentRepository.findBySharePostIdOrderByIdDesc(sharepost_id).stream()
                 .map(ShareCommentdto::new)
                 .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public void sharecommentupdate(Long id, ShareCommentdto update) throws IOException {
+        ShareComment shareComment=shareCommentRepository.findById(id)
+                .orElseThrow(PostNotFound::new);
+        shareComment.toUpdateEntity(update);
+        shareCommentRepository.save(shareComment);
+    }
+
+    public void sharecommentdelete(Long id){
+        ShareComment shareComment =shareCommentRepository.findById(id)
+                .orElseThrow(PostNotFound::new);
+
+        shareCommentRepository.delete(shareComment);
     }
 }
