@@ -1,14 +1,19 @@
 package com.zipcook_server.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.zipcook_server.data.dto.share.Sharedto;
+import com.zipcook_server.data.entity.Comment.ShareComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,6 +43,11 @@ public class SharePost {
     private Date regDate;
 
     private String filepath;
+
+    @OneToMany(mappedBy = "sharePost", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    @Builder.Default
+    private List<ShareComment> shareComments = new ArrayList<>();
 
 
     public void toUpdateEntity(Sharedto shareUpdate, String filepath) {
