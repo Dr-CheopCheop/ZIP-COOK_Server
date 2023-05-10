@@ -33,6 +33,7 @@ public class CommentService {
     @Autowired
     UserRepository userRepository;
 
+    @Transactional
     public void sharecommentsave(CommentCreate commentCreate){
 
         if (commentCreate == null) {

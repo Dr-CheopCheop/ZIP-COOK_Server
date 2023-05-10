@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -18,10 +17,8 @@ public class ShareCommentdto {
 
     private Long id;
 
-    @Valid
     private Long board_id;
 
-    @Valid
     private String user_id;
     @Size(max=30)
     private String writer;

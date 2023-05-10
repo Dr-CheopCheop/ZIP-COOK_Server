@@ -9,8 +9,7 @@ import com.zipcook_server.data.entity.User;
 import com.zipcook_server.repository.Comment.ShareCommentRepository;
 import com.zipcook_server.repository.Share.ShareRepository;
 import com.zipcook_server.repository.UserRepository;
-import com.zipcook_server.service.CommentService;
-import com.zipcook_server.service.ShareService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,17 +45,22 @@ class ShareCommentControllerTest {
     @Autowired
     private ShareRepository shareRepository;
 
-    @Autowired
-    private ShareService shareService;
 
     @Autowired
     private ShareCommentRepository shareCommentRepository;
 
-    @Autowired
-    private CommentService commentService;
 
     @Autowired
     private UserRepository userRepository;
+
+    @BeforeEach
+    void init() {
+        shareRepository.deleteAll();
+        userRepository.deleteAll();
+        shareCommentRepository.deleteAll();
+    }
+
+
 
     @Test
     @DisplayName("share댓글 작성")
@@ -111,8 +115,8 @@ class ShareCommentControllerTest {
         userRepository.save(user);
 
         SharePost sharePost = SharePost.builder()
-                .id(1L)
-                .title("test title")
+                .id(2L)
+                .title("test title2")
                 .build();
         shareRepository.save(sharePost);
 
@@ -128,7 +132,7 @@ class ShareCommentControllerTest {
         shareCommentRepository.saveAll(shareComments);
 
         // expected
-        mockMvc.perform(get("/sharecomment/{boardId}",sharePost.getId())
+        mockMvc.perform(get("/sharecomment/{boardId}",2L)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -149,7 +153,7 @@ class ShareCommentControllerTest {
         userRepository.save(user);
 
         SharePost sharePost = SharePost.builder()
-                .id(1L)
+                .id(3L)
                 .title("test title")
                 .build();
         shareRepository.save(sharePost);
@@ -163,7 +167,7 @@ class ShareCommentControllerTest {
                 .build();
 
         shareCommentRepository.save(shareComment);
-        List<ShareComment> shareComments=shareCommentRepository.findAll();
+        ShareComment comment=shareCommentRepository.findByWriter("nickname").get();
 
 
         ShareCommentdto shareCommentdto = ShareCommentdto.builder()
@@ -176,7 +180,7 @@ class ShareCommentControllerTest {
         String json = objectMapper.writeValueAsString(shareCommentdto);
 
         // expected
-        mockMvc.perform(put("/sharecomment/update/{commentId}",shareComments.get(0).getId())
+        mockMvc.perform(put("/sharecomment/update/{commentId}",comment.getId())
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -199,7 +203,7 @@ class ShareCommentControllerTest {
         userRepository.save(user);
 
         SharePost sharePost = SharePost.builder()
-                .id(1L)
+                .id(4L)
                 .title("test title")
                 .build();
         shareRepository.save(sharePost);
@@ -213,9 +217,10 @@ class ShareCommentControllerTest {
                 .build();
 
         shareCommentRepository.save(shareComment);
+        ShareComment comment=shareCommentRepository.findByWriter("nickname").get();
 
         //when
-        mockMvc.perform(delete("/sharecomment/delete/{commentId}", 1L)
+        mockMvc.perform(delete("/sharecomment/delete/{commentId}", comment.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
