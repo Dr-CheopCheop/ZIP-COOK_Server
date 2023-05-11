@@ -1,13 +1,17 @@
 package com.zipcook_server.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.zipcook_server.data.dto.recipe.Recipedto;
+import com.zipcook_server.data.entity.Comment.RecipeComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +58,11 @@ public class RecipePost {
     @Temporal(TemporalType.DATE)
     @Column(name = "reg_date")
     private Date regDate;
+
+    @OneToMany(mappedBy = "recipePost", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    @Builder.Default
+    private List<RecipeComment> recipeComments = new ArrayList<>();
 
     private String filepath;
 

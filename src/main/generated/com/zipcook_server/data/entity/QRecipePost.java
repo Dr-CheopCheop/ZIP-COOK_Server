@@ -32,6 +32,8 @@ public class QRecipePost extends EntityPathBase<RecipePost> {
 
     public final StringPath level = createString("level");
 
+    public final ListPath<com.zipcook_server.data.entity.Comment.RecipeComment, com.zipcook_server.data.entity.Comment.QRecipeComment> recipeComments = this.<com.zipcook_server.data.entity.Comment.RecipeComment, com.zipcook_server.data.entity.Comment.QRecipeComment>createList("recipeComments", com.zipcook_server.data.entity.Comment.RecipeComment.class, com.zipcook_server.data.entity.Comment.QRecipeComment.class, PathInits.DIRECT2);
+
     public final DatePath<java.util.Date> regDate = createDate("regDate", java.util.Date.class);
 
     public final NumberPath<Integer> serving = createNumber("serving", Integer.class);

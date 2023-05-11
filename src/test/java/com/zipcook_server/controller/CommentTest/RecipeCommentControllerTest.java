@@ -1,16 +1,15 @@
-package com.zipcook_server.controller;
+package com.zipcook_server.controller.CommentTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zipcook_server.data.dto.comment.CommentCreate;
-import com.zipcook_server.data.dto.comment.ShareCommentdto;
-import com.zipcook_server.data.entity.Comment.ShareComment;
-import com.zipcook_server.data.entity.SharePost;
+import com.zipcook_server.data.dto.comment.RecipeCommentdto;
+import com.zipcook_server.data.entity.Comment.RecipeComment;
+import com.zipcook_server.data.entity.RecipePost;
 import com.zipcook_server.data.entity.User;
-import com.zipcook_server.repository.Comment.ShareCommentRepository;
-import com.zipcook_server.repository.Share.ShareRepository;
+import com.zipcook_server.repository.Comment.RecipeCommentRepository;
+import com.zipcook_server.repository.Recipe.RecipeRepository;
 import com.zipcook_server.repository.UserRepository;
-import com.zipcook_server.service.CommentService;
-import com.zipcook_server.service.ShareService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-class ShareCommentControllerTest {
+class RecipeCommentControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -44,22 +43,27 @@ class ShareCommentControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ShareRepository shareRepository;
+    private RecipeRepository recipeRepository;
+
 
     @Autowired
-    private ShareService shareService;
+    private RecipeCommentRepository recipeCommentRepository;
 
-    @Autowired
-    private ShareCommentRepository shareCommentRepository;
-
-    @Autowired
-    private CommentService commentService;
 
     @Autowired
     private UserRepository userRepository;
 
+    @BeforeEach
+    void init() {
+        recipeRepository.deleteAll();
+        userRepository.deleteAll();
+        recipeCommentRepository.deleteAll();
+    }
+
+
+
     @Test
-    @DisplayName("share댓글 작성")
+    @DisplayName("recipe댓글 작성")
     public void test1() throws Exception {
         // given
         User user = User.builder()
@@ -70,15 +74,15 @@ class ShareCommentControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        RecipePost recipePost = RecipePost.builder()
                 .id(1L)
                 .title("test title")
                 .build();
-        shareRepository.save(sharePost);
+        recipeRepository.save(recipePost);
 
         CommentCreate commentCreate = CommentCreate.builder()
                 .user_id(user.getId())
-                .board_id(sharePost.getId())
+                .board_id(recipePost.getId())
                 .writer("nickname")
                 .content("comment:)")
                 .regDate(new Date())
@@ -88,7 +92,7 @@ class ShareCommentControllerTest {
         String json = objectMapper.writeValueAsString(commentCreate);
 
         // when
-        mockMvc.perform(post("/sharecomment")
+        mockMvc.perform(post("/recipe-comment")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -99,7 +103,7 @@ class ShareCommentControllerTest {
 
 
     @Test
-    @DisplayName("share댓글 보기")
+    @DisplayName("recipe댓글 보기")
     void test2() throws Exception {
         // given
         User user = User.builder()
@@ -110,25 +114,25 @@ class ShareCommentControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
-                .id(1L)
-                .title("test title")
+        RecipePost recipePost = RecipePost.builder()
+                .id(2L)
+                .title("test title2")
                 .build();
-        shareRepository.save(sharePost);
+        recipeRepository.save(recipePost);
 
-        List<ShareComment> shareComments = IntStream.range(0, 5)
-                .mapToObj(i -> ShareComment.builder()
+        List<RecipeComment> recipeComments = IntStream.range(0, 5)
+                .mapToObj(i -> RecipeComment.builder()
                         .user(user)
-                        .sharePost(sharePost)
+                        .recipePost(recipePost)
                         .content("comment" + i)
                         .regDate(new Date())
                         .build())
                 .collect(Collectors.toList());
 
-        shareCommentRepository.saveAll(shareComments);
+        recipeCommentRepository.saveAll(recipeComments);
 
         // expected
-        mockMvc.perform(get("/sharecomment/{boardId}",sharePost.getId())
+        mockMvc.perform(get("/recipe-comment/{boardId}",2L)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -137,7 +141,7 @@ class ShareCommentControllerTest {
     }
 
     @Test
-    @DisplayName("share댓글 수정")
+    @DisplayName("recipe댓글 수정")
     void test3() throws Exception {
         // given
         User user = User.builder()
@@ -148,35 +152,36 @@ class ShareCommentControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
-                .id(1L)
-                .title("test title")
-                .build();
-        shareRepository.save(sharePost);
 
-        ShareComment shareComment=ShareComment.builder()
+        RecipePost recipePost = RecipePost.builder()
+                .id(3L)
+                .title("test title3")
+                .build();
+        recipeRepository.save(recipePost);
+
+        RecipeComment recipeComment=RecipeComment.builder()
                 .user(user)
-                .sharePost(sharePost)
+                .recipePost(recipePost)
                 .writer("nickname")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
-        shareCommentRepository.save(shareComment);
-        List<ShareComment> shareComments=shareCommentRepository.findAll();
+        recipeCommentRepository.save(recipeComment);
+        RecipeComment comment=recipeCommentRepository.findByWriter("nickname").get();
 
 
-        ShareCommentdto shareCommentdto = ShareCommentdto.builder()
+        RecipeCommentdto recipeCommentdto = RecipeCommentdto.builder()
                 .user_id(user.getId())
-                .board_id(sharePost.getId())
+                .board_id(recipePost.getId())
                 .content("update comment:)")
                 .regDate(new Date())
                 .build();
 
-        String json = objectMapper.writeValueAsString(shareCommentdto);
+        String json = objectMapper.writeValueAsString(recipeCommentdto);
 
         // expected
-        mockMvc.perform(put("/sharecomment/update/{commentId}",shareComments.get(0).getId())
+        mockMvc.perform(put("/recipe-comment/update/{commentId}",comment.getId())
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -187,7 +192,7 @@ class ShareCommentControllerTest {
 
 
     @Test
-    @DisplayName("share댓글 삭제")
+    @DisplayName("recipe댓글 삭제")
     void test4() throws Exception {
         // given
         User user = User.builder()
@@ -198,24 +203,25 @@ class ShareCommentControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
-                .id(1L)
-                .title("test title")
+        RecipePost recipePost = RecipePost.builder()
+                .id(4L)
+                .title("test title4")
                 .build();
-        shareRepository.save(sharePost);
+        recipeRepository.save(recipePost);
 
-        ShareComment shareComment=ShareComment.builder()
+        RecipeComment recipeComment=RecipeComment.builder()
                 .user(user)
-                .sharePost(sharePost)
+                .recipePost(recipePost)
                 .writer("nickname")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
-        shareCommentRepository.save(shareComment);
+        recipeCommentRepository.save(recipeComment);
+        RecipeComment comment=recipeCommentRepository.findByWriter("nickname").get();
 
         //when
-        mockMvc.perform(delete("/sharecomment/delete/{commentId}", 1L)
+        mockMvc.perform(delete("/recipe-comment/delete/{commentId}", comment.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

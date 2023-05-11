@@ -28,7 +28,11 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath password = createString("password");
 
+    public final ListPath<com.zipcook_server.data.entity.Comment.RecipeComment, com.zipcook_server.data.entity.Comment.QRecipeComment> recipeComments = this.<com.zipcook_server.data.entity.Comment.RecipeComment, com.zipcook_server.data.entity.Comment.QRecipeComment>createList("recipeComments", com.zipcook_server.data.entity.Comment.RecipeComment.class, com.zipcook_server.data.entity.Comment.QRecipeComment.class, PathInits.DIRECT2);
+
     public final ListPath<RecipePost, QRecipePost> recipeEntities = this.<RecipePost, QRecipePost>createList("recipeEntities", RecipePost.class, QRecipePost.class, PathInits.DIRECT2);
+
+    public final ListPath<com.zipcook_server.data.entity.Comment.SaleComment, com.zipcook_server.data.entity.Comment.QSaleComment> saleComments = this.<com.zipcook_server.data.entity.Comment.SaleComment, com.zipcook_server.data.entity.Comment.QSaleComment>createList("saleComments", com.zipcook_server.data.entity.Comment.SaleComment.class, com.zipcook_server.data.entity.Comment.QSaleComment.class, PathInits.DIRECT2);
 
     public final ListPath<SalePost, QSalePost> saleEntities = this.<SalePost, QSalePost>createList("saleEntities", SalePost.class, QSalePost.class, PathInits.DIRECT2);
 

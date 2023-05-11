@@ -1,11 +1,19 @@
 package com.zipcook_server.service;
 
 import com.zipcook_server.data.dto.comment.CommentCreate;
+import com.zipcook_server.data.dto.comment.RecipeCommentdto;
+import com.zipcook_server.data.dto.comment.SaleCommentdto;
 import com.zipcook_server.data.dto.comment.ShareCommentdto;
+import com.zipcook_server.data.entity.Comment.RecipeComment;
+import com.zipcook_server.data.entity.Comment.SaleComment;
 import com.zipcook_server.data.entity.Comment.ShareComment;
+import com.zipcook_server.data.entity.RecipePost;
+import com.zipcook_server.data.entity.SalePost;
 import com.zipcook_server.data.entity.SharePost;
 import com.zipcook_server.data.entity.User;
 import com.zipcook_server.exception.PostNotFound;
+import com.zipcook_server.repository.Comment.RecipeCommentRepository;
+import com.zipcook_server.repository.Comment.SaleCommentRepository;
 import com.zipcook_server.repository.Comment.ShareCommentRepository;
 import com.zipcook_server.repository.Recipe.RecipeRepository;
 import com.zipcook_server.repository.Sale.SaleRepository;
@@ -30,9 +38,16 @@ public class CommentService {
     ShareRepository shareRepository;
     @Autowired
     ShareCommentRepository shareCommentRepository;
+
+    @Autowired
+    SaleCommentRepository saleCommentRepository;
+    @Autowired
+    RecipeCommentRepository recipeCommentRepository;
     @Autowired
     UserRepository userRepository;
 
+    ///////share댓글/////////////////////////////
+    @Transactional
     public void sharecommentsave(CommentCreate commentCreate){
 
         if (commentCreate == null) {
@@ -77,5 +92,108 @@ public class CommentService {
                 .orElseThrow(PostNotFound::new);
 
         shareCommentRepository.delete(shareComment);
+    }
+
+
+
+
+
+    ///////sale댓글/////////////////////////////
+    @Transactional
+    public void salecommentsave(CommentCreate commentCreate){
+
+        if (commentCreate == null) {
+            throw new IllegalArgumentException("CommentCreate cannot be null.");
+        }
+
+        SalePost post=saleRepository.findById(commentCreate.getBoard_id())
+                .orElseThrow(PostNotFound::new);
+
+
+        User user = userRepository.findById(commentCreate.getUser_id())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
+        SaleComment saleComment = SaleComment.builder()
+                .writer(commentCreate.getWriter())
+                .content(commentCreate.getContent())
+                .user(user)
+                .salePost(post)
+                .regDate(new Date())
+                .build();
+
+        saleCommentRepository.save(saleComment);
+    }
+
+    public List<SaleCommentdto> salecommentfindall(Long salepost_id){
+        return saleCommentRepository.findBySalePostIdOrderByIdDesc(salepost_id).stream()
+                .map(SaleCommentdto::new)
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public void salecommentupdate(Long id, SaleCommentdto update) throws IOException {
+        SaleComment saleComment=saleCommentRepository.findById(id)
+                .orElseThrow(PostNotFound::new);
+        saleComment.toUpdateEntity(update);
+        saleCommentRepository.save(saleComment);
+    }
+
+    public void salecommentdelete(Long id){
+        SaleComment saleComment =saleCommentRepository.findById(id)
+                .orElseThrow(PostNotFound::new);
+
+        saleCommentRepository.delete(saleComment);
+    }
+
+
+
+
+    ///////recipe댓글/////////////////////////////
+    @Transactional
+    public void recipecommentsave(CommentCreate commentCreate){
+
+        if (commentCreate == null) {
+            throw new IllegalArgumentException("CommentCreate cannot be null.");
+        }
+
+        RecipePost post=recipeRepository.findById(commentCreate.getBoard_id())
+                .orElseThrow(PostNotFound::new);
+
+
+        User user = userRepository.findById(commentCreate.getUser_id())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
+        RecipeComment recipeComment = RecipeComment.builder()
+                .writer(commentCreate.getWriter())
+                .content(commentCreate.getContent())
+                .user(user)
+                .recipePost(post)
+                .regDate(new Date())
+                .build();
+
+        recipeCommentRepository.save(recipeComment);
+    }
+
+    public List<RecipeCommentdto> recipecommentfindall(Long recipepost_id){
+        return recipeCommentRepository.findByRecipePostIdOrderByIdDesc(recipepost_id).stream()
+                .map(RecipeCommentdto::new)
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public void recipecommentupdate(Long id, RecipeCommentdto update) throws IOException {
+        RecipeComment recipeComment=recipeCommentRepository.findById(id)
+                .orElseThrow(PostNotFound::new);
+        recipeComment.toUpdateEntity(update);
+        recipeCommentRepository.save(recipeComment);
+    }
+
+    public void recipecommentdelete(Long id){
+        RecipeComment recipeComment =recipeCommentRepository.findById(id)
+                .orElseThrow(PostNotFound::new);
+
+        recipeCommentRepository.delete(recipeComment);
     }
 }

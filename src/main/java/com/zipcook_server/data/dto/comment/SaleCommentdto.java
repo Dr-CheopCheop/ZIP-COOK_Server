@@ -1,6 +1,6 @@
 package com.zipcook_server.data.dto.comment;
 
-import com.zipcook_server.data.entity.Comment.ShareComment;
+import com.zipcook_server.data.entity.Comment.SaleComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShareCommentdto {
+public class SaleCommentdto {
 
     private Long id;
 
@@ -29,9 +29,9 @@ public class ShareCommentdto {
 
 
 
-    public ShareCommentdto(ShareComment comment){
+    public SaleCommentdto(SaleComment comment){
         this.id= comment.getId();
-        this.board_id=comment.getSharePost().getId();
+        this.board_id=comment.getSalePost().getId();
         this.user_id=comment.getUser().getId();
         this.writer=comment.getWriter();
         this.content=comment.getContent();
