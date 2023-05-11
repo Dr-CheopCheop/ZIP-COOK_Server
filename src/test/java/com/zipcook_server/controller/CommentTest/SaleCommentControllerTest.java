@@ -1,13 +1,13 @@
-package com.zipcook_server.controller;
+package com.zipcook_server.controller.CommentTest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zipcook_server.data.dto.comment.CommentCreate;
-import com.zipcook_server.data.dto.comment.ShareCommentdto;
-import com.zipcook_server.data.entity.Comment.ShareComment;
-import com.zipcook_server.data.entity.SharePost;
+import com.zipcook_server.data.dto.comment.SaleCommentdto;
+import com.zipcook_server.data.entity.Comment.SaleComment;
+import com.zipcook_server.data.entity.SalePost;
 import com.zipcook_server.data.entity.User;
-import com.zipcook_server.repository.Comment.ShareCommentRepository;
-import com.zipcook_server.repository.Share.ShareRepository;
+import com.zipcook_server.repository.Comment.SaleCommentRepository;
+import com.zipcook_server.repository.Sale.SaleRepository;
 import com.zipcook_server.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-class ShareCommentControllerTest {
+class SaleCommentControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -43,11 +43,11 @@ class ShareCommentControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ShareRepository shareRepository;
+    private SaleRepository saleRepository;
 
 
     @Autowired
-    private ShareCommentRepository shareCommentRepository;
+    private SaleCommentRepository saleCommentRepository;
 
 
     @Autowired
@@ -55,15 +55,15 @@ class ShareCommentControllerTest {
 
     @BeforeEach
     void init() {
-        shareRepository.deleteAll();
+        saleRepository.deleteAll();
         userRepository.deleteAll();
-        shareCommentRepository.deleteAll();
+        saleCommentRepository.deleteAll();
     }
 
 
 
     @Test
-    @DisplayName("share댓글 작성")
+    @DisplayName("sale댓글 작성")
     public void test1() throws Exception {
         // given
         User user = User.builder()
@@ -74,15 +74,15 @@ class ShareCommentControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        SalePost salePost = SalePost.builder()
                 .id(1L)
                 .title("test title")
                 .build();
-        shareRepository.save(sharePost);
+        saleRepository.save(salePost);
 
         CommentCreate commentCreate = CommentCreate.builder()
                 .user_id(user.getId())
-                .board_id(sharePost.getId())
+                .board_id(salePost.getId())
                 .writer("nickname")
                 .content("comment:)")
                 .regDate(new Date())
@@ -92,7 +92,7 @@ class ShareCommentControllerTest {
         String json = objectMapper.writeValueAsString(commentCreate);
 
         // when
-        mockMvc.perform(post("/sharecomment")
+        mockMvc.perform(post("/sale-comment")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -114,25 +114,25 @@ class ShareCommentControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        SalePost salePost = SalePost.builder()
                 .id(2L)
                 .title("test title2")
                 .build();
-        shareRepository.save(sharePost);
+        saleRepository.save(salePost);
 
-        List<ShareComment> shareComments = IntStream.range(0, 5)
-                .mapToObj(i -> ShareComment.builder()
+        List<SaleComment> saleComments = IntStream.range(0, 5)
+                .mapToObj(i -> SaleComment.builder()
                         .user(user)
-                        .sharePost(sharePost)
+                        .salePost(salePost)
                         .content("comment" + i)
                         .regDate(new Date())
                         .build())
                 .collect(Collectors.toList());
 
-        shareCommentRepository.saveAll(shareComments);
+        saleCommentRepository.saveAll(saleComments);
 
         // expected
-        mockMvc.perform(get("/sharecomment/{boardId}",2L)
+        mockMvc.perform(get("/sale-comment/{boardId}",2L)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -141,7 +141,7 @@ class ShareCommentControllerTest {
     }
 
     @Test
-    @DisplayName("share댓글 수정")
+    @DisplayName("sale댓글 수정")
     void test3() throws Exception {
         // given
         User user = User.builder()
@@ -152,35 +152,36 @@ class ShareCommentControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
-                .id(3L)
-                .title("test title")
-                .build();
-        shareRepository.save(sharePost);
 
-        ShareComment shareComment=ShareComment.builder()
+        SalePost salePost = SalePost.builder()
+                .id(3L)
+                .title("test title3")
+                .build();
+        saleRepository.save(salePost);
+
+        SaleComment saleComment=SaleComment.builder()
                 .user(user)
-                .sharePost(sharePost)
+                .salePost(salePost)
                 .writer("nickname")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
-        shareCommentRepository.save(shareComment);
-        ShareComment comment=shareCommentRepository.findByWriter("nickname").get();
+        saleCommentRepository.save(saleComment);
+        SaleComment comment=saleCommentRepository.findByWriter("nickname").get();
 
 
-        ShareCommentdto shareCommentdto = ShareCommentdto.builder()
+        SaleCommentdto saleCommentdto = SaleCommentdto.builder()
                 .user_id(user.getId())
-                .board_id(sharePost.getId())
+                .board_id(salePost.getId())
                 .content("update comment:)")
                 .regDate(new Date())
                 .build();
 
-        String json = objectMapper.writeValueAsString(shareCommentdto);
+        String json = objectMapper.writeValueAsString(saleCommentdto);
 
         // expected
-        mockMvc.perform(put("/sharecomment/update/{commentId}",comment.getId())
+        mockMvc.perform(put("/sale-comment/update/{commentId}",comment.getId())
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -191,7 +192,7 @@ class ShareCommentControllerTest {
 
 
     @Test
-    @DisplayName("share댓글 삭제")
+    @DisplayName("sale댓글 삭제")
     void test4() throws Exception {
         // given
         User user = User.builder()
@@ -202,25 +203,25 @@ class ShareCommentControllerTest {
                 .build();
         userRepository.save(user);
 
-        SharePost sharePost = SharePost.builder()
+        SalePost salePost = SalePost.builder()
                 .id(4L)
-                .title("test title")
+                .title("test title4")
                 .build();
-        shareRepository.save(sharePost);
+        saleRepository.save(salePost);
 
-        ShareComment shareComment=ShareComment.builder()
+        SaleComment saleComment=SaleComment.builder()
                 .user(user)
-                .sharePost(sharePost)
+                .salePost(salePost)
                 .writer("nickname")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
-        shareCommentRepository.save(shareComment);
-        ShareComment comment=shareCommentRepository.findByWriter("nickname").get();
+        saleCommentRepository.save(saleComment);
+        SaleComment comment=saleCommentRepository.findByWriter("nickname").get();
 
         //when
-        mockMvc.perform(delete("/sharecomment/delete/{commentId}", comment.getId())
+        mockMvc.perform(delete("/sale-comment/delete/{commentId}", comment.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

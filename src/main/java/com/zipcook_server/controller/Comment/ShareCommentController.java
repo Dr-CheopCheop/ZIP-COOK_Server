@@ -1,4 +1,4 @@
-package com.zipcook_server.controller;
+package com.zipcook_server.controller.Comment;
 
 import com.zipcook_server.data.dto.comment.CommentCreate;
 import com.zipcook_server.data.dto.comment.ShareCommentdto;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @ResponseBody
-@RequestMapping(value="/sharecomment")
+@RequestMapping(value="/share-comment")
 public class ShareCommentController {
 
     @Autowired

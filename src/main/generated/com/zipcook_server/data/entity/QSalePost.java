@@ -30,6 +30,8 @@ public class QSalePost extends EntityPathBase<SalePost> {
 
     public final DatePath<java.util.Date> regDate = createDate("regDate", java.util.Date.class);
 
+    public final ListPath<com.zipcook_server.data.entity.Comment.SaleComment, com.zipcook_server.data.entity.Comment.QSaleComment> saleComments = this.<com.zipcook_server.data.entity.Comment.SaleComment, com.zipcook_server.data.entity.Comment.QSaleComment>createList("saleComments", com.zipcook_server.data.entity.Comment.SaleComment.class, com.zipcook_server.data.entity.Comment.QSaleComment.class, PathInits.DIRECT2);
+
     public final StringPath title = createString("title");
 
     public final QUser user;

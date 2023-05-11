@@ -30,6 +30,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final ListPath<RecipePost, QRecipePost> recipeEntities = this.<RecipePost, QRecipePost>createList("recipeEntities", RecipePost.class, QRecipePost.class, PathInits.DIRECT2);
 
+    public final ListPath<com.zipcook_server.data.entity.Comment.SaleComment, com.zipcook_server.data.entity.Comment.QSaleComment> saleComments = this.<com.zipcook_server.data.entity.Comment.SaleComment, com.zipcook_server.data.entity.Comment.QSaleComment>createList("saleComments", com.zipcook_server.data.entity.Comment.SaleComment.class, com.zipcook_server.data.entity.Comment.QSaleComment.class, PathInits.DIRECT2);
+
     public final ListPath<SalePost, QSalePost> saleEntities = this.<SalePost, QSalePost>createList("saleEntities", SalePost.class, QSalePost.class, PathInits.DIRECT2);
 
     public final ListPath<com.zipcook_server.data.entity.Comment.ShareComment, com.zipcook_server.data.entity.Comment.QShareComment> shareComments = this.<com.zipcook_server.data.entity.Comment.ShareComment, com.zipcook_server.data.entity.Comment.QShareComment>createList("shareComments", com.zipcook_server.data.entity.Comment.ShareComment.class, com.zipcook_server.data.entity.Comment.QShareComment.class, PathInits.DIRECT2);

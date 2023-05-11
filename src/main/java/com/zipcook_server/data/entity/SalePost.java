@@ -1,14 +1,19 @@
 package com.zipcook_server.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.zipcook_server.data.dto.sale.Saledto;
+import com.zipcook_server.data.entity.Comment.SaleComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,6 +42,11 @@ public class SalePost {
     private Date regDate;
 
     private String filepath;
+
+    @OneToMany(mappedBy = "salePost", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+    @Builder.Default
+    private List<SaleComment> saleComments = new ArrayList<>();
 
     public void toUpdateEntity(Saledto saleUpdate, String filepath) {
         this.title = saleUpdate.getTitle();
