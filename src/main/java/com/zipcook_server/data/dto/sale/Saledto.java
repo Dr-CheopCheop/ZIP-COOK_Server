@@ -31,12 +31,22 @@ public class Saledto {
 
     private String filepath;
 
+    private String place;
+
+    private String price;
+
+    private String discountPrice;
+
+
     public Saledto(SalePost post){
         this.uid=post.getUser().getId();
         this.id= post.getId();
         this.title= post.getTitle();
         this.content=post.getContent();
         this.regDate=post.getRegDate();
+        this.place=post.getPlace();
+        this.price=post.getPrice();
+        this.discountPrice=post.getDiscountPrice();
         this.filepath=post.getFilepath();
     }
 }

@@ -24,9 +24,15 @@ public class QSalePost extends EntityPathBase<SalePost> {
 
     public final StringPath content = createString("content");
 
+    public final StringPath discountPrice = createString("discountPrice");
+
     public final StringPath filepath = createString("filepath");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final StringPath place = createString("place");
+
+    public final StringPath price = createString("price");
 
     public final DatePath<java.util.Date> regDate = createDate("regDate", java.util.Date.class);
 
