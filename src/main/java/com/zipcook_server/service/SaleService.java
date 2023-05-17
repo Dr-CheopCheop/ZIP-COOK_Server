@@ -44,6 +44,9 @@ public class SaleService {
                 .title(saleCreate.getTitle())
                 .content(saleCreate.getContent())
                 .regDate(new Date())
+                .price(saleCreate.getPrice())
+                .discountPrice(saleCreate.getDiscountPrice())
+                .place(saleCreate.getPlace())
                 .filepath(savepath)
                 .build();
 
@@ -60,6 +63,9 @@ public class SaleService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .regDate(post.getRegDate())
+                .price(post.getPrice())
+                .discountPrice(post.getDiscountPrice())
+                .place(post.getPlace())
                 .filepath(post.getFilepath())
                 .build();
 

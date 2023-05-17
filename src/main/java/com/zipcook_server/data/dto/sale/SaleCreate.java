@@ -22,9 +22,14 @@ public class SaleCreate {
     @Size(max=30)
     private String title;
 
-    @NotBlank(message = "내용을 입력하세요")
     @Size(max=80)
     private String content;
+
+    private String place;
+
+    private String price;
+
+    private String discountPrice;
 
     private Date regDate;
 

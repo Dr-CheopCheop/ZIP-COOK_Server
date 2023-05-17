@@ -75,6 +75,9 @@ class SaleControllerTest {
                 .uid(user.getId())
                 .title("title sale")
                 .content("content sale")
+                .price("15000")
+                .discountPrice("10000")
+                .place("market")
                 .build();
 
 
@@ -115,6 +118,9 @@ class SaleControllerTest {
                 .user(user)
                 .title("sale")
                 .content("sale content")
+                .price("15000")
+                .discountPrice("10000")
+                .place("market")
                 .build();
 
         saleRepository.save(salePost);
