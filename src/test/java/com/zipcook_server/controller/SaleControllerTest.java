@@ -74,7 +74,6 @@ class SaleControllerTest {
         SaleCreate saleCreate = SaleCreate.builder()
                 .uid(user.getId())
                 .title("title sale")
-                .content("content sale")
                 .price("15000")
                 .discountPrice("10000")
                 .place("market")
@@ -95,7 +94,6 @@ class SaleControllerTest {
         // then
         SalePost post = saleRepository.findAll().get(0);
         assertThat(post.getTitle()).isEqualTo("title sale");
-        assertThat(post.getContent()).isEqualTo("content sale");
         assertThat(post.getUser().getId()).isEqualTo("joy");
     }
 
@@ -117,7 +115,6 @@ class SaleControllerTest {
         SalePost salePost = SalePost.builder()
                 .user(user)
                 .title("sale")
-                .content("sale content")
                 .price("15000")
                 .discountPrice("10000")
                 .place("market")
@@ -152,7 +149,6 @@ class SaleControllerTest {
                 .mapToObj(i -> SalePost.builder()
                         .user(user)
                         .title("title" + i)
-                        .content("content" + i)
                         .build())
                 .collect(Collectors.toList());
 
@@ -184,7 +180,6 @@ class SaleControllerTest {
         SaleCreate saleCreate = SaleCreate.builder()
                 .uid(user.getId())
                 .title("title sale")
-                .content("content sale")
                 .build();
 
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
@@ -195,7 +190,6 @@ class SaleControllerTest {
         Saledto update = Saledto.builder()
                 .uid(user.getId())
                 .title("Test update post")
-                .content("Test update content")
                 .regDate(new Date())
                 .build();
 
@@ -229,7 +223,6 @@ class SaleControllerTest {
         SaleCreate saleCreate = SaleCreate.builder()
                 .uid(user.getId())
                 .title("title sale")
-                .content("content sale")
                 .build();
 
         MockMultipartFile File= new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
@@ -262,7 +255,6 @@ class SaleControllerTest {
 
         SaleCreate saleCreate = SaleCreate.builder()
                 .uid(user.getId())
-                .content("sale tomato")
                 .build();
 
 
@@ -300,7 +292,6 @@ class SaleControllerTest {
         SalePost salePost = SalePost.builder()
                 .user(user)
                 .title("sale title")
-                .content("Test sale content")
                 .regDate(new Date())
                 .build();
 
@@ -309,7 +300,6 @@ class SaleControllerTest {
         SalePost salePost2 = SalePost.builder()
                 .user(user)
                 .title("sale banana")
-                .content("Test sale content")
                 .regDate(new Date())
                 .build();
 

@@ -85,7 +85,6 @@ class MainControllerTest {
                 .mapToObj(i -> SalePost.builder()
                         .user(user)
                         .title("title" + i)
-                        .content("content" + i)
                         .build())
                 .collect(Collectors.toList());
 
