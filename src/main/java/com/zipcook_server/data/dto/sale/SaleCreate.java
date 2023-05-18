@@ -22,8 +22,6 @@ public class SaleCreate {
     @Size(max=30)
     private String title;
 
-    @Size(max=80)
-    private String content;
 
     private String place;
 

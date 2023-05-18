@@ -22,8 +22,6 @@ public class QSalePost extends EntityPathBase<SalePost> {
 
     public static final QSalePost salePost = new QSalePost("salePost");
 
-    public final StringPath content = createString("content");
-
     public final StringPath discountPrice = createString("discountPrice");
 
     public final StringPath filepath = createString("filepath");
