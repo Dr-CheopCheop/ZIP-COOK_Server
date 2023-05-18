@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zipcook_server.data.entity.RecipePost;
 import com.zipcook_server.data.entity.SalePost;
 import com.zipcook_server.data.entity.SharePost;
-import com.zipcook_server.data.entity.User;
 import com.zipcook_server.repository.Recipe.RecipeRepository;
 import com.zipcook_server.repository.Sale.SaleRepository;
 import com.zipcook_server.repository.Share.ShareRepository;
@@ -65,32 +64,25 @@ class MainControllerTest {
     @Test
     @DisplayName("메인 페이지 조회")
     void testGetPage() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         List<RecipePost> requestPosts = IntStream.range(0, 10)
                 .mapToObj(i -> RecipePost.builder()
-                        .user(user)
+                        .username("joy")
                         .title("title" + i)
                         .build())
                 .collect(Collectors.toList());
 
         List<SalePost> requestPosts2 = IntStream.range(0, 10)
                 .mapToObj(i -> SalePost.builder()
-                        .user(user)
+                        .username("joy")
                         .title("title" + i)
                         .build())
                 .collect(Collectors.toList());
 
         List<SharePost> requestPosts3 = IntStream.range(0, 10)
                 .mapToObj(i -> SharePost.builder()
-                        .user(user)
+                        .username("joy")
                         .title("title" + i)
                         .content("content" + i)
                         .build())

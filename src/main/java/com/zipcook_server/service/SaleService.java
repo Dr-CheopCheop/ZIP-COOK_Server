@@ -3,7 +3,6 @@ package com.zipcook_server.service;
 import com.zipcook_server.data.dto.sale.SaleCreate;
 import com.zipcook_server.data.dto.sale.Saledto;
 import com.zipcook_server.data.entity.SalePost;
-import com.zipcook_server.data.entity.User;
 import com.zipcook_server.data.request.SaleSearch;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Sale.SaleRepository;
@@ -30,8 +29,7 @@ public class SaleService {
     UserRepository userRepository;
 
     public void write(SaleCreate saleCreate, MultipartFile file) throws IOException {
-        User user = userRepository.findById(saleCreate.getUid())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
@@ -40,7 +38,8 @@ public class SaleService {
         file.transferTo(saveFile);
 
         SalePost salePost = SalePost.builder()
-                .user(user)
+                .nickname(saleCreate.getNickname())
+                .username(saleCreate.getUsername())
                 .title(saleCreate.getTitle())
                 .regDate(new Date())
                 .price(saleCreate.getPrice())
@@ -58,7 +57,8 @@ public class SaleService {
 
         return Saledto.builder()
                 .id(post.getId())
-                .uid(post.getUser().getId())
+                .nickname(post.getNickname())
+                .username(post.getUsername())
                 .title(post.getTitle())
                 .regDate(post.getRegDate())
                 .price(post.getPrice())

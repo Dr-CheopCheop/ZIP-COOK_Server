@@ -28,6 +28,8 @@ public class QSalePost extends EntityPathBase<SalePost> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath nickname = createString("nickname");
+
     public final StringPath place = createString("place");
 
     public final StringPath price = createString("price");
@@ -39,6 +41,8 @@ public class QSalePost extends EntityPathBase<SalePost> {
     public final StringPath title = createString("title");
 
     public final QUser user;
+
+    public final StringPath username = createString("username");
 
     public QSalePost(String variable) {
         this(SalePost.class, forVariable(variable), INITS);

@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -19,9 +18,9 @@ public class ShareCommentdto {
 
     private Long board_id;
 
-    private String user_id;
-    @Size(max=30)
-    private String writer;
+    private String username;
+
+    private String nickname;
 
     private String content;
 
@@ -32,8 +31,8 @@ public class ShareCommentdto {
     public ShareCommentdto(ShareComment comment){
         this.id= comment.getId();
         this.board_id=comment.getSharePost().getId();
-        this.user_id=comment.getUser().getId();
-        this.writer=comment.getWriter();
+        this.username=comment.getUsername();
+        this.nickname=comment.getNickname();
         this.content=comment.getContent();
         this.regDate=comment.getRegDate();
     }

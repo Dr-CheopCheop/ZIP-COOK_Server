@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface ShareCommentRepository extends JpaRepository<ShareComment, Long> {
     List<ShareComment> findBySharePostIdOrderByIdDesc(Long sharePostId);
 
-    Optional<ShareComment> findByWriter(String writer);
+    Optional<ShareComment> findByNickname(String nickname);
 }

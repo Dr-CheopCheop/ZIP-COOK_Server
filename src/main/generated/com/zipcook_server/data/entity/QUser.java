@@ -20,11 +20,13 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final SetPath<Authority, QAuthority> authorities = this.<Authority, QAuthority>createSet("authorities", Authority.class, QAuthority.class, PathInits.DIRECT2);
+
     public final StringPath email = createString("email");
 
-    public final StringPath id = createString("id");
-
     public final StringPath location = createString("location");
+
+    public final StringPath nickname = createString("nickname");
 
     public final StringPath password = createString("password");
 
@@ -39,6 +41,10 @@ public class QUser extends EntityPathBase<User> {
     public final ListPath<com.zipcook_server.data.entity.Comment.ShareComment, com.zipcook_server.data.entity.Comment.QShareComment> shareComments = this.<com.zipcook_server.data.entity.Comment.ShareComment, com.zipcook_server.data.entity.Comment.QShareComment>createList("shareComments", com.zipcook_server.data.entity.Comment.ShareComment.class, com.zipcook_server.data.entity.Comment.QShareComment.class, PathInits.DIRECT2);
 
     public final ListPath<SharePost, QSharePost> shareEntities = this.<SharePost, QSharePost>createList("shareEntities", SharePost.class, QSharePost.class, PathInits.DIRECT2);
+
+    public final NumberPath<Long> userId = createNumber("userId", Long.class);
+
+    public final StringPath username = createString("username");
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));

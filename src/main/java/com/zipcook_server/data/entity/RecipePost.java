@@ -31,6 +31,12 @@ public class RecipePost {
     @JoinColumn(name = "UID")
     private User user;
 
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "nickname")
+    private String nickname;
+
     @Column(name = "title", length = 100)
     private String title;
 

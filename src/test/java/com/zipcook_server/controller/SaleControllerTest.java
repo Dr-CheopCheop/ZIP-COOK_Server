@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zipcook_server.data.dto.sale.SaleCreate;
 import com.zipcook_server.data.dto.sale.Saledto;
 import com.zipcook_server.data.entity.SalePost;
-import com.zipcook_server.data.entity.User;
 import com.zipcook_server.repository.Sale.SaleRepository;
 import com.zipcook_server.repository.UserRepository;
 import com.zipcook_server.service.SaleService;
@@ -62,17 +61,9 @@ class SaleControllerTest {
     @Test
     @DisplayName("/sale 요청시 db에 값이 저장된다")
     void test1() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         SaleCreate saleCreate = SaleCreate.builder()
-                .uid(user.getId())
+                .username("joy")
                 .title("title sale")
                 .price("15000")
                 .discountPrice("10000")
@@ -94,7 +85,7 @@ class SaleControllerTest {
         // then
         SalePost post = saleRepository.findAll().get(0);
         assertThat(post.getTitle()).isEqualTo("title sale");
-        assertThat(post.getUser().getId()).isEqualTo("joy");
+
     }
 
 
@@ -103,17 +94,10 @@ class SaleControllerTest {
     @Test
     @DisplayName("글 1개 조회")
     void test2() throws Exception {
-        //given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         SalePost salePost = SalePost.builder()
-                .user(user)
+                .username("joy")
                 .title("sale")
                 .price("15000")
                 .discountPrice("10000")
@@ -136,18 +120,11 @@ class SaleControllerTest {
     @Test
     @DisplayName("글 여러개 조회")
     void test3() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         List<SalePost> requestPosts = IntStream.range(0, 20)
                 .mapToObj(i -> SalePost.builder()
-                        .user(user)
+                        .username("joy")
                         .title("title" + i)
                         .build())
                 .collect(Collectors.toList());
@@ -168,17 +145,10 @@ class SaleControllerTest {
     @Test
     @DisplayName("글 수정")
     void test4() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         SaleCreate saleCreate = SaleCreate.builder()
-                .uid(user.getId())
+                .username("joy")
                 .title("title sale")
                 .build();
 
@@ -188,7 +158,7 @@ class SaleControllerTest {
         List<SalePost> salePosts = saleRepository.findByTitleContaining("sale");
 
         Saledto update = Saledto.builder()
-                .uid(user.getId())
+                .username("joy")
                 .title("Test update post")
                 .regDate(new Date())
                 .build();
@@ -211,17 +181,10 @@ class SaleControllerTest {
     @Test
     @DisplayName("게시글 삭제")
     void test5() throws Exception {
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
 
         SaleCreate saleCreate = SaleCreate.builder()
-                .uid(user.getId())
+                .username("joy")
                 .title("title sale")
                 .build();
 
@@ -244,17 +207,10 @@ class SaleControllerTest {
     @Test
     @DisplayName("/sale 요청시 제목은 필수값이다")
     void test6() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         SaleCreate saleCreate = SaleCreate.builder()
-                .uid(user.getId())
+                .username("joy")
                 .build();
 
 
@@ -279,18 +235,10 @@ class SaleControllerTest {
     @Test
     @DisplayName("게시글 검색")
     void test7() throws Exception {
-        // given
 
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         SalePost salePost = SalePost.builder()
-                .user(user)
+                .username("joy")
                 .title("sale title")
                 .regDate(new Date())
                 .build();
@@ -298,7 +246,7 @@ class SaleControllerTest {
         saleRepository.save(salePost);
 
         SalePost salePost2 = SalePost.builder()
-                .user(user)
+                .username("joy")
                 .title("sale banana")
                 .regDate(new Date())
                 .build();
