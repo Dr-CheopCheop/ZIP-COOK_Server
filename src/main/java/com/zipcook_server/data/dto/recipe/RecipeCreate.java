@@ -2,7 +2,6 @@ package com.zipcook_server.data.dto.recipe;
 
 import lombok.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecipeCreate {
-    @Valid
-    private String uid;
+    private String username;
+
+
+    private String nickname;
 
     @Size(max=30)
     private String title;

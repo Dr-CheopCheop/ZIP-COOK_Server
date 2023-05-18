@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -18,8 +17,11 @@ public class Saledto {
 
     private Long id;
 
-    @Valid
-    private String uid;
+
+    private String username;
+
+
+    private String nickname;
 
     @Size(max=30)
     private String title;
@@ -37,7 +39,8 @@ public class Saledto {
 
 
     public Saledto(SalePost post){
-        this.uid=post.getUser().getId();
+        this.username=post.getUsername();
+        this.nickname=post.getNickname();
         this.id= post.getId();
         this.title= post.getTitle();
         this.regDate=post.getRegDate();

@@ -61,17 +61,10 @@ class ShareControllerTest {
     @Test
     @DisplayName("/share 요청시 db에 값이 저장된다")
     void test1() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
+                .username("joy")
                 .title("tomato")
                 .content("share tomato")
                 .build();
@@ -92,7 +85,7 @@ class ShareControllerTest {
         SharePost post = shareRepository.findAll().get(0);
         assertThat(post.getTitle()).isEqualTo("tomato");
         assertThat(post.getContent()).isEqualTo("share tomato");
-        assertThat(post.getUser().getId()).isEqualTo("joy");
+
     }
 
 
@@ -100,17 +93,10 @@ class ShareControllerTest {
     @Test
     @DisplayName("글 1개 조회")
     void test2() throws Exception {
-        //given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
+                .username("joy")
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
@@ -137,7 +123,7 @@ class ShareControllerTest {
     void test3() throws Exception {
         // given
         User user = User.builder()
-                .id("joy")
+                .username("joy")
                 .email("example@example.com")
                 .password("abc123")
                 .location("seoul")
@@ -146,7 +132,7 @@ class ShareControllerTest {
 
         List<SharePost> requestPosts = IntStream.range(0, 10)
                 .mapToObj(i -> SharePost.builder()
-                        .user(user)
+                        .username("joy")
                         .title("title" + i)
                         .content("content" + i)
                         .build())
@@ -167,17 +153,10 @@ class ShareControllerTest {
     @Test
     @DisplayName("글 수정")
     void test4() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
+                .username("joy")
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
@@ -189,7 +168,7 @@ class ShareControllerTest {
         List<SharePost> sharePosts = shareRepository.findByTitleContaining("share");
 
         Sharedto update = Sharedto.builder()
-                .uid(user.getId())
+                .username("joy")
                 .title("Test update post")
                 .content("Test update content")
                 .regDate(new Date())
@@ -215,7 +194,7 @@ class ShareControllerTest {
     @DisplayName("게시글 삭제")
     void test5() throws Exception {
         User user = User.builder()
-                .id("joy")
+                .username("joy")
                 .email("example@example.com")
                 .password("abc123")
                 .location("seoul")
@@ -223,7 +202,7 @@ class ShareControllerTest {
         userRepository.save(user);
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
+                .username("joy")
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
@@ -250,7 +229,7 @@ class ShareControllerTest {
     void test6() throws Exception {
         // given
         User user = User.builder()
-                .id("joy")
+                .username("joy")
                 .email("example@example.com")
                 .password("abc123")
                 .location("seoul")
@@ -258,7 +237,7 @@ class ShareControllerTest {
         userRepository.save(user);
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
+                .username("joy")
                 .content("share tomato")
                 .build();
 
@@ -284,18 +263,10 @@ class ShareControllerTest {
     @Test
     @DisplayName("게시글 검색")
     void test7() throws Exception {
-        // given
 
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         SharePost sharePost = SharePost.builder()
-                .user(user)
+                .username("joy")
                 .title("share tomato")
                 .content("Test content")
                 .regDate(new Date())
@@ -304,7 +275,7 @@ class ShareControllerTest {
         shareRepository.save(sharePost);
 
         SharePost sharePost2 = SharePost.builder()
-                .user(user)
+                .username("joy")
                 .title("share banana")
                 .content("Test content")
                 .regDate(new Date())

@@ -5,7 +5,6 @@ import com.zipcook_server.data.dto.comment.CommentCreate;
 import com.zipcook_server.data.dto.comment.SaleCommentdto;
 import com.zipcook_server.data.entity.Comment.SaleComment;
 import com.zipcook_server.data.entity.SalePost;
-import com.zipcook_server.data.entity.User;
 import com.zipcook_server.repository.Comment.SaleCommentRepository;
 import com.zipcook_server.repository.Sale.SaleRepository;
 import com.zipcook_server.repository.UserRepository;
@@ -66,24 +65,17 @@ class SaleCommentControllerTest {
     @DisplayName("sale댓글 작성")
     public void test1() throws Exception {
         // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         SalePost salePost = SalePost.builder()
-                .id(1L)
                 .title("test title")
                 .build();
         saleRepository.save(salePost);
 
         CommentCreate commentCreate = CommentCreate.builder()
-                .user_id(user.getId())
                 .board_id(salePost.getId())
-                .writer("nickname")
+                .nickname("joy")
+                .username("이역곡")
                 .content("comment:)")
                 .regDate(new Date())
                 .build();
@@ -105,24 +97,14 @@ class SaleCommentControllerTest {
     @Test
     @DisplayName("share댓글 보기")
     void test2() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         SalePost salePost = SalePost.builder()
-                .id(2L)
                 .title("test title2")
                 .build();
         saleRepository.save(salePost);
 
         List<SaleComment> saleComments = IntStream.range(0, 5)
                 .mapToObj(i -> SaleComment.builder()
-                        .user(user)
                         .salePost(salePost)
                         .content("comment" + i)
                         .regDate(new Date())
@@ -132,7 +114,7 @@ class SaleCommentControllerTest {
         saleCommentRepository.saveAll(saleComments);
 
         // expected
-        mockMvc.perform(get("/sale-comment/{boardId}",2L)
+        mockMvc.perform(get("/sale-comment/{boardId}",salePost.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -143,36 +125,25 @@ class SaleCommentControllerTest {
     @Test
     @DisplayName("sale댓글 수정")
     void test3() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
-
 
         SalePost salePost = SalePost.builder()
-                .id(3L)
                 .title("test title3")
                 .build();
         saleRepository.save(salePost);
 
         SaleComment saleComment=SaleComment.builder()
-                .user(user)
                 .salePost(salePost)
-                .writer("nickname")
+                .nickname("joy")
+                .username("이역곡")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
         saleCommentRepository.save(saleComment);
-        SaleComment comment=saleCommentRepository.findByWriter("nickname").get();
+        SaleComment comment=saleCommentRepository.findByNickname("joy").get();
 
 
         SaleCommentdto saleCommentdto = SaleCommentdto.builder()
-                .user_id(user.getId())
                 .board_id(salePost.getId())
                 .content("update comment:)")
                 .regDate(new Date())
@@ -194,31 +165,22 @@ class SaleCommentControllerTest {
     @Test
     @DisplayName("sale댓글 삭제")
     void test4() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         SalePost salePost = SalePost.builder()
-                .id(4L)
                 .title("test title4")
                 .build();
         saleRepository.save(salePost);
 
         SaleComment saleComment=SaleComment.builder()
-                .user(user)
                 .salePost(salePost)
-                .writer("nickname")
+                .nickname("joy")
+                .username("이역곡")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
         saleCommentRepository.save(saleComment);
-        SaleComment comment=saleCommentRepository.findByWriter("nickname").get();
+        SaleComment comment=saleCommentRepository.findByNickname("joy").get();
 
         //when
         mockMvc.perform(delete("/sale-comment/delete/{commentId}", comment.getId())

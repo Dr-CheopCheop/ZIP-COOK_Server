@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface SaleCommentRepository extends JpaRepository<SaleComment, Long> {
     List<SaleComment> findBySalePostIdOrderByIdDesc(Long salePostId);
 
-    Optional<SaleComment> findByWriter(String writer);
+    Optional<SaleComment> findByNickname(String nickname);
 }

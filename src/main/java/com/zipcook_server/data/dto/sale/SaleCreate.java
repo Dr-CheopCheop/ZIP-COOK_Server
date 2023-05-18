@@ -2,7 +2,6 @@ package com.zipcook_server.data.dto.sale;
 
 import lombok.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -15,8 +14,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class SaleCreate {
 
-    @Valid
-    private String uid;
+
+    private String username;
+
+
+    private String nickname;
 
     @NotBlank(message = "제목을 입력하세요")
     @Size(max=30)
