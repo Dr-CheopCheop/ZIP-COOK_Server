@@ -7,6 +7,9 @@ import com.zipcook_server.service.ChatbotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/chatbot")
 public class ChatbotController {
@@ -21,9 +24,9 @@ public class ChatbotController {
         return chatbotService.askQuestion(requestDto);
     }
 
-    @GetMapping("{month}")
-    public String getMonthFood(@PathVariable String month) {
-        String food = null;
+    @GetMapping("/{month}")
+    public List<String> getMonthFood(@PathVariable String month) {
+        List<String> food = null;
         switch (month) {
             case "january":
                 food = monthFoodConfig.getJanuary();
@@ -62,7 +65,8 @@ public class ChatbotController {
                 food = monthFoodConfig.getDecember();
                 break;
             default:
-                food = "Invalid month";
+                food = new ArrayList<>();
+                food.add("Invalid month");
                 break;
         }
         return food;

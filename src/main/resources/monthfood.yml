@@ -1,12 +1,36 @@
-january: tangerine
-february: apple
-march: seaweed
-april: ark shell
-may: sea bream
-june: scomberomorini
-july: cuttlefish
-august: abalone
-september: flatfish
-october: salmon
-november: codfish
-december: Yeongdeok Crab
+january:
+  - tangerine
+  - orange
+february:
+  - apple
+  - tomato
+march:
+  - seaweed
+  - kiwi
+april:
+  - ark shell
+  - spinach
+may:
+  - sea bream
+  - Bluefish
+june:
+  - scomberomorini
+  - squie
+july:
+  - cuttlefish
+  - sea cucumber
+august:
+  - abalone
+  - clam
+september:
+  - flatfish
+  - sea bass
+october:
+  - salmon
+  - grouper
+november:
+  - codfish
+  - pollack
+december:
+  - Yeongdeok Crab
+  - squid
