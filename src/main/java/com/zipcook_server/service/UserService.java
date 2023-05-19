@@ -3,7 +3,7 @@ package com.zipcook_server.service;
 import com.zipcook_server.data.dto.UserDTO;
 import com.zipcook_server.data.entity.Authority;
 import com.zipcook_server.data.entity.User;
-import com.zipcook_server.data.repository.UserRepository;
+import com.zipcook_server.repository.UserRepository;
 import com.zipcook_server.util.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

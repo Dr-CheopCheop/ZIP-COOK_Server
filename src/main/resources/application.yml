@@ -17,6 +17,11 @@ spring:
     port: '587'
     default-encoding: UTF-8
 
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+
 #openai api settings
 api:
   secret:

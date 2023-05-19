@@ -1,4 +1,4 @@
-package com.zipcook_server.data.repository;
+package com.zipcook_server.repository;
 
 import org.springframework.stereotype.Repository;
 

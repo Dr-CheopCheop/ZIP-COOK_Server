@@ -1,7 +1,7 @@
 package com.zipcook_server.service;
 
 import com.zipcook_server.data.entity.User;
-import com.zipcook_server.data.repository.UserRepository;
+import com.zipcook_server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

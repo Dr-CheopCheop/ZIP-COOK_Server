@@ -2,7 +2,7 @@ package com.zipcook_server.service;
 
 import com.zipcook_server.data.dto.UserDTO;
 import com.zipcook_server.data.entity.User;
-import com.zipcook_server.data.repository.UserRepository;
+import com.zipcook_server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
