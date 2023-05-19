@@ -26,15 +26,13 @@ public class QSaleComment extends EntityPathBase<SaleComment> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath nickname = createString("nickname");
-
     public final DatePath<java.util.Date> regDate = createDate("regDate", java.util.Date.class);
 
     public final com.zipcook_server.data.entity.QSalePost salePost;
 
     public final com.zipcook_server.data.entity.QUser user;
 
-    public final StringPath username = createString("username");
+    public final StringPath writer = createString("writer");
 
     public QSaleComment(String variable) {
         this(SaleComment.class, forVariable(variable), INITS);

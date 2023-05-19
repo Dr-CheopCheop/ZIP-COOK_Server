@@ -26,15 +26,13 @@ public class QShareComment extends EntityPathBase<ShareComment> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath nickname = createString("nickname");
-
     public final DatePath<java.util.Date> regDate = createDate("regDate", java.util.Date.class);
 
     public final com.zipcook_server.data.entity.QSharePost sharePost;
 
     public final com.zipcook_server.data.entity.QUser user;
 
-    public final StringPath username = createString("username");
+    public final StringPath writer = createString("writer");
 
     public QShareComment(String variable) {
         this(ShareComment.class, forVariable(variable), INITS);

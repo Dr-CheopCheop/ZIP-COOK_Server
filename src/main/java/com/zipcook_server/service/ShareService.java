@@ -3,6 +3,7 @@ package com.zipcook_server.service;
 import com.zipcook_server.data.dto.share.ShareCreate;
 import com.zipcook_server.data.dto.share.Sharedto;
 import com.zipcook_server.data.entity.SharePost;
+import com.zipcook_server.data.entity.User;
 import com.zipcook_server.data.request.ShareSearch;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Share.ShareRepository;
@@ -33,6 +34,8 @@ public class ShareService {
     private ResourceLoader resourceLoader;
 
     public void write(ShareCreate shareCreate, MultipartFile file) throws IOException {
+        User user = userRepository.findById(shareCreate.getUid())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
@@ -41,8 +44,7 @@ public class ShareService {
         file.transferTo(saveFile);
 
         SharePost sharePost = SharePost.builder()
-                .nickname(shareCreate.getNickname())
-                .username(shareCreate.getUsername())
+                .user(user)
                 .title(shareCreate.getTitle())
                 .content(shareCreate.getContent())
                 .regDate(new Date())
@@ -58,8 +60,7 @@ public class ShareService {
 
         return Sharedto.builder()
                 .id(post.getId())
-                .nickname(post.getNickname())
-                .nickname(post.getNickname())
+                .uid(post.getUser().getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .regDate(post.getRegDate())

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -18,9 +19,10 @@ public class RecipeCommentdto {
 
     private Long board_id;
 
-    private String username;
+    private String user_id;
+    @Size(max=30)
+    private String writer;
 
-    private String nickname;
     private String content;
 
     private Date regDate;
@@ -30,8 +32,8 @@ public class RecipeCommentdto {
     public RecipeCommentdto(RecipeComment comment){
         this.id= comment.getId();
         this.board_id=comment.getRecipePost().getId();
-        this.username=comment.getUsername();
-        this.nickname=comment.getNickname();
+        this.user_id=comment.getUser().getId();
+        this.writer=comment.getWriter();
         this.content=comment.getContent();
         this.regDate=comment.getRegDate();
     }

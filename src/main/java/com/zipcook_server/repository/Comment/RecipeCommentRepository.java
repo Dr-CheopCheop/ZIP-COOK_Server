@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface RecipeCommentRepository extends JpaRepository<RecipeComment, Long> {
     List<RecipeComment> findByRecipePostIdOrderByIdDesc(Long recipePostId);
 
-    Optional<RecipeComment> findByNickname(String nickname);
+    Optional<RecipeComment> findByWriter(String writer);
 }

@@ -4,6 +4,18 @@ spring:
     url: jdbc:mysql://localhost:3306/zipcook?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: cuk
     password: 1234
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: leegy0419@gmail.com
+    password: xvxbbnhejpvezhpw
+    port: '587'
+    default-encoding: UTF-8
 
   jpa:
     hibernate:
@@ -18,6 +30,48 @@ openai:
   api:
     url: https://api.openai.com/v1/completions
 
+##jwt settings
+jwt:
+  issuer: lee
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  header: Authorization
+  token-validity-in-seconds: 86400
+  expiration: 604800
 
-
-
+month-food:
+  january:
+    - tangerine
+    - orange
+  february:
+    - apple
+    - tomato
+  march:
+    - seaweed
+    - kiwi
+  april:
+    - ark shell
+    - spinach
+  may:
+    - sea bream
+    - Bluefish
+  june:
+    - scomberomorini
+    - squie
+  july:
+    - cuttlefish
+    - sea cucumber
+  august:
+    - abalone
+    - clam
+  september:
+    - flatfish
+    - sea bass
+  october:
+    - salmon
+    - grouper
+  november:
+    - codfish
+    - pollack
+  december:
+    - Yeongdeok Crab
+    - squid

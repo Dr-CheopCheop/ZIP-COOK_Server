@@ -29,4 +29,6 @@ public class ChatbotRequestDto implements Serializable {
         this.temperature = temperature;
         this.topP = topP;
     }
+
+
 }

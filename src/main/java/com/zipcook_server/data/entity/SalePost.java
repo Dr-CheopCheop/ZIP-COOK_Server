@@ -31,15 +31,11 @@ public class SalePost {
     @JoinColumn(name = "UID")
     private User user;
 
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "nickname")
-    private String nickname;
-
     @Column(name = "title", length = 100)
     private String title;
 
+    @Column(name = "content", length = 500)
+    private String content;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "reg_date")
@@ -60,6 +56,7 @@ public class SalePost {
 
     public void toUpdateEntity(Saledto saleUpdate, String filepath) {
         this.title = saleUpdate.getTitle();
+        this.content = saleUpdate.getContent();
         this.regDate = new Date();
         this.place= saleUpdate.getPlace();
         this.price=saleUpdate.getPrice();

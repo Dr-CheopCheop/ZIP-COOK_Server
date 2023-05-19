@@ -10,6 +10,7 @@ import com.zipcook_server.data.entity.Comment.ShareComment;
 import com.zipcook_server.data.entity.RecipePost;
 import com.zipcook_server.data.entity.SalePost;
 import com.zipcook_server.data.entity.SharePost;
+import com.zipcook_server.data.entity.User;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Comment.RecipeCommentRepository;
 import com.zipcook_server.repository.Comment.SaleCommentRepository;
@@ -57,10 +58,13 @@ public class CommentService {
                 .orElseThrow(PostNotFound::new);
 
 
+        User user = userRepository.findById(commentCreate.getUser_id())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
         ShareComment shareComment = ShareComment.builder()
-                .nickname(commentCreate.getNickname())
-                .username(commentCreate.getUsername())
+                .writer(commentCreate.getWriter())
                 .content(commentCreate.getContent())
+                .user(user)
                 .sharePost(post)
                 .regDate(new Date())
                 .build();
@@ -106,11 +110,13 @@ public class CommentService {
                 .orElseThrow(PostNotFound::new);
 
 
+        User user = userRepository.findById(commentCreate.getUser_id())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
 
         SaleComment saleComment = SaleComment.builder()
-                .nickname(commentCreate.getNickname())
-                .username(commentCreate.getUsername())
+                .writer(commentCreate.getWriter())
                 .content(commentCreate.getContent())
+                .user(user)
                 .salePost(post)
                 .regDate(new Date())
                 .build();
@@ -155,10 +161,13 @@ public class CommentService {
                 .orElseThrow(PostNotFound::new);
 
 
+        User user = userRepository.findById(commentCreate.getUser_id())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
         RecipeComment recipeComment = RecipeComment.builder()
-                .nickname(commentCreate.getNickname())
-                .username(commentCreate.getUsername())
+                .writer(commentCreate.getWriter())
                 .content(commentCreate.getContent())
+                .user(user)
                 .recipePost(post)
                 .regDate(new Date())
                 .build();

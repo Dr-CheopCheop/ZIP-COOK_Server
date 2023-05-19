@@ -28,4 +28,13 @@ public class ChatbotResponseDto implements Serializable {
         this.model = model;
         this.choices = choices;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setObject(String object) {
+        this.object = object;
+    }
+
 }

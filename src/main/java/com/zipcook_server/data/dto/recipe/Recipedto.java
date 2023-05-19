@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
@@ -18,11 +19,8 @@ public class Recipedto {
 
     private Long id;
 
-
-    private String username;
-
-
-    private String nickname;
+    @Valid
+    private String uid;
 
     @Size(max=30)
     private String title;
@@ -48,8 +46,7 @@ public class Recipedto {
     private String filepath;
 
     public Recipedto(RecipePost post){
-        this.nickname= post.getNickname();
-        this.nickname=post.getNickname();
+        this.uid=post.getUser().getId();
         this.id= post.getId();
         this.title= post.getTitle();
         this.serving= post.getServing();

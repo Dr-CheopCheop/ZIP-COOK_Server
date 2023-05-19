@@ -3,51 +3,29 @@ package com.zipcook_server.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+
 
 import java.util.List;
 
 @Configuration
-@PropertySource("classpath:monthFood.yml")
+@ConfigurationProperties(prefix = "month-food")
 @Getter
 @Setter
 public class MonthFoodConfig {
 
-    @Value("${january}")
-    private String january;
-
-    @Value("${february}")
-    private String february;
-
-    @Value("${march}")
-    private String march;
-
-    @Value("${april}")
-    private String april;
-
-    @Value("${may}")
-    private String may;
-
-    @Value("${june}")
-    private String june;
-
-    @Value("${july}")
-    private String july;
-
-    @Value("${august}")
-    private String august;
-
-    @Value("${september}")
-    private String september;
-
-    @Value("${october}")
-    private String october;
-
-    @Value("${november}")
-    private String november;
-
-    @Value("${december}")
-    private String december;
+    private List<String> january;
+    private List<String> february;
+    private List<String> march;
+    private List<String> april;
+    private List<String> may;
+    private List<String> june;
+    private List<String> july;
+    private List<String> august;
+    private List<String> september;
+    private List<String> october;
+    private List<String> november;
+    private List<String> december;
 
 }

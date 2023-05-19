@@ -2,6 +2,7 @@ package com.zipcook_server.data.dto.share;
 
 import lombok.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -14,11 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class ShareCreate {
 
-
-    private String username;
-
-
-    private String nickname;
+    @Valid
+    private String uid;
 
     @NotBlank(message = "제목을 입력하세요")
     @Size(max=30)

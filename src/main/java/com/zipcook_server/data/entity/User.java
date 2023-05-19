@@ -1,5 +1,9 @@
 package com.zipcook_server.data.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -8,14 +12,16 @@ import com.zipcook_server.data.entity.Comment.SaleComment;
 import com.zipcook_server.data.entity.Comment.ShareComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
+import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -84,6 +90,15 @@ public class User {
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     @Builder.Default
     private List<RecipeComment> recipeComments = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+    }
+
 
 
 }

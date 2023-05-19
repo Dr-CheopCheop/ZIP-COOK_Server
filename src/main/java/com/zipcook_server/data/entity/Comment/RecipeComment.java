@@ -23,9 +23,7 @@ public class RecipeComment {
     @Column(name = "id")
     private Long id;
 
-    private String username;
-
-    private String nickname;
+    private String writer;
 
     private String content;
 

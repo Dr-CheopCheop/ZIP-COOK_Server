@@ -3,6 +3,7 @@ package com.zipcook_server.service;
 import com.zipcook_server.data.dto.recipe.RecipeCreate;
 import com.zipcook_server.data.dto.recipe.Recipedto;
 import com.zipcook_server.data.entity.RecipePost;
+import com.zipcook_server.data.entity.User;
 import com.zipcook_server.data.request.RecipeSearch;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Recipe.RecipeRepository;
@@ -29,7 +30,8 @@ public class RecipeService {
     UserRepository userRepository;
 
     public void write(RecipeCreate recipeCreate, MultipartFile file) throws IOException {
-
+        User user = userRepository.findById(recipeCreate.getUid())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
@@ -38,8 +40,7 @@ public class RecipeService {
         file.transferTo(saveFile);
 
         RecipePost recipePost = RecipePost.builder()
-                .nickname(recipeCreate.getNickname())
-                .username(recipeCreate.getUsername())
+                .user(user)
                 .title(recipeCreate.getTitle())
                 .serving(recipeCreate.getServing())
                 .level(recipeCreate.getLevel())
@@ -60,8 +61,7 @@ public class RecipeService {
 
         return Recipedto.builder()
                 .id(post.getId())
-                .nickname(post.getNickname())
-                .username(post.getUsername())
+                .uid(post.getUser().getId())
                 .title(post.getTitle())
                 .serving(post.getServing())
                 .level(post.getLevel())
