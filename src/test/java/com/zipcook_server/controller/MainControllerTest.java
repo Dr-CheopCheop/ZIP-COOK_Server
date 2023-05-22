@@ -79,6 +79,7 @@ class MainControllerTest {
                         .nickname("nick")
                         .title("title" + i)
                         .content("content" + i)
+                        .location("seoul")
                         .build())
                 .collect(Collectors.toList());
 
@@ -87,6 +88,7 @@ class MainControllerTest {
                         .nickname("nick")
                         .title("title" + i)
                         .content("content" + i)
+                        .location("seoul")
                         .build())
                 .collect(Collectors.toList());
 
@@ -96,7 +98,7 @@ class MainControllerTest {
 
         // when
         // expected
-        mockMvc.perform(get("/main?sharepage=1&salepage=1&recipepage=1")
+        mockMvc.perform(get("/main?location=seoul&sharepage=1&salepage=1&recipepage=1")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

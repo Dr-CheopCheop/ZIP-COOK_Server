@@ -32,6 +32,8 @@ public class Sharedto {
 
     private String nickname;
 
+    private String location;
+
     public Sharedto(SharePost post){
         this.nickname= post.getNickname();
         this.id= post.getId();
@@ -39,5 +41,6 @@ public class Sharedto {
         this.content=post.getContent();
         this.regDate=post.getRegDate();
         this.filepath=post.getFilepath();
+        this.location=post.getLocation();
     }
 }

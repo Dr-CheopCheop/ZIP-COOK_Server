@@ -48,13 +48,14 @@ public class ShareService {
                 .content(shareCreate.getContent())
                 .regDate(new Date())
                 .filepath(savepath)
+                .location(shareCreate.getLocation())
                 .build();
 
         shareRepository.save(sharePost);
     }
 
-    public Sharedto get(Long id){
-        SharePost post=shareRepository.findById(id)
+    public Sharedto get(Long id,String location){
+        SharePost post=shareRepository.findByIdAndLocation(id,location)
                 .orElseThrow(PostNotFound::new);
 
         return Sharedto.builder()
@@ -64,6 +65,7 @@ public class ShareService {
                 .content(post.getContent())
                 .regDate(post.getRegDate())
                 .filepath(post.getFilepath())
+                .location(post.getLocation())
                 .build();
 
 
@@ -78,21 +80,16 @@ public class ShareService {
 
 
 
-    public List<Sharedto> getAll(){
-        return shareRepository.findAll().stream()
-                .map(Sharedto::new)
-                .collect(Collectors.toList());
-    }
 
-    public List<Sharedto> searchByTitle(String title) {
-        return shareRepository.findByTitleContaining(title).stream()
+    public List<Sharedto> searchByTitle(String title,String location) {
+        return shareRepository.findByTitleContainingAndLocation(title,location).stream()
                 .map(Sharedto::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public void update(Long id,Sharedto update,MultipartFile file) throws IOException {
-        SharePost sharePost=shareRepository.findById(id)
+    public void update(Long id,String location,Sharedto update,MultipartFile file) throws IOException {
+        SharePost sharePost=shareRepository.findByIdAndLocation(id,location)
                 .orElseThrow(PostNotFound::new);
 
         File deleteFile = new File(sharePost.getFilepath());
@@ -109,8 +106,8 @@ public class ShareService {
     }
 
 
-    public void delete(Long id){
-        SharePost post=shareRepository.findById(id)
+    public void delete(Long id,String location){
+        SharePost post=shareRepository.findByIdAndLocation(id,location)
                 .orElseThrow(PostNotFound::new);
 
         File deleteFile = new File(post.getFilepath());

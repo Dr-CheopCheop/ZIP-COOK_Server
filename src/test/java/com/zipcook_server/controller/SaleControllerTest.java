@@ -71,6 +71,7 @@ class SaleControllerTest {
                 .price("15000")
                 .discountPrice("10000")
                 .place("market")
+                .location("seoul")
                 .build();
 
 
@@ -106,13 +107,14 @@ class SaleControllerTest {
                 .price("15000")
                 .discountPrice("10000")
                 .place("market")
+                .location("seoul")
                 .build();
 
         saleRepository.save(salePost);
 
 
         //when
-        mockMvc.perform(get("/board-sale/{boardId}", salePost.getId())
+        mockMvc.perform(get("/board-sale/{location}/{boardId}",salePost.getLocation(), salePost.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -131,13 +133,14 @@ class SaleControllerTest {
                         .nickname("nick")
                         .title("title" + i)
                         .content("content" + i)
+                        .location("seoul")
                         .build())
                 .collect(Collectors.toList());
 
         saleRepository.saveAll(requestPosts);
 
         // expected
-        mockMvc.perform(get("/board-sale?page=1")
+        mockMvc.perform(get("/board-sale?location=seoul&page=1")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -156,17 +159,19 @@ class SaleControllerTest {
                 .nickname("nick")
                 .title("title sale")
                 .content("content sale")
+                .location("seoul")
                 .build();
 
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
         saleService.write(saleCreate, file);
 
-        List<SalePost> salePosts = saleRepository.findByTitleContaining("sale");
+        List<SalePost> salePosts = saleRepository.findByTitleContainingAndLocation("sale","seoul");
 
         Saledto update = Saledto.builder()
                 .nickname("nick")
                 .title("Test update post")
                 .content("Test update content")
+                .location("seoul")
                 .regDate(new Date())
                 .build();
 
@@ -174,7 +179,7 @@ class SaleControllerTest {
         MockMultipartFile saledto = new MockMultipartFile("update", "update", "application/json", json.getBytes(StandardCharsets.UTF_8));
 
         // when
-        mockMvc.perform(multipart("/board-sale/update/{boardId}", salePosts.get(0).getId())
+        mockMvc.perform(multipart("/board-sale/{location}/update/{boardId}", "seoul",salePosts.get(0).getId())
                         .file(file)
                         .file(saledto))
                 .andExpect(status().isOk())
@@ -194,15 +199,16 @@ class SaleControllerTest {
                 .nickname("nick")
                 .title("title sale")
                 .content("content sale")
+                .location("seoul")
                 .build();
 
         MockMultipartFile File= new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
         saleService.write(saleCreate,File);
 
-        List<SalePost> salePost=saleRepository.findByTitleContaining("sale");
+        List<SalePost> salePost=saleRepository.findByTitleContainingAndLocation("sale","seoul");
 
         //when
-        mockMvc.perform(delete("/board-sale/{boardId}", salePost.get(0).getId())
+        mockMvc.perform(delete("/board-sale/{location}/{boardId}", "seoul",salePost.get(0).getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -238,7 +244,7 @@ class SaleControllerTest {
         saleRepository.save(salePost2);
 
         // when
-        mockMvc.perform(get("/board-sale/search/{title}" ,"sale")
+        mockMvc.perform(get("/board-sale/{location}/search/{title}" ,"seoul","sale")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

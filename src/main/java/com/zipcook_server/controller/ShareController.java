@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import retrofit2.http.Path;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -31,9 +32,9 @@ public class ShareController {
         return ResponseEntity.ok("Post shared successfully!");
     }
 
-    @GetMapping("/{boardId}")
-    public Sharedto getPost(@PathVariable Long boardId) throws IOException {
-        return shareService.get(boardId);
+    @GetMapping("/{location}/{boardId}")
+    public Sharedto getPost(@PathVariable String location,@PathVariable Long boardId) throws IOException {
+        return shareService.get(boardId,location);
 
     }
 
@@ -42,27 +43,27 @@ public class ShareController {
         return shareService.getList(shareSearch);
     }
 
-    @GetMapping("/search/{title}")
-    public List<Sharedto> searchByTitle(@PathVariable String title) throws IOException {
-        return shareService.searchByTitle(title);
+    @GetMapping("/{location}/search/{title}")
+    public List<Sharedto> searchByTitle(@PathVariable String location,@PathVariable String title) throws IOException {
+        return shareService.searchByTitle(title,location);
     }
 
-    @GetMapping("/update/{boardId}")
-    public void updateForm(@PathVariable Long boardId, Model model)  {
-        Sharedto sharedto =shareService.get(boardId);
+    @GetMapping("/{location}/update/{boardId}")
+    public void updateForm(@PathVariable String location,@PathVariable Long boardId, Model model)  {
+        Sharedto sharedto =shareService.get(boardId,location);
         model.addAttribute("shareboardupdate", sharedto);
     }
 
-    @PostMapping("/update/{boardId}")
-    public ResponseEntity<String> update(@PathVariable Long boardId, @RequestPart @Valid Sharedto update,
-                                             @RequestPart(value="file",required = true) MultipartFile file) throws IOException {
-        shareService.update(boardId,update,file);
+    @PostMapping("/{location}/update/{boardId}")
+    public ResponseEntity<String> update(@PathVariable String location,@PathVariable Long boardId, @RequestPart @Valid Sharedto update,
+                                         @RequestPart(value="file",required = true) MultipartFile file) throws IOException {
+        shareService.update(boardId,location,update,file);
         return ResponseEntity.ok("Updated Successfully!");
     }
 
-    @DeleteMapping("/{boardId}")
-    public void delete(@PathVariable Long boardId){
-        shareService.delete(boardId);
+    @DeleteMapping("/{location}/{boardId}")
+    public void delete(@PathVariable String location,@PathVariable Long boardId){
+        shareService.delete(boardId,location);
 
     }
 

@@ -14,6 +14,8 @@ public class ShareSearch {
 
     private int page;
 
+    private String location;
+
     public long getOffset(){
         return (long)((page-1)*10);
     }

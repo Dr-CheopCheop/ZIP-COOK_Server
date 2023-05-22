@@ -31,9 +31,9 @@ public class SaleController {
         return ResponseEntity.ok("Post shared successfully!");
     }
 
-    @GetMapping("/{boardId}")
-    public Saledto getPost(@PathVariable Long boardId) throws IOException {
-        return saleService.get(boardId);
+    @GetMapping("/{location}/{boardId}")
+    public Saledto getPost(@PathVariable String location,@PathVariable Long boardId) throws IOException {
+        return saleService.get(boardId,location);
 
     }
 
@@ -42,28 +42,28 @@ public class SaleController {
         return saleService.getList(saleSearch);
     }
 
-    @GetMapping("/search/{title}")
-    public List<Saledto> searchByTitle(@PathVariable String title) throws IOException {
-        return saleService.searchByTitle(title);
+    @GetMapping("/{location}/search/{title}")
+    public List<Saledto> searchByTitle(@PathVariable String location,@PathVariable String title) throws IOException {
+        return saleService.searchByTitle(title,location);
     }
 
-    @GetMapping("/update/{boardId}")
-    public void updateForm(@PathVariable Long boardId, Model model)  {
-        Saledto saledto =saleService.get(boardId);
+    @GetMapping("/{location}/update/{boardId}")
+    public void updateForm(@PathVariable String location, @PathVariable Long boardId, Model model)  {
+        Saledto saledto =saleService.get(boardId,location);
         model.addAttribute("saleboardupdate", saledto);
     }
 
-    @PostMapping("/update/{boardId}")
-    public ResponseEntity<String> update(@PathVariable Long boardId, @RequestPart @Valid Saledto update,
+    @PostMapping("/{location}/update/{boardId}")
+    public ResponseEntity<String> update(@PathVariable String location,@PathVariable Long boardId, @RequestPart @Valid Saledto update,
                                              @RequestPart(value="file",required = true) MultipartFile file) throws IOException {
-        saleService.update(boardId,update,file);
+        saleService.update(boardId,location,update,file);
         return ResponseEntity.ok("Updated Successfully!");
     }
 
 
-    @DeleteMapping("/{boardId}")
-    public void delete(@PathVariable Long boardId){
-        saleService.delete(boardId);
+    @DeleteMapping("/{location}/{boardId}")
+    public void delete(@PathVariable String location,@PathVariable Long boardId){
+        saleService.delete(boardId,location);
 
     }
 

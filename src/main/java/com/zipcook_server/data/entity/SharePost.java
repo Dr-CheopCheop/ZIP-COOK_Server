@@ -46,6 +46,9 @@ public class SharePost {
 
     private String nickname;
 
+    @Column(name = "location")
+    private String location;
+
     @OneToMany(mappedBy = "sharePost", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     @Builder.Default
@@ -57,5 +60,6 @@ public class SharePost {
         this.content = shareUpdate.getContent();
         this.regDate = new Date();
         this.filepath = filepath;
+        this.location= shareUpdate.getLocation();
     }
 }

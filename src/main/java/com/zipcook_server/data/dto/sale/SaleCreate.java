@@ -35,5 +35,7 @@ public class SaleCreate {
 
     private String nickname;
 
+    private String location;
+
 
 }
