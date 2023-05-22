@@ -33,5 +33,7 @@ public class SaleCreate {
 
     private Date regDate;
 
+    private String nickname;
+
 
 }

@@ -41,6 +41,8 @@ public class SalePost {
     @Column(name = "reg_date")
     private Date regDate;
 
+    private String nickname;
+
     private String filepath;
     @Column(name = "place")
     private String place;

@@ -12,13 +12,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class CommentCreate {
 
-    private String user_id;
-
 
     private Long board_id;
 
     @Size(max=30)
-    private String writer;
+    private String nickname;
 
     private String content;
 

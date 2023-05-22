@@ -1,5 +1,6 @@
 package com.zipcook_server.repository.Comment;
 
+import com.zipcook_server.data.entity.Comment.RecipeComment;
 import com.zipcook_server.data.entity.Comment.ShareComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,5 +12,5 @@ import java.util.Optional;
 public interface ShareCommentRepository extends JpaRepository<ShareComment, Long> {
     List<ShareComment> findBySharePostIdOrderByIdDesc(Long sharePostId);
 
-    Optional<ShareComment> findByWriter(String writer);
+    Optional<ShareComment> findByNickname(String nickname);
 }

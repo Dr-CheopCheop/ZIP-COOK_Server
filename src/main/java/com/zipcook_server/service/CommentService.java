@@ -58,13 +58,10 @@ public class CommentService {
                 .orElseThrow(PostNotFound::new);
 
 
-        User user = userRepository.findById(commentCreate.getUser_id())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
 
         ShareComment shareComment = ShareComment.builder()
-                .writer(commentCreate.getWriter())
+                .nickname(commentCreate.getNickname())
                 .content(commentCreate.getContent())
-                .user(user)
                 .sharePost(post)
                 .regDate(new Date())
                 .build();
@@ -110,13 +107,10 @@ public class CommentService {
                 .orElseThrow(PostNotFound::new);
 
 
-        User user = userRepository.findById(commentCreate.getUser_id())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
 
         SaleComment saleComment = SaleComment.builder()
-                .writer(commentCreate.getWriter())
+                .nickname(commentCreate.getNickname())
                 .content(commentCreate.getContent())
-                .user(user)
                 .salePost(post)
                 .regDate(new Date())
                 .build();
@@ -161,13 +155,10 @@ public class CommentService {
                 .orElseThrow(PostNotFound::new);
 
 
-        User user = userRepository.findById(commentCreate.getUser_id())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
 
         RecipeComment recipeComment = RecipeComment.builder()
-                .writer(commentCreate.getWriter())
+                .nickname(commentCreate.getNickname())
                 .content(commentCreate.getContent())
-                .user(user)
                 .recipePost(post)
                 .regDate(new Date())
                 .build();

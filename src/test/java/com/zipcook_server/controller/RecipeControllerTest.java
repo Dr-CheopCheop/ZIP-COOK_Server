@@ -62,14 +62,7 @@ class RecipeControllerTest {
     @Test
     @DisplayName("/recipe 요청시 db에 값이 저장된다")
     void test1() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         List<String> content = new ArrayList<>();
         content.add("Step 1. Do this");
@@ -82,7 +75,7 @@ class RecipeControllerTest {
 
 
         RecipeCreate recipeCreate = RecipeCreate.builder()
-                .uid(user.getId())
+                .nickname("nick")
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
@@ -111,14 +104,7 @@ class RecipeControllerTest {
     @Test
     @DisplayName("글 1개 조회")
     void test2() throws Exception {
-        //given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         List<String> content = new ArrayList<>();
         content.add("Step 1. Do this");
@@ -131,7 +117,7 @@ class RecipeControllerTest {
 
 
         RecipePost recipePost = RecipePost.builder()
-                .user(user)
+                .nickname("nick")
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
@@ -158,18 +144,11 @@ class RecipeControllerTest {
     @Test
     @DisplayName("글 여러개 조회")
     void test3() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         List<RecipePost> requestPosts = IntStream.range(0, 10)
                 .mapToObj(i -> RecipePost.builder()
-                        .user(user)
+                        .nickname("nick")
                         .title("title" + i)
                         .build())
                 .collect(Collectors.toList());
@@ -189,14 +168,7 @@ class RecipeControllerTest {
     @Test
     @DisplayName("글 수정")
     void test4() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         List<String> content = new ArrayList<>();
         content.add("Step 1. Do this");
@@ -209,7 +181,7 @@ class RecipeControllerTest {
 
 
         RecipeCreate recipeCreate = RecipeCreate.builder()
-                .uid(user.getId())
+                .nickname("nick")
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
@@ -226,7 +198,6 @@ class RecipeControllerTest {
         List<RecipePost> recipePosts = recipeRepository.findByTitleContaining("recipe");
 
         Recipedto update = Recipedto.builder()
-                .uid(user.getId())
                 .title("Test update post")
                 .regDate(new Date())
                 .build();
@@ -249,13 +220,7 @@ class RecipeControllerTest {
     @Test
     @DisplayName("게시글 삭제")
     void test5() throws Exception {
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         List<String> content = new ArrayList<>();
         content.add("Step 1. Do this");
@@ -268,7 +233,7 @@ class RecipeControllerTest {
 
 
         RecipeCreate recipeCreate = RecipeCreate.builder()
-                .uid(user.getId())
+                .nickname("nick")
                 .title("Test recipe")
                 .serving(2)
                 .level("easy")
@@ -300,13 +265,6 @@ class RecipeControllerTest {
     void test6() throws Exception {
         // given
 
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         List<String> content = new ArrayList<>();
         content.add("Step 1. Do this");
@@ -319,7 +277,7 @@ class RecipeControllerTest {
 
 
         RecipePost recipe = RecipePost.builder()
-                .user(user)
+                .nickname("nick")
                 .title("Spaghetti with Meatballs")
                 .serving(4)
                 .level("easy")

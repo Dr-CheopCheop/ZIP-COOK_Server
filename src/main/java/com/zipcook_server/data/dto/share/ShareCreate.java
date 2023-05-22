@@ -30,5 +30,7 @@ public class ShareCreate {
 
     private String filepath;
 
+    private String nickname;
+
 
 }

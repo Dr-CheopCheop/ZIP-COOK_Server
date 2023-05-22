@@ -45,8 +45,10 @@ public class Recipedto {
 
     private String filepath;
 
+    private String nickname;
+
     public Recipedto(RecipePost post){
-        this.uid=post.getUser().getId();
+        this.nickname= post.getNickname();
         this.id= post.getId();
         this.title= post.getTitle();
         this.serving= post.getServing();

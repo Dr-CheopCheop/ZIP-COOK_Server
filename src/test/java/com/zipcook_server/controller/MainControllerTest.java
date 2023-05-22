@@ -65,25 +65,18 @@ class MainControllerTest {
     @Test
     @DisplayName("메인 페이지 조회")
     void testGetPage() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         List<RecipePost> requestPosts = IntStream.range(0, 10)
                 .mapToObj(i -> RecipePost.builder()
-                        .user(user)
+                        .nickname("nick")
                         .title("title" + i)
                         .build())
                 .collect(Collectors.toList());
 
         List<SalePost> requestPosts2 = IntStream.range(0, 10)
                 .mapToObj(i -> SalePost.builder()
-                        .user(user)
+                        .nickname("nick")
                         .title("title" + i)
                         .content("content" + i)
                         .build())
@@ -91,7 +84,7 @@ class MainControllerTest {
 
         List<SharePost> requestPosts3 = IntStream.range(0, 10)
                 .mapToObj(i -> SharePost.builder()
-                        .user(user)
+                        .nickname("nick")
                         .title("title" + i)
                         .content("content" + i)
                         .build())

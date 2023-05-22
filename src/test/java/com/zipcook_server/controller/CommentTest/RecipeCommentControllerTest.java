@@ -65,25 +65,16 @@ class RecipeCommentControllerTest {
     @Test
     @DisplayName("recipe댓글 작성")
     public void test1() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         RecipePost recipePost = RecipePost.builder()
-                .id(1L)
                 .title("test title")
                 .build();
         recipeRepository.save(recipePost);
 
         CommentCreate commentCreate = CommentCreate.builder()
-                .user_id(user.getId())
                 .board_id(recipePost.getId())
-                .writer("nickname")
+                .nickname("nickname")
                 .content("comment:)")
                 .regDate(new Date())
                 .build();
@@ -105,24 +96,15 @@ class RecipeCommentControllerTest {
     @Test
     @DisplayName("recipe댓글 보기")
     void test2() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         RecipePost recipePost = RecipePost.builder()
-                .id(2L)
                 .title("test title2")
                 .build();
         recipeRepository.save(recipePost);
 
         List<RecipeComment> recipeComments = IntStream.range(0, 5)
                 .mapToObj(i -> RecipeComment.builder()
-                        .user(user)
+                        .nickname("nickname")
                         .recipePost(recipePost)
                         .content("comment" + i)
                         .regDate(new Date())
@@ -132,7 +114,7 @@ class RecipeCommentControllerTest {
         recipeCommentRepository.saveAll(recipeComments);
 
         // expected
-        mockMvc.perform(get("/recipe-comment/{boardId}",2L)
+        mockMvc.perform(get("/recipe-comment/{boardId}",recipePost.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -143,36 +125,26 @@ class RecipeCommentControllerTest {
     @Test
     @DisplayName("recipe댓글 수정")
     void test3() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
 
         RecipePost recipePost = RecipePost.builder()
-                .id(3L)
                 .title("test title3")
                 .build();
         recipeRepository.save(recipePost);
 
         RecipeComment recipeComment=RecipeComment.builder()
-                .user(user)
+                .nickname("nickname")
                 .recipePost(recipePost)
-                .writer("nickname")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
         recipeCommentRepository.save(recipeComment);
-        RecipeComment comment=recipeCommentRepository.findByWriter("nickname").get();
+        RecipeComment comment=recipeCommentRepository.findByNickname("nickname").get();
 
 
         RecipeCommentdto recipeCommentdto = RecipeCommentdto.builder()
-                .user_id(user.getId())
+                .nickname("nickname")
                 .board_id(recipePost.getId())
                 .content("update comment:)")
                 .regDate(new Date())
@@ -194,31 +166,22 @@ class RecipeCommentControllerTest {
     @Test
     @DisplayName("recipe댓글 삭제")
     void test4() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         RecipePost recipePost = RecipePost.builder()
-                .id(4L)
                 .title("test title4")
                 .build();
         recipeRepository.save(recipePost);
 
         RecipeComment recipeComment=RecipeComment.builder()
-                .user(user)
+                .nickname("nickname")
                 .recipePost(recipePost)
-                .writer("nickname")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
         recipeCommentRepository.save(recipeComment);
-        RecipeComment comment=recipeCommentRepository.findByWriter("nickname").get();
+        RecipeComment comment=recipeCommentRepository.findByNickname("nickname").get();
 
         //when
         mockMvc.perform(delete("/recipe-comment/delete/{commentId}", comment.getId())

@@ -71,6 +71,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/exist/**").permitAll() //중복체크
                 .antMatchers("/chatbot/**").permitAll()
                 .antMatchers("/v2/api-docs", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**").permitAll()
+                .antMatchers("/recipe-comment/**").permitAll()
+                .antMatchers("/sale-comment/**").permitAll()
+                .antMatchers("/share-comment/**").permitAll()
+                .antMatchers("/main/**").permitAll()
+                .antMatchers("/board-sale/**").permitAll()
+                .antMatchers("/board-share/**").permitAll()
+                .antMatchers("/board-recipe/**").permitAll()
+
 
 
                 .anyRequest().authenticated()
