@@ -26,13 +26,13 @@ public class QRecipeComment extends EntityPathBase<RecipeComment> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath nickname = createString("nickname");
+
     public final com.zipcook_server.data.entity.QRecipePost recipePost;
 
     public final DatePath<java.util.Date> regDate = createDate("regDate", java.util.Date.class);
 
     public final com.zipcook_server.data.entity.QUser user;
-
-    public final StringPath writer = createString("writer");
 
     public QRecipeComment(String variable) {
         this(RecipeComment.class, forVariable(variable), INITS);

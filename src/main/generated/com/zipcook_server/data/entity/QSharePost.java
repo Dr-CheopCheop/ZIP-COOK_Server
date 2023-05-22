@@ -28,6 +28,10 @@ public class QSharePost extends EntityPathBase<SharePost> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath location = createString("location");
+
+    public final StringPath nickname = createString("nickname");
+
     public final DatePath<java.util.Date> regDate = createDate("regDate", java.util.Date.class);
 
     public final ListPath<com.zipcook_server.data.entity.Comment.ShareComment, com.zipcook_server.data.entity.Comment.QShareComment> shareComments = this.<com.zipcook_server.data.entity.Comment.ShareComment, com.zipcook_server.data.entity.Comment.QShareComment>createList("shareComments", com.zipcook_server.data.entity.Comment.ShareComment.class, com.zipcook_server.data.entity.Comment.QShareComment.class, PathInits.DIRECT2);
