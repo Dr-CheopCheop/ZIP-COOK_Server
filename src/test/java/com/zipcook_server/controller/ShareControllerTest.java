@@ -67,6 +67,7 @@ class ShareControllerTest {
                 .nickname("nick")
                 .title("tomato")
                 .content("share tomato")
+                .location("seoul")
                 .build();
 
 
@@ -98,17 +99,18 @@ class ShareControllerTest {
                 .nickname("nick")
                 .title("Test share post")
                 .content("Test content")
+                .location("seoul")
                 .regDate(new Date())
                 .build();
 
         MockMultipartFile File= new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
         shareService.write(shareCreate,File);
 
-        List<SharePost> sharePost=shareRepository.findByTitleContaining("share");
+        List<SharePost> sharePost=shareRepository.findByTitleContainingAndLocation("share","seoul");
 
 
         //when
-        mockMvc.perform(get("/board-share/{boardId}", sharePost.get(0).getId())
+        mockMvc.perform(get("/board-share/{location}/{boardId}", "seoul",sharePost.get(0).getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -127,13 +129,14 @@ class ShareControllerTest {
                         .nickname("nick")
                         .title("title" + i)
                         .content("content" + i)
+                        .location("seoul")
                         .build())
                 .collect(Collectors.toList());
 
         shareRepository.saveAll(requestPosts);
 
         // expected
-        mockMvc.perform(get("/board-share?page=1")
+        mockMvc.perform(get("/board-share?location=seoul&page=1")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -152,25 +155,27 @@ class ShareControllerTest {
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
+                .location("seoul")
                 .build();
 
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
         shareService.write(shareCreate, file);
 
-        List<SharePost> sharePosts = shareRepository.findByTitleContaining("share");
+        List<SharePost> sharePosts = shareRepository.findByTitleContainingAndLocation("share","seoul");
 
         Sharedto update = Sharedto.builder()
                 .nickname("nick")
                 .title("Test update post")
                 .content("Test update content")
                 .regDate(new Date())
+                .location("seoul")
                 .build();
 
         String json = objectMapper.writeValueAsString(update);
         MockMultipartFile sharedto = new MockMultipartFile("update", "update", "application/json", json.getBytes(StandardCharsets.UTF_8));
 
         // when
-        mockMvc.perform(multipart("/board-share/update/{boardId}", sharePosts.get(0).getId())
+        mockMvc.perform(multipart("/board-share/{location}/update/{boardId}", "seoul",sharePosts.get(0).getId())
                         .file(file)
                         .file(sharedto))
                 .andExpect(status().isOk())
@@ -192,15 +197,16 @@ class ShareControllerTest {
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
+                .location("seoul")
                 .build();
 
         MockMultipartFile File= new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
         shareService.write(shareCreate,File);
 
-        List<SharePost> sharePost=shareRepository.findByTitleContaining("share");
+        List<SharePost> sharePost=shareRepository.findByTitleContainingAndLocation("share","seoul");
 
         //when
-        mockMvc.perform(delete("/board-share/{boardId}", sharePost.get(0).getId())
+        mockMvc.perform(delete("/board-share/{location}/{boardId}", "seoul",sharePost.get(0).getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -221,6 +227,7 @@ class ShareControllerTest {
                 .title("share tomato")
                 .content("Test content")
                 .regDate(new Date())
+                .location("seoul")
                 .build();
 
         shareRepository.save(sharePost);
@@ -230,12 +237,13 @@ class ShareControllerTest {
                 .title("share banana")
                 .content("Test content")
                 .regDate(new Date())
+                .location("seoul")
                 .build();
 
         shareRepository.save(sharePost2);
 
         // when
-        mockMvc.perform(get("/board-share/search/{title}" ,"share")
+        mockMvc.perform(get("/board-share/{location}/search/{title}" ,"share","seoul")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

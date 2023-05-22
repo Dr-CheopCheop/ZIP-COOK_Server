@@ -1,6 +1,7 @@
 package com.zipcook_server.repository.Share;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.zipcook_server.data.entity.QSalePost;
 import com.zipcook_server.data.entity.QSharePost;
 import com.zipcook_server.data.entity.SharePost;
 import com.zipcook_server.data.request.MainSearch;
@@ -16,6 +17,7 @@ public class ShareRepositoryImpl implements SharePostRepositoryCustom {
     @Override
     public List<SharePost> getList(ShareSearch shareSearch) {
         return jpaQueryFactory.selectFrom(QSharePost.sharePost)
+                .where(QSharePost.sharePost.location.eq(shareSearch.getLocation()))
                 .orderBy(QSharePost.sharePost.id.desc())
                 .limit(10)
                 .offset(shareSearch.getOffset())
