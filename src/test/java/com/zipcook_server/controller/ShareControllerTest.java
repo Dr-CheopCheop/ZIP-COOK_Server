@@ -61,17 +61,10 @@ class ShareControllerTest {
     @Test
     @DisplayName("/share 요청시 db에 값이 저장된다")
     void test1() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
+                .nickname("nick")
                 .title("tomato")
                 .content("share tomato")
                 .build();
@@ -92,7 +85,6 @@ class ShareControllerTest {
         SharePost post = shareRepository.findAll().get(0);
         assertThat(post.getTitle()).isEqualTo("tomato");
         assertThat(post.getContent()).isEqualTo("share tomato");
-        assertThat(post.getUser().getId()).isEqualTo("joy");
     }
 
 
@@ -100,17 +92,10 @@ class ShareControllerTest {
     @Test
     @DisplayName("글 1개 조회")
     void test2() throws Exception {
-        //given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
+                .nickname("nick")
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
@@ -135,18 +120,11 @@ class ShareControllerTest {
     @Test
     @DisplayName("글 여러개 조회")
     void test3() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         List<SharePost> requestPosts = IntStream.range(0, 10)
                 .mapToObj(i -> SharePost.builder()
-                        .user(user)
+                        .nickname("nick")
                         .title("title" + i)
                         .content("content" + i)
                         .build())
@@ -167,17 +145,10 @@ class ShareControllerTest {
     @Test
     @DisplayName("글 수정")
     void test4() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
+                .nickname("nick")
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
@@ -189,7 +160,7 @@ class ShareControllerTest {
         List<SharePost> sharePosts = shareRepository.findByTitleContaining("share");
 
         Sharedto update = Sharedto.builder()
-                .uid(user.getId())
+                .nickname("nick")
                 .title("Test update post")
                 .content("Test update content")
                 .regDate(new Date())
@@ -214,16 +185,10 @@ class ShareControllerTest {
     @Test
     @DisplayName("게시글 삭제")
     void test5() throws Exception {
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
+                .nickname("nick")
                 .title("Test share post")
                 .content("Test content")
                 .regDate(new Date())
@@ -245,57 +210,14 @@ class ShareControllerTest {
     }
 
 
-    @Test
-    @DisplayName("/share 요청시 제목은 필수값이다")
-    void test6() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
-
-        ShareCreate shareCreate = ShareCreate.builder()
-                .uid(user.getId())
-                .content("share tomato")
-                .build();
-
-
-        MockMultipartFile multipartFile1 = new MockMultipartFile("file", "test.txt", "text/plain", "test file".getBytes(StandardCharsets.UTF_8));
-        String json = objectMapper.writeValueAsString(shareCreate);
-        MockMultipartFile sharepost = new MockMultipartFile("sharepost", "sharepost", "application/json", json.getBytes(StandardCharsets.UTF_8));
-
-
-        mockMvc.perform(multipart("/board-share")
-                        .file(multipartFile1)
-                        .file(sharepost))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("400"))
-                .andExpect(jsonPath("$.message").value("잘못된 요청입니다"))
-                .andExpect(jsonPath("$.validation.title").value("제목을 입력하세요"))
-                .andDo(print());
-
-
-
-    }
 
     @Test
     @DisplayName("게시글 검색")
-    void test7() throws Exception {
-        // given
+    void test6() throws Exception {
 
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         SharePost sharePost = SharePost.builder()
-                .user(user)
+                .nickname("nick")
                 .title("share tomato")
                 .content("Test content")
                 .regDate(new Date())
@@ -304,7 +226,7 @@ class ShareControllerTest {
         shareRepository.save(sharePost);
 
         SharePost sharePost2 = SharePost.builder()
-                .user(user)
+                .nickname("nick")
                 .title("share banana")
                 .content("Test content")
                 .regDate(new Date())

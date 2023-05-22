@@ -30,8 +30,7 @@ public class SaleService {
     UserRepository userRepository;
 
     public void write(SaleCreate saleCreate, MultipartFile file) throws IOException {
-        User user = userRepository.findById(saleCreate.getUid())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
@@ -40,7 +39,7 @@ public class SaleService {
         file.transferTo(saveFile);
 
         SalePost salePost = SalePost.builder()
-                .user(user)
+                .nickname(saleCreate.getNickname())
                 .title(saleCreate.getTitle())
                 .content(saleCreate.getContent())
                 .regDate(new Date())
@@ -59,7 +58,7 @@ public class SaleService {
 
         return Saledto.builder()
                 .id(post.getId())
-                .uid(post.getUser().getId())
+                .nickname(post.getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .regDate(post.getRegDate())

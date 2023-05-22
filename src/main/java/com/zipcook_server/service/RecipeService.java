@@ -30,8 +30,7 @@ public class RecipeService {
     UserRepository userRepository;
 
     public void write(RecipeCreate recipeCreate, MultipartFile file) throws IOException {
-        User user = userRepository.findById(recipeCreate.getUid())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
@@ -40,7 +39,7 @@ public class RecipeService {
         file.transferTo(saveFile);
 
         RecipePost recipePost = RecipePost.builder()
-                .user(user)
+                .nickname(recipeCreate.getNickname())
                 .title(recipeCreate.getTitle())
                 .serving(recipeCreate.getServing())
                 .level(recipeCreate.getLevel())
@@ -61,7 +60,7 @@ public class RecipeService {
 
         return Recipedto.builder()
                 .id(post.getId())
-                .uid(post.getUser().getId())
+                .nickname(post.getNickname())
                 .title(post.getTitle())
                 .serving(post.getServing())
                 .level(post.getLevel())

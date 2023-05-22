@@ -44,6 +44,8 @@ public class SharePost {
 
     private String filepath;
 
+    private String nickname;
+
     @OneToMany(mappedBy = "sharePost", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     @Builder.Default

@@ -30,8 +30,10 @@ public class Sharedto {
 
     private String filepath;
 
+    private String nickname;
+
     public Sharedto(SharePost post){
-        this.uid=post.getUser().getId();
+        this.nickname= post.getNickname();
         this.id= post.getId();
         this.title= post.getTitle();
         this.content=post.getContent();

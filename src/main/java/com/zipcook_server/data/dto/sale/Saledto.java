@@ -37,9 +37,11 @@ public class Saledto {
 
     private String discountPrice;
 
+    private String nickname;
+
 
     public Saledto(SalePost post){
-        this.uid=post.getUser().getId();
+        this.nickname= post.getNickname();
         this.id= post.getId();
         this.title= post.getTitle();
         this.content=post.getContent();

@@ -37,4 +37,6 @@ public class RecipeCreate {
 
 
     private Date regDate;
+
+    private String nickname;
 }

@@ -34,8 +34,7 @@ public class ShareService {
     private ResourceLoader resourceLoader;
 
     public void write(ShareCreate shareCreate, MultipartFile file) throws IOException {
-        User user = userRepository.findById(shareCreate.getUid())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
@@ -44,7 +43,7 @@ public class ShareService {
         file.transferTo(saveFile);
 
         SharePost sharePost = SharePost.builder()
-                .user(user)
+                .nickname(shareCreate.getNickname())
                 .title(shareCreate.getTitle())
                 .content(shareCreate.getContent())
                 .regDate(new Date())
@@ -60,7 +59,7 @@ public class ShareService {
 
         return Sharedto.builder()
                 .id(post.getId())
-                .uid(post.getUser().getId())
+                .nickname(post.getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .regDate(post.getRegDate())

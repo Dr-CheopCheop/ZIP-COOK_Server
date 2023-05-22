@@ -59,6 +59,8 @@ public class RecipePost {
     @Column(name = "reg_date")
     private Date regDate;
 
+    private String nickname;
+
     @OneToMany(mappedBy = "recipePost", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     @Builder.Default

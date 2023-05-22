@@ -21,7 +21,7 @@ public class SaleCommentdto {
 
     private String user_id;
     @Size(max=30)
-    private String writer;
+    private String nickname;
 
     private String content;
 
@@ -32,8 +32,7 @@ public class SaleCommentdto {
     public SaleCommentdto(SaleComment comment){
         this.id= comment.getId();
         this.board_id=comment.getSalePost().getId();
-        this.user_id=comment.getUser().getId();
-        this.writer=comment.getWriter();
+        this.nickname=comment.getNickname();
         this.content=comment.getContent();
         this.regDate=comment.getRegDate();
     }

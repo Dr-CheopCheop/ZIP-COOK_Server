@@ -23,7 +23,7 @@ public class ShareComment {
     @Column(name = "id")
     private Long id;
 
-    private String writer;
+    private String nickname;
 
     private String content;
 

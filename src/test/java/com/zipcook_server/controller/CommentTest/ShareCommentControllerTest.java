@@ -65,14 +65,7 @@ class ShareCommentControllerTest {
     @Test
     @DisplayName("share댓글 작성")
     public void test1() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         SharePost sharePost = SharePost.builder()
                 .id(1L)
@@ -81,9 +74,8 @@ class ShareCommentControllerTest {
         shareRepository.save(sharePost);
 
         CommentCreate commentCreate = CommentCreate.builder()
-                .user_id(user.getId())
                 .board_id(sharePost.getId())
-                .writer("nickname")
+                .nickname("nickname")
                 .content("comment:)")
                 .regDate(new Date())
                 .build();
@@ -105,24 +97,14 @@ class ShareCommentControllerTest {
     @Test
     @DisplayName("share댓글 보기")
     void test2() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         SharePost sharePost = SharePost.builder()
-                .id(2L)
                 .title("test title2")
                 .build();
         shareRepository.save(sharePost);
 
         List<ShareComment> shareComments = IntStream.range(0, 5)
                 .mapToObj(i -> ShareComment.builder()
-                        .user(user)
                         .sharePost(sharePost)
                         .content("comment" + i)
                         .regDate(new Date())
@@ -132,7 +114,7 @@ class ShareCommentControllerTest {
         shareCommentRepository.saveAll(shareComments);
 
         // expected
-        mockMvc.perform(get("/share-comment/{boardId}",2L)
+        mockMvc.perform(get("/share-comment/{boardId}",sharePost.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -143,35 +125,25 @@ class ShareCommentControllerTest {
     @Test
     @DisplayName("share댓글 수정")
     void test3() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
 
         SharePost sharePost = SharePost.builder()
-                .id(3L)
                 .title("test title")
                 .build();
         shareRepository.save(sharePost);
 
         ShareComment shareComment=ShareComment.builder()
-                .user(user)
                 .sharePost(sharePost)
-                .writer("nickname")
+                .nickname("nickname")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
         shareCommentRepository.save(shareComment);
-        ShareComment comment=shareCommentRepository.findByWriter("nickname").get();
+        ShareComment comment=shareCommentRepository.findByNickname("nickname").get();
 
 
         ShareCommentdto shareCommentdto = ShareCommentdto.builder()
-                .user_id(user.getId())
+                .nickname("nickname")
                 .board_id(sharePost.getId())
                 .content("update comment:)")
                 .regDate(new Date())
@@ -193,31 +165,22 @@ class ShareCommentControllerTest {
     @Test
     @DisplayName("share댓글 삭제")
     void test4() throws Exception {
-        // given
-        User user = User.builder()
-                .id("joy")
-                .email("example@example.com")
-                .password("abc123")
-                .location("seoul")
-                .build();
-        userRepository.save(user);
+
 
         SharePost sharePost = SharePost.builder()
-                .id(4L)
                 .title("test title")
                 .build();
         shareRepository.save(sharePost);
 
         ShareComment shareComment=ShareComment.builder()
-                .user(user)
                 .sharePost(sharePost)
-                .writer("nickname")
+                .nickname("nickname")
                 .content("comment")
                 .regDate(new Date())
                 .build();
 
         shareCommentRepository.save(shareComment);
-        ShareComment comment=shareCommentRepository.findByWriter("nickname").get();
+        ShareComment comment=shareCommentRepository.findByNickname("nickname").get();
 
         //when
         mockMvc.perform(delete("/share-comment/delete/{commentId}", comment.getId())
