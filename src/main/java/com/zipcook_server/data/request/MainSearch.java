@@ -19,6 +19,8 @@ public class MainSearch {
 
     private int recipepage;
 
+    private String location;
+
 
     public long sharegetOffset(){
         return (long)((sharepage-1)*5);

@@ -27,6 +27,7 @@ public class ShareRepositoryImpl implements SharePostRepositoryCustom {
     @Override
     public List<SharePost> maingetList(MainSearch mainSearch) {
         return jpaQueryFactory.selectFrom(QSharePost.sharePost)
+                .where(QSharePost.sharePost.location.eq(mainSearch.getLocation()))
                 .orderBy(QSharePost.sharePost.id.desc())
                 .limit(5)
                 .offset(mainSearch.sharegetOffset())
