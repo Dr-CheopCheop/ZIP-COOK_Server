@@ -51,6 +51,9 @@ public class SalePost {
     @Column(name = "discountPrice")
     private String discountPrice;
 
+    @Column(name = "location")
+    private String location;
+
     @OneToMany(mappedBy = "salePost", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     @Builder.Default
@@ -64,5 +67,6 @@ public class SalePost {
         this.price=saleUpdate.getPrice();
         this.discountPrice= saleUpdate.getDiscountPrice();
         this.filepath = filepath;
+        this.location= saleUpdate.getLocation();
     }
 }

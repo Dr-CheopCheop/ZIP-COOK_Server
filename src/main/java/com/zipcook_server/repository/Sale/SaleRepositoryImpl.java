@@ -17,6 +17,7 @@ public class SaleRepositoryImpl implements SalePostRepositoryCustom {
     @Override
     public List<SalePost> getList(SaleSearch saleSearch) {
         return jpaQueryFactory.selectFrom(QSalePost.salePost)
+                .where(QSalePost.salePost.location.eq(saleSearch.getLocation()))
                 .orderBy(QSalePost.salePost.id.desc())
                 .limit(10)
                 .offset(saleSearch.getOffset())

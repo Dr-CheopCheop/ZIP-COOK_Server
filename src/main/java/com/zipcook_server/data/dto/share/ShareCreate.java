@@ -32,5 +32,6 @@ public class ShareCreate {
 
     private String nickname;
 
+    private String location;
 
 }

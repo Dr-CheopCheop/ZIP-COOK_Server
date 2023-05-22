@@ -39,6 +39,8 @@ public class Saledto {
 
     private String nickname;
 
+    private String location;
+
 
     public Saledto(SalePost post){
         this.nickname= post.getNickname();
@@ -50,5 +52,6 @@ public class Saledto {
         this.price=post.getPrice();
         this.discountPrice=post.getDiscountPrice();
         this.filepath=post.getFilepath();
+        this.location=post.getLocation();
     }
 }

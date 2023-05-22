@@ -47,13 +47,14 @@ public class SaleService {
                 .discountPrice(saleCreate.getDiscountPrice())
                 .place(saleCreate.getPlace())
                 .filepath(savepath)
+                .location(saleCreate.getLocation())
                 .build();
 
         saleRepository.save(salePost);
     }
 
-    public Saledto get(Long id){
-        SalePost post=saleRepository.findById(id)
+    public Saledto get(Long id,String location){
+        SalePost post=saleRepository.findByIdAndLocation(id,location)
                 .orElseThrow(PostNotFound::new);
 
         return Saledto.builder()
@@ -78,22 +79,17 @@ public class SaleService {
     }
 
 
-    public List<Saledto> getAll(){
-        return saleRepository.findAll().stream()
-                .map(Saledto::new)
-                .collect(Collectors.toList());
-    }
 
-    public List<Saledto> searchByTitle(String title) {
-        return saleRepository.findByTitleContaining(title).stream()
+    public List<Saledto> searchByTitle(String title,String location) {
+        return saleRepository.findByTitleContainingAndLocation(title,location).stream()
                 .map(Saledto::new)
                 .collect(Collectors.toList());
     }
 
 
     @Transactional
-    public void update(Long id, Saledto update, MultipartFile file) throws IOException {
-        SalePost salePost=saleRepository.findById(id)
+    public void update(Long id, String location,Saledto update, MultipartFile file) throws IOException {
+        SalePost salePost=saleRepository.findByIdAndLocation(id,location)
                 .orElseThrow(PostNotFound::new);
 
         File deleteFile = new File(salePost.getFilepath());
@@ -109,8 +105,8 @@ public class SaleService {
         saleRepository.save(salePost);
     }
 
-    public void delete(Long id){
-        SalePost post=saleRepository.findById(id)
+    public void delete(Long id,String location){
+        SalePost post=saleRepository.findByIdAndLocation(id,location)
                 .orElseThrow(PostNotFound::new);
 
         File deleteFile = new File(post.getFilepath());
