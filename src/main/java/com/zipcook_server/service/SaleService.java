@@ -30,7 +30,6 @@ public class SaleService {
 
     public void write(SaleCreate saleCreate, MultipartFile file) throws IOException {
 
-
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
         String savepath="/Users/seunghee/Documents/boardimages/"+fileName;
