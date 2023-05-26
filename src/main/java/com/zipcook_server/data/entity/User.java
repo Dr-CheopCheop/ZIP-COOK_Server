@@ -1,9 +1,6 @@
 package com.zipcook_server.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -12,7 +9,6 @@ import com.zipcook_server.data.entity.Comment.SaleComment;
 import com.zipcook_server.data.entity.Comment.ShareComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -24,6 +20,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode
 @Entity
 @Builder
 @Table(name = "tbl_user")
