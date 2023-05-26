@@ -99,6 +99,4 @@ public class User {
         return Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
     }
 
-
-
 }

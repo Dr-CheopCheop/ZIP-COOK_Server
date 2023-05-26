@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @ResponseBody
 @RequestMapping(value="/board-share")
