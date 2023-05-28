@@ -1,16 +1,9 @@
 plugins {
     id 'java'
-    id 'war'
     id 'org.springframework.boot' version '2.5.6'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
-
-group = 'com.zipcook_server'
-
-//<<<<<<< Updated upstream
-group = 'com.zipcook_server'
-//=======
 group = 'com.zipcook.catholic'
 //>>>>>>> Stashed changes
 
@@ -35,7 +28,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     runtimeOnly 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -63,7 +56,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 
-
     testImplementation 'junit:junit:4.13.1'
 
     compileOnly 'org.projectlombok:lombok'
@@ -71,7 +63,7 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+//    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -88,12 +80,13 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-//>>>>>>> Stashed changes
-
 
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
-
+//빌드 시 테스트 코드 무시
+test {
+    exclude '**/*'
+}

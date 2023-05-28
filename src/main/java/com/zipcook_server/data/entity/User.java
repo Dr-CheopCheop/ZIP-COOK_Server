@@ -20,7 +20,6 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode
 @Entity
 @Builder
 @Table(name = "tbl_user")
