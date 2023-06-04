@@ -290,7 +290,7 @@ class RecipeControllerTest {
         recipeRepository.save(recipe);
 
         // when
-        mockMvc.perform(get("/board-recipe/search/{title}" ,recipe.getTitle())
+        mockMvc.perform(get("/board-recipe/search/{title}" ,"Meatballs")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
