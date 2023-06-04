@@ -8,6 +8,7 @@ import com.zipcook_server.data.request.SaleSearch;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Sale.SaleRepository;
 import com.zipcook_server.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +22,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SaleService {
 
-    @Autowired
-    SaleRepository saleRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    private final SaleRepository saleRepository;
+
+
+    private final UserRepository userRepository;
 
     public void write(SaleCreate saleCreate, MultipartFile file) throws IOException {
 

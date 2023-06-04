@@ -8,6 +8,7 @@ import com.zipcook_server.repository.Recipe.RecipeRepository;
 import com.zipcook_server.repository.Sale.SaleRepository;
 import com.zipcook_server.repository.Share.ShareRepository;
 import com.zipcook_server.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +16,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MainService {
 
-    @Autowired
-    RecipeRepository recipeRepository;
+    private final RecipeRepository recipeRepository;
 
-    @Autowired
-    UserRepository userRepository;
 
-    @Autowired
-    SaleRepository saleRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    ShareRepository shareRepository;
+
+    private final SaleRepository saleRepository;
+
+
+    private final ShareRepository shareRepository;
 
 
     public List<Recipedto> recipegetList(MainSearch mainSearch){

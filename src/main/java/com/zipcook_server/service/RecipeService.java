@@ -8,6 +8,7 @@ import com.zipcook_server.data.request.RecipeSearch;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Recipe.RecipeRepository;
 import com.zipcook_server.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +22,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RecipeService {
 
-    @Autowired
-    RecipeRepository recipeRepository;
+    private final RecipeRepository recipeRepository;
 
-    @Autowired
-    UserRepository userRepository;
+
+    private final UserRepository userRepository;
 
     public void write(RecipeCreate recipeCreate, MultipartFile file) throws IOException {
 
@@ -82,11 +83,7 @@ public class RecipeService {
                 .collect(Collectors.toList());
     }
 
-    public List<Recipedto> getAll(){
-        return recipeRepository.findAll().stream()
-                .map(Recipedto::new)
-                .collect(Collectors.toList());
-    }
+
 
     public List<Recipedto> searchByTitle(String title) {
         return recipeRepository.findByTitleContaining(title).stream()
