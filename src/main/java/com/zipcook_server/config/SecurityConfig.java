@@ -69,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/signup").permitAll() //회원가입
                 .antMatchers("/auth/findPassword/**").permitAll() //비밀번호 찾기
                 .antMatchers("/auth/exist/**").permitAll() //중복체크
+                .antMatchers("/auth/findId/**").permitAll()
                 .antMatchers("/chatbot/**").permitAll()
                 .antMatchers("/v2/api-docs", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**").permitAll()
                 .antMatchers("/recipe-comment/**").permitAll()
