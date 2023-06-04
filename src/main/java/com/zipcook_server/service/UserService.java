@@ -83,7 +83,6 @@ public class UserService {
         return UserDTO.from(SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername).orElse(null));
     }
 
-
     @Transactional(readOnly = true)
     public Optional<String> verifyPassword(UserDTO userDTO) {
 
@@ -132,6 +131,23 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public String findId(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if (user.isPresent()) {
+            String username = user.get().getUsername();
+            if (username.length() > 4) {
+                String visiblePart = username.substring(0, 4);
+                String maskedPart = "*".repeat(username.length() - 4);
+                return visiblePart + maskedPart;
+            } else {
+                return username;
+            }
+        } else {
+            return null;
+        }
+    }
 
 
 }
