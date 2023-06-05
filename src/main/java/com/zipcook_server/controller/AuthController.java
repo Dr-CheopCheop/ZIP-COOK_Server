@@ -16,10 +16,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -54,9 +55,11 @@ public class AuthController {
     @GetMapping("/logout")
     @PreAuthorize("hasAnyRole('USER')")
     @ApiOperation(value = "로그아웃", notes = "로그아웃 API")
-    public void logout(){
+    public ResponseEntity<?> logout() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.remove(JwtFilter.AUTHORIZATION_HEADER);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
 
