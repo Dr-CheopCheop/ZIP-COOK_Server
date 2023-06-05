@@ -8,6 +8,7 @@ import com.zipcook_server.data.request.ShareSearch;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Share.ShareRepository;
 import com.zipcook_server.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -22,16 +23,17 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ShareService {
 
-    @Autowired
-    ShareRepository shareRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    private final ShareRepository shareRepository;
 
-    @Autowired
-    private ResourceLoader resourceLoader;
+
+    private final UserRepository userRepository;
+
+
+    private final ResourceLoader resourceLoader;
 
     public void write(ShareCreate shareCreate, MultipartFile file) throws IOException {
 

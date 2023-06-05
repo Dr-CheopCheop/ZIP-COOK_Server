@@ -56,7 +56,7 @@ public class ShareController {
     }
 
     @PostMapping("/{location}/update/{boardId}")
-    public ResponseEntity<String> update(@PathVariable String location,@PathVariable Long boardId, @RequestPart @Valid Sharedto update,
+    public ResponseEntity<String> update(@PathVariable String location,@PathVariable Long boardId, @RequestPart("sharepost") @Valid Sharedto update,
                                          @RequestPart(value="file",required = true) MultipartFile file) throws IOException {
         shareService.update(boardId,location,update,file);
         return ResponseEntity.ok("Updated Successfully!");

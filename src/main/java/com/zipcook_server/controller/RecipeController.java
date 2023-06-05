@@ -24,7 +24,7 @@ public class RecipeController {
     RecipeService recipeService;
 
     @PostMapping()
-    public ResponseEntity<String> sharePost(@RequestPart("recipepost") @Valid RecipeCreate recipeCreate,
+    public ResponseEntity<String> recipePost(@RequestPart("recipepost") @Valid RecipeCreate recipeCreate,
                                             @RequestPart(value="file",required = true) MultipartFile file) throws IOException {
 
         recipeService.write(recipeCreate,file);
@@ -55,7 +55,7 @@ public class RecipeController {
     }
 
     @PostMapping("/update/{boardId}")
-    public ResponseEntity<String> update(@PathVariable Long boardId, @RequestPart @Valid Recipedto update,
+    public ResponseEntity<String> update(@PathVariable Long boardId, @RequestPart(value = "recipepost") @Valid Recipedto update,
                                              @RequestPart(value="file",required = true) MultipartFile file) throws IOException {
         recipeService.update(boardId,update,file);
         return ResponseEntity.ok("Updated Successfully!");

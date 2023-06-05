@@ -4,7 +4,6 @@ import com.zipcook_server.data.dto.UserDTO;
 import com.zipcook_server.service.MailService;
 import com.zipcook_server.service.UserService;
 import com.zipcook_server.util.SecurityUtil;
-import javassist.bytecode.DuplicateMemberException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +27,14 @@ public class UserController {
 
     //회원가입
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@Valid @RequestBody UserDTO userDto){
+    public ResponseEntity<Void> signup(@Valid @RequestBody UserDTO userDto) {
         userService.signup(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     //아이디 중복체크
     @GetMapping("/exist/username/{username}")
-    public ResponseEntity<Map<String, Object>> checkUsernameDuplicate(@PathVariable String username){
+    public ResponseEntity<Map<String, Object>> checkUsernameDuplicate(@PathVariable String username) {
         boolean isDuplicate = userService.checkUsernameDuplicate(username);
 
         Map<String, Object> response = new HashMap<>();
@@ -117,4 +116,14 @@ public class UserController {
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.badRequest().build());
     }
 
+    //아이디 찾기
+    @GetMapping("/findId/{email}")
+    public ResponseEntity<String> findId(@PathVariable String email) {
+        String username = userService.findId(email);
+        if (username != null && !username.isEmpty()) {
+            return ResponseEntity.ok(username);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
 }

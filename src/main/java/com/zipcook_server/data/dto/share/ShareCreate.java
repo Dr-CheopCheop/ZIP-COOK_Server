@@ -28,8 +28,6 @@ public class ShareCreate {
 
     private Date regDate;
 
-    private String filepath;
-
     private String nickname;
 
     private String location;

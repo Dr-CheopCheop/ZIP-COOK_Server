@@ -55,7 +55,7 @@ public class SaleController {
     }
 
     @PostMapping("/{location}/update/{boardId}")
-    public ResponseEntity<String> update(@PathVariable String location,@PathVariable Long boardId, @RequestPart @Valid Saledto update,
+    public ResponseEntity<String> update(@PathVariable String location,@PathVariable Long boardId, @RequestPart("salepost") @Valid Saledto update,
                                              @RequestPart(value="file",required = true) MultipartFile file) throws IOException {
         saleService.update(boardId,location,update,file);
         return ResponseEntity.ok("Updated Successfully!");
