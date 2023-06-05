@@ -2,6 +2,7 @@ package com.zipcook_server.controller;
 
 import com.zipcook_server.data.dto.share.ShareCreate;
 import com.zipcook_server.data.dto.share.Sharedto;
+import com.zipcook_server.data.request.ShareMainSearch;
 import com.zipcook_server.data.request.ShareSearch;
 import com.zipcook_server.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,12 @@ public class ShareController {
     @GetMapping()
     public List<Sharedto> getList(@ModelAttribute ShareSearch shareSearch){
         return shareService.getList(shareSearch);
+    }
+
+
+    @GetMapping("/main")
+    public List<Sharedto> getMainList(@ModelAttribute ShareMainSearch shareMainSearch){
+        return shareService.getMainList(shareMainSearch);
     }
 
     @GetMapping("/{location}/search/{title}")
