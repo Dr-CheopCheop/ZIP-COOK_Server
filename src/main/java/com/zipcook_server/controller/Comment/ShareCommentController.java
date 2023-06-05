@@ -33,7 +33,7 @@ public class ShareCommentController {
     }
 
 
-    @PutMapping("/update/{commentId}")
+    @PostMapping("/update/{commentId}")
     public ResponseEntity<String> updateComment(@PathVariable Long commentId, @RequestBody @Valid ShareCommentdto update) throws IOException {
         commentService.sharecommentupdate(commentId, update);
         return ResponseEntity.ok("Comment updated successfully!");

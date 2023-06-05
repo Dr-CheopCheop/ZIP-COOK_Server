@@ -33,7 +33,7 @@ public class RecipeCommentController {
     }
 
 
-    @PutMapping("/update/{commentId}")
+    @PostMapping("/update/{commentId}")
     public ResponseEntity<String> updateComment(@PathVariable Long commentId, @RequestBody @Valid RecipeCommentdto update) throws IOException {
         commentService.recipecommentupdate(commentId, update);
         return ResponseEntity.ok("Comment updated successfully!");
