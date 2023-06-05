@@ -24,7 +24,7 @@ public class RecipeController {
     RecipeService recipeService;
 
     @PostMapping()
-    public ResponseEntity<String> sharePost(@RequestPart("recipepost") @Valid RecipeCreate recipeCreate,
+    public ResponseEntity<String> recipePost(@RequestPart("recipepost") @Valid RecipeCreate recipeCreate,
                                             @RequestPart(value="file",required = true) MultipartFile file) throws IOException {
 
         recipeService.write(recipeCreate,file);
