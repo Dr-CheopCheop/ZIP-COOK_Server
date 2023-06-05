@@ -38,6 +38,8 @@ jwt:
   token-validity-in-seconds: 86400
   expiration: 604800
 
+#image path
+
 month-food:
   january:
     - tangerine

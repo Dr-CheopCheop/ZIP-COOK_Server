@@ -17,13 +17,8 @@ public class CorsConfig {
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-
-        // /auth/ 경로에 대한 CORS 정책 등록
-        source.registerCorsConfiguration("/auth/**", config);
-
-        // /chatbot/ 경로에 대한 CORS 정책 등록
-        source.registerCorsConfiguration("/chatbot/**", config);
-
+        config.addExposedHeader("Access-Control-Allow-Origin");
+        
         return new CorsFilter(source);
     }
 
