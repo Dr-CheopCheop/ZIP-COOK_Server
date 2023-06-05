@@ -118,12 +118,13 @@ public class UserController {
 
     //아이디 찾기
     @GetMapping("/findId/{email}")
-    public ResponseEntity<String> findId(@PathVariable String email) {
-        String username = userService.findId(email);
-        if (username != null && !username.isEmpty()) {
-            return ResponseEntity.ok(username);
+    public ResponseEntity<?> findId(@PathVariable String email) {
+        UserDTO user = userService.findId(email);
+        if (user != null) {
+            return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
+
 }
