@@ -25,15 +25,6 @@ spring:
     init:
       mode: always
 
-
-#openai api settings
-api:
-  secret:
-    key: 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
-openai:
-  api:
-    url: https://api.openai.com/v1/completions
-
 ##jwt settings
 jwt:
   issuer: lee
