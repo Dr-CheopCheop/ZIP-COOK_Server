@@ -2,6 +2,7 @@ package com.zipcook_server.controller;
 
 import com.zipcook_server.data.dto.sale.SaleCreate;
 import com.zipcook_server.data.dto.sale.Saledto;
+import com.zipcook_server.data.request.SaleMainSearch;
 import com.zipcook_server.data.request.SaleSearch;
 import com.zipcook_server.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,11 @@ public class SaleController {
     @GetMapping()
     public List<Saledto> getList(@ModelAttribute SaleSearch saleSearch){
         return saleService.getList(saleSearch);
+    }
+
+    @GetMapping("/main")
+    public List<Saledto> getMainList(@ModelAttribute SaleMainSearch saleMainSearch){
+        return saleService.getMainList(saleMainSearch);
     }
 
     @GetMapping("/{location}/search/{title}")

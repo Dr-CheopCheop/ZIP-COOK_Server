@@ -4,6 +4,7 @@ import com.zipcook_server.data.dto.sale.SaleCreate;
 import com.zipcook_server.data.dto.sale.Saledto;
 import com.zipcook_server.data.entity.SalePost;
 import com.zipcook_server.data.entity.User;
+import com.zipcook_server.data.request.SaleMainSearch;
 import com.zipcook_server.data.request.SaleSearch;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Sale.SaleRepository;
@@ -79,6 +80,14 @@ public class SaleService {
                 .map(Saledto::new)
                 .collect(Collectors.toList());
     }
+
+
+    public List<Saledto> getMainList(SaleMainSearch saleMainSearch){
+        return saleRepository.getMainList(saleMainSearch).stream()
+                .map(Saledto::new)
+                .collect(Collectors.toList());
+    }
+
 
 
 

@@ -4,6 +4,7 @@ import com.zipcook_server.data.dto.share.ShareCreate;
 import com.zipcook_server.data.dto.share.Sharedto;
 import com.zipcook_server.data.entity.SharePost;
 import com.zipcook_server.data.entity.User;
+import com.zipcook_server.data.request.ShareMainSearch;
 import com.zipcook_server.data.request.ShareSearch;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Share.ShareRepository;
@@ -76,6 +77,12 @@ public class ShareService {
 
     public List<Sharedto> getList(ShareSearch shareSearch){
         return shareRepository.getList(shareSearch).stream()
+                .map(Sharedto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<Sharedto> getMainList(ShareMainSearch shareMainSearch){
+        return shareRepository.getMainList(shareMainSearch).stream()
                 .map(Sharedto::new)
                 .collect(Collectors.toList());
     }

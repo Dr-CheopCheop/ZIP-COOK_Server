@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.zipcook_server.data.entity.QSalePost;
 import com.zipcook_server.data.entity.SalePost;
 import com.zipcook_server.data.request.MainSearch;
+import com.zipcook_server.data.request.SaleMainSearch;
 import com.zipcook_server.data.request.SaleSearch;
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +19,15 @@ public class SaleRepositoryImpl implements SalePostRepositoryCustom {
     public List<SalePost> getList(SaleSearch saleSearch) {
         return jpaQueryFactory.selectFrom(QSalePost.salePost)
                 .where(QSalePost.salePost.location.eq(saleSearch.getLocation()))
+                .orderBy(QSalePost.salePost.id.desc())
+                .limit(10)
+                .offset(saleSearch.getOffset())
+                .fetch();
+    }
+
+    @Override
+    public List<SalePost> getMainList(SaleMainSearch saleSearch) {
+        return jpaQueryFactory.selectFrom(QSalePost.salePost)
                 .orderBy(QSalePost.salePost.id.desc())
                 .limit(10)
                 .offset(saleSearch.getOffset())
