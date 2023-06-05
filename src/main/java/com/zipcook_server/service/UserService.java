@@ -132,22 +132,25 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public String findId(String email) {
+    public UserDTO findId(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-
+        UserDTO temp = null;
         if (user.isPresent()) {
             String username = user.get().getUsername();
             if (username.length() > 4) {
                 String visiblePart = username.substring(0, 4);
                 String maskedPart = "*".repeat(username.length() - 4);
-                return visiblePart + maskedPart;
-            } else {
-                return username;
+                username =  visiblePart + maskedPart;
+
+                temp = UserDTO.builder()
+                        .email(user.get().getEmail())
+                        .nickname(user.get().getNickname())
+                        .location(user.get().getLocation())
+                        .username(username)
+                        .password(passwordEncoder.encode(user.get().getPassword()))
+                        .build();
             }
-        } else {
-            return null;
         }
+        return temp;
     }
-
-
 }
