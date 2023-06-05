@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 public class ChatbotConfig {
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER = "Bearer ";
-    public static final String API_KEY = "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";
+    public static final String API_KEY = "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";
     public static final String MODEL = "text-davinci-003";
     public static final Integer MAX_TOKEN = 2048;
     public static final Double TEMPERATURE = 0.0;
