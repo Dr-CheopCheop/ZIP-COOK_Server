@@ -44,8 +44,8 @@ public class RecipeController {
     }
 
     @GetMapping("/main")
-    public List<Recipedto> getMainList(@ModelAttribute RecipeMainSearch recipeSearch){
-        return recipeService.getMainList(recipeSearch);
+    public List<Recipedto> getMain(){
+        return recipeService.getMain();
     }
 
     @GetMapping("/search/{title}")

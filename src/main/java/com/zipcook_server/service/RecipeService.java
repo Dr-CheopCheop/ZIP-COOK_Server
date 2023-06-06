@@ -92,6 +92,13 @@ public class RecipeService {
     }
 
 
+    public List<Recipedto> getMain(){
+        return recipeRepository.findAll().stream()
+                .map(Recipedto::new)
+                .collect(Collectors.toList());
+    }
+
+
 
     public List<Recipedto> searchByTitle(String title) {
         return recipeRepository.findByTitleContaining(title).stream()

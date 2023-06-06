@@ -47,8 +47,8 @@ public class ShareController {
 
 
     @GetMapping("/main")
-    public List<Sharedto> getMainList(@ModelAttribute ShareMainSearch shareMainSearch){
-        return shareService.getMainList(shareMainSearch);
+    public List<Sharedto> getMainList(){
+        return shareService.getMain();
     }
 
     @GetMapping("/{location}/search/{title}")

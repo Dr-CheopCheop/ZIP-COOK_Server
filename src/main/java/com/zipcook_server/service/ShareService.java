@@ -87,6 +87,12 @@ public class ShareService {
                 .collect(Collectors.toList());
     }
 
+    public List<Sharedto> getMain(){
+        return shareRepository.findAll().stream()
+                .map(Sharedto::new)
+                .collect(Collectors.toList());
+    }
+
 
 
 

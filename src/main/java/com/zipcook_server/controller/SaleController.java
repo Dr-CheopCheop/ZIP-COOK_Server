@@ -45,8 +45,8 @@ public class SaleController {
     }
 
     @GetMapping("/main")
-    public List<Saledto> getMainList(@ModelAttribute SaleMainSearch saleMainSearch){
-        return saleService.getMainList(saleMainSearch);
+    public List<Saledto> getMain(){
+        return saleService.getMain();
     }
 
     @GetMapping("/{location}/search/{title}")
