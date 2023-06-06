@@ -50,7 +50,7 @@ public class RecipeService {
                 .content(recipeCreate.getContent())
                 .time(recipeCreate.getTime())
                 .regDate(new Date())
-                .filepath(savepath)
+                .filepath(fileName)
                 .build();
 
         recipeRepository.save(recipePost);
@@ -120,7 +120,7 @@ public class RecipeService {
         File saveFile = new File(savepath);
         file.transferTo(saveFile);
 
-        recipePost.toUpdateEntity(update,savepath);
+        recipePost.toUpdateEntity(update,fileName);
         recipeRepository.save(recipePost);
     }
 

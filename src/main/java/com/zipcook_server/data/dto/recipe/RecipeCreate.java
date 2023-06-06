@@ -33,7 +33,7 @@ public class RecipeCreate {
     private List<String> content;
 
 
-    private int time;
+    private String time;
 
 
     private Date regDate;

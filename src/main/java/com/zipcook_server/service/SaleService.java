@@ -49,7 +49,7 @@ public class SaleService {
                 .price(saleCreate.getPrice())
                 .discountPrice(saleCreate.getDiscountPrice())
                 .place(saleCreate.getPlace())
-                .filepath(savepath)
+                .filepath(fileName)
                 .location(saleCreate.getLocation())
                 .build();
 
@@ -118,7 +118,7 @@ public class SaleService {
         File saveFile = new File(savepath);
         file.transferTo(saveFile);
 
-        salePost.toUpdateEntity(update,savepath);
+        salePost.toUpdateEntity(update,fileName);
         saleRepository.save(salePost);
     }
 

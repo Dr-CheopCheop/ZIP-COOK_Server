@@ -53,7 +53,7 @@ public class RecipePost {
 
 
     @Column(name = "time")
-    private int time;
+    private String time;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "reg_date")

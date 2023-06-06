@@ -50,7 +50,7 @@ public class ShareService {
                 .title(shareCreate.getTitle())
                 .content(shareCreate.getContent())
                 .regDate(new Date())
-                .filepath(savepath)
+                .filepath(fileName)
                 .location(shareCreate.getLocation())
                 .build();
 
@@ -116,7 +116,7 @@ public class ShareService {
         File saveFile = new File(savepath);
         file.transferTo(saveFile);
 
-        sharePost.toUpdateEntity(update,savepath);
+        sharePost.toUpdateEntity(update,fileName);
         shareRepository.save(sharePost);
     }
 

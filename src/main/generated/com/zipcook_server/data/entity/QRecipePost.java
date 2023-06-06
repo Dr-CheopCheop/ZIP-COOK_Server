@@ -38,11 +38,11 @@ public class QRecipePost extends EntityPathBase<RecipePost> {
 
     public final DatePath<java.util.Date> regDate = createDate("regDate", java.util.Date.class);
 
-    public final NumberPath<Integer> serving = createNumber("serving", Integer.class);
+    public final StringPath serving = createString("serving");
 
     public final StringPath summary = createString("summary");
 
-    public final NumberPath<Integer> time = createNumber("time", Integer.class);
+    public final StringPath time = createString("time");
 
     public final StringPath title = createString("title");
 

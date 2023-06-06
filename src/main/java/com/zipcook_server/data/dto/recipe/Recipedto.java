@@ -38,7 +38,7 @@ public class Recipedto {
     private List<String> content;
 
 
-    private int time;
+    private String time;
 
 
     private Date regDate;
