@@ -35,7 +35,7 @@ public class RecipePost {
     private String title;
 
     @Column(name = "serving")
-    private int serving;
+    private String serving;
 
     @Column(name = "level", length = 5)
     private String level;

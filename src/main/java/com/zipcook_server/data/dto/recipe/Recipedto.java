@@ -25,7 +25,7 @@ public class Recipedto {
     @Size(max=30)
     private String title;
 
-    private int serving;
+    private String serving;
 
     @Size(max=5)
     private String level;
