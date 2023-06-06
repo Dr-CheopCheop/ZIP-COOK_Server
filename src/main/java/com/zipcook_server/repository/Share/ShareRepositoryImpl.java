@@ -20,7 +20,7 @@ public class ShareRepositoryImpl implements SharePostRepositoryCustom {
         return jpaQueryFactory.selectFrom(QSharePost.sharePost)
                 .where(QSharePost.sharePost.location.eq(shareSearch.getLocation()))
                 .orderBy(QSharePost.sharePost.id.desc())
-                .limit(10)
+                .limit(6)
                 .offset(shareSearch.getOffset())
                 .fetch();
     }

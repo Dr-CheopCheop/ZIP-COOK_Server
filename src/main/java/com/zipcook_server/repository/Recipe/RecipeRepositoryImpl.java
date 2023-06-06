@@ -19,7 +19,7 @@ public class RecipeRepositoryImpl implements RecipePostRespositoryCustom {
     public List<RecipePost> getList(RecipeSearch recipeSearch) {
         return jpaQueryFactory.selectFrom(QRecipePost.recipePost)
                 .orderBy(QRecipePost.recipePost.id.desc())
-                .limit(10)
+                .limit(6)
                 .offset(recipeSearch.getOffset())
                 .fetch();
     }
