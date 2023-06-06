@@ -17,6 +17,6 @@ public class SaleMainSearch {
 
 
     public long getOffset(){
-        return (long)((page-1)*10);
+        return (long)((page-1)*5);
     }
 }

@@ -1,6 +1,5 @@
 package com.zipcook_server.data.request;
 
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -10,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ShareMainSearch {
+public class RecipeMainSearch {
 
     private int page;
 

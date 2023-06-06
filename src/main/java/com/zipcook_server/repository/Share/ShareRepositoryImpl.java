@@ -29,7 +29,7 @@ public class ShareRepositoryImpl implements SharePostRepositoryCustom {
     public List<SharePost> getMainList(ShareMainSearch shareSearch) {
         return jpaQueryFactory.selectFrom(QSharePost.sharePost)
                 .orderBy(QSharePost.sharePost.id.desc())
-                .limit(10)
+                .limit(5)
                 .offset(shareSearch.getOffset())
                 .fetch();
     }

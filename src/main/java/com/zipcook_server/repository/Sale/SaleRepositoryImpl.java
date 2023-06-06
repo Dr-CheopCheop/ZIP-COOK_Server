@@ -29,7 +29,7 @@ public class SaleRepositoryImpl implements SalePostRepositoryCustom {
     public List<SalePost> getMainList(SaleMainSearch saleSearch) {
         return jpaQueryFactory.selectFrom(QSalePost.salePost)
                 .orderBy(QSalePost.salePost.id.desc())
-                .limit(10)
+                .limit(5)
                 .offset(saleSearch.getOffset())
                 .fetch();
     }

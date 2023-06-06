@@ -2,6 +2,7 @@ package com.zipcook_server.controller;
 
 import com.zipcook_server.data.dto.recipe.RecipeCreate;
 import com.zipcook_server.data.dto.recipe.Recipedto;
+import com.zipcook_server.data.request.RecipeMainSearch;
 import com.zipcook_server.data.request.RecipeSearch;
 import com.zipcook_server.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class RecipeController {
     @GetMapping()
     public List<Recipedto> getList(@ModelAttribute RecipeSearch recipeSearch){
         return recipeService.getList(recipeSearch);
+    }
+
+    @GetMapping("/main")
+    public List<Recipedto> getMainList(@ModelAttribute RecipeMainSearch recipeSearch){
+        return recipeService.getMainList(recipeSearch);
     }
 
     @GetMapping("/search/{title}")
