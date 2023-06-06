@@ -88,6 +88,12 @@ public class SaleService {
                 .collect(Collectors.toList());
     }
 
+    public List<Saledto> getMain(){
+        return saleRepository.findAll().stream()
+                .map(Saledto::new)
+                .collect(Collectors.toList());
+    }
+
 
 
 
