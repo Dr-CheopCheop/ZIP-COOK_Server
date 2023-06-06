@@ -20,7 +20,7 @@ public class SaleRepositoryImpl implements SalePostRepositoryCustom {
         return jpaQueryFactory.selectFrom(QSalePost.salePost)
                 .where(QSalePost.salePost.location.eq(saleSearch.getLocation()))
                 .orderBy(QSalePost.salePost.id.desc())
-                .limit(10)
+                .limit(6)
                 .offset(saleSearch.getOffset())
                 .fetch();
     }
