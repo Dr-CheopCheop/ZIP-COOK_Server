@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.zipcook_server.data.entity.QRecipePost;
 import com.zipcook_server.data.entity.RecipePost;
 import com.zipcook_server.data.request.MainSearch;
+import com.zipcook_server.data.request.RecipeMainSearch;
 import com.zipcook_server.data.request.RecipeSearch;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,14 @@ public class RecipeRepositoryImpl implements RecipePostRespositoryCustom {
                 .fetch();
     }
 
+    @Override
+    public List<RecipePost> getMainList(RecipeMainSearch recipeSearch) {
+        return jpaQueryFactory.selectFrom(QRecipePost.recipePost)
+                .orderBy(QRecipePost.recipePost.id.desc())
+                .limit(5)
+                .offset(recipeSearch.getOffset())
+                .fetch();
+    }
     @Override
     public List<RecipePost> maingetList(MainSearch mainSearch) {
         return jpaQueryFactory.selectFrom(QRecipePost.recipePost)

@@ -4,6 +4,7 @@ import com.zipcook_server.data.dto.recipe.RecipeCreate;
 import com.zipcook_server.data.dto.recipe.Recipedto;
 import com.zipcook_server.data.entity.RecipePost;
 import com.zipcook_server.data.entity.User;
+import com.zipcook_server.data.request.RecipeMainSearch;
 import com.zipcook_server.data.request.RecipeSearch;
 import com.zipcook_server.exception.PostNotFound;
 import com.zipcook_server.repository.Recipe.RecipeRepository;
@@ -79,6 +80,13 @@ public class RecipeService {
 
     public List<Recipedto> getList(RecipeSearch recipeSearch){
         return recipeRepository.getList(recipeSearch).stream()
+                .map(Recipedto::new)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<Recipedto> getMainList(RecipeMainSearch recipeSearch){
+        return recipeRepository.getMainList(recipeSearch).stream()
                 .map(Recipedto::new)
                 .collect(Collectors.toList());
     }
