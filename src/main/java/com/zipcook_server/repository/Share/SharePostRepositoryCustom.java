@@ -10,7 +10,7 @@ import java.util.List;
 public interface SharePostRepositoryCustom {
     List<SharePost> getList(ShareSearch ShareSearch);
 
-    List<SharePost> getMainList(ShareMainSearch ShareSearch);
+    List<SharePost> getMainList();
 
     List<SharePost> maingetList(MainSearch mainSearch);
 

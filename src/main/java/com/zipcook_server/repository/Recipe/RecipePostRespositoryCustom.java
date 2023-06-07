@@ -10,7 +10,7 @@ import java.util.List;
 public interface RecipePostRespositoryCustom {
     List<RecipePost> getList(RecipeSearch RecipeSearch);
 
-    List<RecipePost> getMainList(RecipeMainSearch RecipeSearch);
+    List<RecipePost> getMainList();
 
     List<RecipePost> maingetList(MainSearch mainSearch);
 }

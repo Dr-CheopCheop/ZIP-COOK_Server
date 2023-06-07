@@ -11,7 +11,7 @@ public interface SalePostRepositoryCustom {
 
     List<SalePost> getList(SaleSearch SaleSearch);
 
-    List<SalePost> getMainList(SaleMainSearch SaleSearch);
+    List<SalePost> getMainList();
 
     List<SalePost> maingetList(MainSearch mainSearch);
 }

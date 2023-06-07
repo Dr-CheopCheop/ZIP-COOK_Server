@@ -44,7 +44,6 @@ public class SaleService {
         SalePost salePost = SalePost.builder()
                 .nickname(saleCreate.getNickname())
                 .title(saleCreate.getTitle())
-                .content(saleCreate.getContent())
                 .regDate(new Date())
                 .price(saleCreate.getPrice())
                 .discountPrice(saleCreate.getDiscountPrice())
@@ -64,7 +63,6 @@ public class SaleService {
                 .id(post.getId())
                 .nickname(post.getNickname())
                 .title(post.getTitle())
-                .content(post.getContent())
                 .regDate(post.getRegDate())
                 .price(post.getPrice())
                 .discountPrice(post.getDiscountPrice())
@@ -82,14 +80,10 @@ public class SaleService {
     }
 
 
-    public List<Saledto> getMainList(SaleMainSearch saleMainSearch){
-        return saleRepository.getMainList(saleMainSearch).stream()
-                .map(Saledto::new)
-                .collect(Collectors.toList());
-    }
+
 
     public List<Saledto> getMain(){
-        return saleRepository.findAll().stream()
+        return saleRepository.getMainList().stream()
                 .map(Saledto::new)
                 .collect(Collectors.toList());
     }

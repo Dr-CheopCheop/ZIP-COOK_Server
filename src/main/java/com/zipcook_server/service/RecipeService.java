@@ -85,15 +85,8 @@ public class RecipeService {
     }
 
 
-    public List<Recipedto> getMainList(RecipeMainSearch recipeSearch){
-        return recipeRepository.getMainList(recipeSearch).stream()
-                .map(Recipedto::new)
-                .collect(Collectors.toList());
-    }
-
-
     public List<Recipedto> getMain(){
-        return recipeRepository.findAll().stream()
+        return recipeRepository.getMainList().stream()
                 .map(Recipedto::new)
                 .collect(Collectors.toList());
     }

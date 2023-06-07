@@ -20,17 +20,17 @@ public class SaleRepositoryImpl implements SalePostRepositoryCustom {
         return jpaQueryFactory.selectFrom(QSalePost.salePost)
                 .where(QSalePost.salePost.location.eq(saleSearch.getLocation()))
                 .orderBy(QSalePost.salePost.id.desc())
-                .limit(6)
-                .offset(saleSearch.getOffset())
+                //.limit(6)
+                //.offset(saleSearch.getOffset())
                 .fetch();
     }
 
     @Override
-    public List<SalePost> getMainList(SaleMainSearch saleSearch) {
+    public List<SalePost> getMainList() {
         return jpaQueryFactory.selectFrom(QSalePost.salePost)
                 .orderBy(QSalePost.salePost.id.desc())
-                .limit(5)
-                .offset(saleSearch.getOffset())
+                //.limit(5)
+                //.offset(saleSearch.getOffset())
                 .fetch();
     }
 

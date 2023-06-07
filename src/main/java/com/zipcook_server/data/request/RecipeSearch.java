@@ -11,9 +11,10 @@ import lombok.Setter;
 @Builder
 public class RecipeSearch {
 
-    private int page;
+    //private int page;
 
-    public long getOffset(){
+    /**public long getOffset(){
         return (long)((page-1)*10);
     }
+     **/
 }

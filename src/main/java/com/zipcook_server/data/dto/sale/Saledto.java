@@ -24,8 +24,7 @@ public class Saledto {
     @Size(max=30)
     private String title;
 
-    @Size(max=80)
-    private String content;
+
 
     private Date regDate;
 
@@ -46,7 +45,6 @@ public class Saledto {
         this.nickname= post.getNickname();
         this.id= post.getId();
         this.title= post.getTitle();
-        this.content=post.getContent();
         this.regDate=post.getRegDate();
         this.place=post.getPlace();
         this.price=post.getPrice();
